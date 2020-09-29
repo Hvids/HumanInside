@@ -7,7 +7,7 @@ import requests
 from Url import Url
 from Text import Text
 from CulturalCenter import CulturalCenters, CulturalCenter
-
+from Event import Event, Events
 from Parser import Parser
 
 
@@ -36,26 +36,25 @@ class ParseImgUrl:
 
 
 class ParserName:
-    def __init__(self):
-        pass
 
     def parse(self, reg, text):
-        sub_name = text.get_str_by_reg(reg)
-        reg_name = r'>(.*)'
-        name = Parser.get_str_by_reg(reg_name, sub_name)
+        name = text.get_str_by_reg(reg)
         return name
 
 
 class ParserContent:
-    def __init__(self):
-        pass
-
-    def parse(self, reg, text):
+    def parse_cultural_center(self, reg, text):
         sub_content = text.get_str_by_reg(reg)
         reg = r'<p>(.*?)</p>'
-        sub_content = Parser.get_str_by_reg(reg,sub_content)
+        sub_content = Parser.get_str_by_reg(reg, sub_content)
         reg_split = r'<span>|</span>'
         content = Parser.delete_by_reg(reg_split, sub_content)
+        return content
+
+    def parser_event(self, reg, text):
+        content_sub = text.get_str_by_reg(reg)
+        reg = r'<p>(.*?)</p>'
+        content = Parser.get_str_by_reg(reg, content_sub)
         return content
 
 
@@ -70,13 +69,34 @@ class ParserPassport:
         lat, long = tuple(re.split(reg_split, sub_geo))
         return lat, long
 
+    def __get_age(self, text):
+        reg = '<h3 class="sidebar-info_key" data-reactid=".*?">Ограничение по возрасту:</h3><div class="sidebar-info_value" data-reactid=".*?"><!-- react-text: .*? -->(.*?)<!-- /react-text --><!-- react-text: .*? -->(.*?)<!--'
+        age_t = re.findall(reg, text)
+        age_t = re.findall(reg, text)[0] if len(age_t)>0 else ''
+        age = "".join(age_t)
+        return age
+
     def __get_passport_dict(self, regs, text):
         passport = {}
         for key in regs.keys():
             passport[key] = Parser.get_str_by_reg(regs[key], text)
         return passport
 
-    def parse(self, reg, text):
+    def parse_event(self, reg, text):
+        sub_pass = text.get_str_by_reg(reg)
+        regs = {
+            'town': '<h3 class="sidebar-info_key" data-reactid=".*?">Город:</h3><div class="sidebar-info_value" data-reactid=".*?"><div data-reactid=".*?"><!-- react-text: .*? -->(.*?)<!--',
+            'price': r'data-reactid=".*?">Цены на билеты:</h3><div class="sidebar-info_value" data-reactid=".*?">(.*?) руб',
+        }
+        passport = self.__get_passport_dict(regs, sub_pass)
+        passport['age'] = self.__get_age(sub_pass)
+        reg_site_buy = '<li class="sidebar-info_list-item sidebar-info_list-item__overflowed" data-reactid=".*?"><a href="(.*?)" title'
+        passport['site_buy'] = text.get_str_by_reg(reg_site_buy)
+        reg_date = '<button type="button" class="inline-datepicker_button button button__clean" data-reactid=".*?"><!-- react-text: .*? -->(.*?)<!--'
+        passport['date'] = text.get_str_by_reg(reg_date)
+        return passport
+
+    def parse_cultural_center(self, reg, text):
         sub_content = text.get_str_by_reg(reg)
         regs = {
             'adress': r'-->(.*?)<!--',
@@ -87,10 +107,77 @@ class ParserPassport:
         }
 
         passport = self.__get_passport_dict(regs, sub_content)
+        passport['adress'] = re.sub(r'\s+', ' ', passport['adress'])
         passport['latitude'], passport['logitute'] = self.__get_geo_by_adress(passport['adress'])
-        reg_off_site = r'<div class="sidebar-info_row" data-reactid=".*?"><h3 class="sidebar-info_key" data-reactid="774">Официальный сайт:</h3><div class="sidebar-info_value" data-reactid="775"><a href="(.*?)"'
+        reg_off_site = r'<div class="sidebar-info_row" data-reactid=".*?"><h3 class="sidebar-info_key" data-reactid=".*?">Официальный сайт:</h3><div class="sidebar-info_value" data-reactid=".*?"><a href="(.*?)"'
         passport['offical_site'] = text.get_str_by_reg(reg_off_site)
         return passport
+
+
+class ParserEvent:
+    def __init__(self, site, url):
+        self.site = site
+        self.url = url
+        self.text = Text(url)
+
+    @property
+    def __name(self):
+        reg = r'<div class="entity-info_title" data-reactid=".*?">(.*?)</div>'
+        parser_name = ParserName()
+        name = parser_name.parse(reg, self.text)
+        return name
+
+    @property
+    def __content(self):
+        reg = r'<div class="content_view content_view__text" data-reactid=".*?">(.*?)</div>'
+        parser_content = ParserContent()
+        content = parser_content.parser_event(reg, self.text)
+        return content
+
+    @property
+    def passport(self):
+        reg = r'<div class="sidebar-info_row" data-reactid=".*?">(.*?)</div>'
+        parser_passport = ParserPassport()
+        passport = parser_passport.parse_event(reg, self.text)
+        return passport
+
+    @property
+    def __img_url(self):
+        reg = r'<img class="image image__clickable entity-info_image" src="(.*?)"'
+        parser_img_url = ParseImgUrl(prefix=self.site)
+        img_url = parser_img_url.parse(reg, self.text)
+        return img_url
+
+    def parse(self, id_cultural):
+        name = self.__name
+        content = self.__content
+        img_url = self.__img_url
+        passport = self.passport
+        event = Event(id_cultural, name, content, img_url, passport)
+        return event
+
+
+class ParserEvents:
+    def __init__(self, site, url):
+        self.url = url
+        self.site = site
+        self.url_events = self.__make_url_events()
+
+    def __make_url_events(self):
+        text = Text(self.url)
+        reg = r'<a class="media-preview_img-wrap" href="/events(.*?)" data-reactid="'
+        urls = text.findall(reg)
+        urls = Url.make_urls_with_site(self.site + '/events', urls)
+        return urls
+
+    def parse(self, id_cultural):
+        result_events = Events()
+        for id, url in enumerate(self.url_events):
+            parser_event = ParserEvent(self.site, url)
+            event = parser_event.parse(id_cultural)
+            print(f'e = {event.id}  {event.name} {event.img_url}')
+            result_events.add(event)
+        return result_events
 
 
 class ParserCulturalCenter:
@@ -101,10 +188,11 @@ class ParserCulturalCenter:
 
     @property
     def __name(self):
-        reg = r'<h1 class="entity-info_title"(.*?)</h1>'
+        reg = r'<h1 class="entity-info_title" data-reactid=".*?">(.*?)</h1>'
         parser_name = ParserName()
         name = parser_name.parse(reg, self.text)
         return name
+
     @property
     def __img_url(self):
         reg = r'<img class="image image__clickable entity-info_image" src="(.*?)"'
@@ -116,25 +204,27 @@ class ParserCulturalCenter:
     def __content(self):
         reg_content = r'<div class="content_view content_view__text"(.*?)</div></div></div>'
         parser_content = ParserContent()
-        content = parser_content.parse(reg_content, self.text)
+        content = parser_content.parse_cultural_center(reg_content, self.text)
         return content
 
     @property
     def __passport(self):
         reg_passport = r'<div class="sidebar-info_value"(.*?)</div>'
         parser_passport = ParserPassport()
-        passport = parser_passport.parse(reg_passport, self.text)
+        passport = parser_passport.parse_cultural_center(reg_passport, self.text)
         return passport
 
-    def __events(self):
-        return None
+    def __parse_events(self, id_cultural):
+        parser_events = ParserEvents(self.site, self.url)
+        events = parser_events.parse(id_cultural)
+        return events
 
-    def parse_center(self, id):
+    def parse_center(self, id) -> object:
         name = self.__name
         img_url = self.__img_url
         content = self.__content
         passport = self.__passport
-        events = self.__events
+        events = self.__parse_events(id)
         return CulturalCenter(id, name, passport, content, img_url, events)
 
 
@@ -147,8 +237,10 @@ class ParserCulturalCenters:
     def cultural_centers(self):
         centers = CulturalCenters()
         for id, url in enumerate(self.urls):
+
             parser_cultural_center = ParserCulturalCenter(self.site, url)
             center = parser_cultural_center.parse_center(id)
+            print(f'cc = {center.name}')
             centers.add(center)
         return centers
 
