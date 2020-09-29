@@ -26,7 +26,7 @@ class Libraries:
     def parse_urls(cls, urls, verbose=1):
         libs = []
         if verbose == 1:
-            print("parse library")
+            print("parse libraries")
         for i, url in enumerate(urls):
             parser = ParserLibraryPage(url)
             lib = parser.parse()

@@ -9,7 +9,7 @@ from Libraries import Libraries
 
 if __name__ == '__main__':
     path_pd = '../../data/csv/libraries.csv'
-    path_img = '../../data/img/library/'
+    path_img = '../../data/img/libraries/'
     url_libraries_one_page = 'https://www.culture.ru/literature/libraries/location-moskva'
     site = 'https://www.culture.ru'
     url_after_one = ('https://www.culture.ru/literature/libraries/location-moskva?page=', '&limit=16&sort=-views')

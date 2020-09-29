@@ -6,8 +6,6 @@ import re
 from Library import Library
 from Parser import Parser
 
-from bs4 import BeautifulSoup
-
 class ParserLibraryPage(Parser):
 
     def __init__(self, url):
