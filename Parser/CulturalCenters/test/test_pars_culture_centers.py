@@ -16,7 +16,5 @@ parser_cultural_centers = ParserCulturalCenters(site, urls_cultural_centers[:2])
 cultural_centers = parser_cultural_centers.cultural_centers
 
 path_pd = '../../../data/csv'
-path_img_cultural_center = '../../../data/img/cultural_centers/'
-path_img_event = '../../../data/img/events/'
 
-cultural_centers.save(path_pd, path_img_cultural_center, path_img_event)
+cultural_centers.save(path_pd)

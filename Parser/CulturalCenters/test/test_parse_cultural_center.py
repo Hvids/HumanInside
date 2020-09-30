@@ -15,5 +15,4 @@ path_pd = '../../../data/csv'
 path_img_cultural_center = '../../../data/img/cultural_centers/'
 path_img_event = '../../../data/img/events/'
 
-cc.save_img(path_img_cultural_center)
-cc.events.save_imgs(path_img_event)
+#

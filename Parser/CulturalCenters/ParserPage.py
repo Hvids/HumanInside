@@ -44,17 +44,17 @@ class ParserName:
 
 class ParserContent:
     def parse_cultural_center(self, reg, text):
-        sub_content = text.get_str_by_reg(reg)
-        reg = r'<p>(.*?)</p>'
-        sub_content = Parser.get_str_by_reg(reg, sub_content)
-        reg_split = r'<span>|</span>'
-        content = Parser.delete_by_reg(reg_split, sub_content)
+        content = text.get_str_by_reg(reg)
+        reg = '<span>|</span>'
+        content = Parser.delete_by_reg(reg, content)
         return content
 
     def parser_event(self, reg, text):
         content_sub = text.get_str_by_reg(reg)
         reg = r'<p>(.*?)</p>'
         content = Parser.get_str_by_reg(reg, content_sub)
+        reg = '<span>|</span>'
+        content = Parser.delete_by_reg(reg, content)
         return content
 
 
@@ -64,10 +64,14 @@ class ParserPassport:
         gm = 'https://www.google.com/maps/search/' + adress
         reg = r'<meta content="https://maps.google.com/maps/api/staticmap\?center=(.*?)&amp;zoom'
         text = requests.get(gm).text
-        sub_geo = re.findall(reg, text)[0]
-        reg_split = '%2C'
-        lat, long = tuple(re.split(reg_split, sub_geo))
-        return lat, long
+        sub_geo = re.findall(reg, text)
+        if len(sub_geo) > 0:
+            sub_geo = sub_geo[0]
+            reg_split = r'%2C'
+            lat, long = tuple(re.split(reg_split, sub_geo))
+            return lat, long
+        else:
+            return '',''
 
     def __get_age(self, text):
         reg = '<h3 class="sidebar-info_key" data-reactid=".*?">Ограничение по возрасту:</h3><div class="sidebar-info_value" data-reactid=".*?"><!-- react-text: .*? -->(.*?)<!-- /react-text --><!-- react-text: .*? -->(.*?)<!--'
@@ -165,9 +169,9 @@ class ParserEvents:
 
     def __make_url_events(self):
         text = Text(self.url)
-        reg = r'<a class="media-preview_img-wrap" href="/events(.*?)" data-reactid="'
+        reg = r'<div class="content-list_item" data-reactid=".*?"><div class="content-list_item-info" data-reactid=".*?"><div class="media-preview" data-reactid=".*?"><a class="media-preview_img-wrap" href="(.*?)"'
         urls = text.findall(reg)
-        urls = Url.make_urls_with_site(self.site + '/events', urls)
+        urls = Url.make_urls_with_site(self.site, urls)
         return urls
 
     def parse(self, id_cultural):
@@ -202,7 +206,7 @@ class ParserCulturalCenter:
 
     @property
     def __content(self):
-        reg_content = r'<div class="content_view content_view__text"(.*?)</div></div></div>'
+        reg_content = r'<p>(.*?)</p>'
         parser_content = ParserContent()
         content = parser_content.parse_cultural_center(reg_content, self.text)
         return content
@@ -225,6 +229,7 @@ class ParserCulturalCenter:
         content = self.__content
         passport = self.__passport
         events = self.__parse_events(id)
+        # events = None
         return CulturalCenter(id, name, passport, content, img_url, events)
 
 

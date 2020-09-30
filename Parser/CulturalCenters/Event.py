@@ -1,8 +1,6 @@
 from copy import deepcopy
 import pandas as pd
-from PIL import Image
-import requests
-from io import BytesIO
+
 
 class Event:
     counter = 0
@@ -19,16 +17,6 @@ class Event:
     @property
     def columns(self):
         return self.row.keys()
-
-
-    def save_img(self, path_img):
-         try:
-            id = self.id
-            response = requests.get(self.img_url)
-            img = Image.open(BytesIO(response.content))
-            img.convert('RGB').save(path_img + str(id)+'.png', "PNG", optimize=True)
-         except:
-             print(f'non image download {self.id}')
 
     @property
     def row(self):
@@ -48,7 +36,6 @@ class Events:
     def __init__(self, events=[]):
         self.events = events
 
-
     @property
     def columns_event(self):
         return self.events[0].columns
@@ -61,11 +48,6 @@ class Events:
             row = event.row
             data_ev = data_ev.append(row, ignore_index=True)
         return data_ev
-
-    def save_imgs(self,path):
-        for event in self.events:
-            event.save_img(path)
-
 
     def add(self, event):
         self.events.append(event)
