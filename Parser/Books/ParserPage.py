@@ -46,6 +46,7 @@ class ParserComments(ParserData):
             comment_obj = parser_comment.parse_comment(id_book)
             if comment_obj.rating == '':
                 continue
+            print(f'com = {comment_obj.id} {comment_obj.date}')
             comments_obj.add(comment_obj)
         return comments_obj
 
@@ -88,12 +89,13 @@ class ParserBook(ParserData):
             'language': r'<span itemprop="inLanguage" class="desc2">(.*?)</span>'
 
         }
-        comments = self.parse_comments(id_book)
+        # comments = self.parse_comments(id_book)
         passport = self.parse_passport(regs)
         passport['content'] = self.content
         passport['img_url'] = self.img_url
-
-        return Book(id_book, passport, comments)
+        # book_ = Book(id_book, passport, comments)
+        book_ = Book(id_book, passport)
+        return book_
 
 
 class ParserBooks(ParserDataList):
@@ -104,7 +106,7 @@ class ParserBooks(ParserDataList):
         for id_book, url in enumerate(self.urls):
             parser_book = ParserBook(self.site, url)
             book = parser_book.parse_book(id_book)
-            # print(book)
+            print(f"{id_book} {book.passport['name']}")
             books.add(book)
         return books
 

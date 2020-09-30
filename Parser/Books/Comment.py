@@ -1,5 +1,5 @@
 from copy import deepcopy
-
+import pandas as pd
 
 class Comment:
     counter = 0
@@ -40,3 +40,11 @@ class Comments:
     @property
     def columns(self):
         return ['id', 'id_book', 'date', 'rating', 'content']
+
+    @property
+    def df(self):
+        df =pd.DataFrame(columns=self.columns)
+        for com in self.comments:
+            row = com.row
+            df = df.append(row,ignore_index=True)
+        return df

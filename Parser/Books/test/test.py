@@ -13,4 +13,9 @@ parser_urls = ParserUrlsBook(prefix,url,postfix)
 urls = parser_urls.get_urls(range_postfix)
 
 parser_books = ParserBooks(prefix,urls)
+
 book = parser_books.books
+
+path_pd = '../../../data/csv'
+print('save')
+book.save(path_pd)

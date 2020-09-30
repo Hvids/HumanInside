@@ -3,7 +3,7 @@ import pandas as pd
 
 
 class Book:
-    def __init__(self, id, passport, comments):
+    def __init__(self, id, passport, comments = None):
         self.id = id
         self.passport = passport
         self.comments = comments
@@ -16,6 +16,10 @@ class Book:
         res = deepcopy(self.passport)
         res['id'] = self.id
         return res
+
+    @property
+    def comments_df(self):
+        return self.comments.df
 
     @property
     def columns(self):
@@ -34,7 +38,7 @@ class Books:
 
     @property
     def columns(self):
-        return self.books[0].row.keys
+        return self.books[0].row.keys()
 
     @property
     def columns_comment(self):
@@ -42,5 +46,12 @@ class Books:
 
     def save(self, path_pd):
         df_books = pd.DataFrame(columns=self.columns)
-        df_comment = pd.DataFrame(columns=self.columns_comment)
+        # df_comments = pd.DataFrame(columns=self.columns_comment)
+        for book in self.books:
+            row = book.row
+            # df_comments_sub = book.comments_df
+            df_books = df_books.append(row,ignore_index=True)
+            # df_comments = df_comments.append(df_comments_sub)
 
+        # df_comments.to_csv(path_pd+'/comments.csv', index=False)
+        df_books.to_csv(path_pd+'/books.csv',index=False)
