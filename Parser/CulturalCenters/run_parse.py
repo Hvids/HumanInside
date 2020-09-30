@@ -1,3 +1,5 @@
+import  sys
+sys.path.append('../')
 from ParserPage import ParserUrlsCulturalCenters, ParserCulturalCenters
 
 site = 'https://www.2do2go.ru'

@@ -38,7 +38,7 @@ class CulturalCenter:
 
 class CulturalCenters:
     def __init__(self, ceneters=[]):
-        self.centers = ceneters
+        self.centers = deepcopy(ceneters)
 
     def add(self, center):
         self.centers.append(center)
@@ -58,9 +58,11 @@ class CulturalCenters:
         data_cc = pd.DataFrame(columns=columns_cultural_centers)
         data_ev = pd.DataFrame(columns=columns_events)
         for center in self.centers:
+            print(f'f cc = {center.id} {center.name}')
+
             row = center.row
             data_cc = data_cc.append(row, ignore_index=True)
             data_sub_ev = center.events_pd
-            data_ev = pd.concat([data_ev, data_sub_ev], axis=0)
+            data_ev = data_ev.append(data_sub_ev)
         data_cc.to_csv(path_pd + '/cultural_centers.csv', index=False)
         data_ev.to_csv(path_pd + '/events.csv', index=False)

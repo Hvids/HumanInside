@@ -34,11 +34,8 @@ class Event:
 
 class Events:
     def __init__(self, events=[]):
-        self.events = events
-
-    @property
-    def columns_event(self):
-        return self.events[0].columns
+        self.events = deepcopy(events)
+        self.columns_event = ['town',"price","age",'site_buy','date','id','id_cultural','name','img_url',"content"]
 
     @property
     def data_frame(self):

@@ -179,7 +179,7 @@ class ParserEvents:
         for id, url in enumerate(self.url_events):
             parser_event = ParserEvent(self.site, url)
             event = parser_event.parse(id_cultural)
-            print(f'e = {event.id}  {event.name} {event.img_url}')
+            print(f'ev = {event.id}  {event.name}')
             result_events.add(event)
         return result_events
 
@@ -229,7 +229,7 @@ class ParserCulturalCenter:
         content = self.__content
         passport = self.__passport
         events = self.__parse_events(id)
-        # events = None
+
         return CulturalCenter(id, name, passport, content, img_url, events)
 
 
@@ -245,7 +245,7 @@ class ParserCulturalCenters:
 
             parser_cultural_center = ParserCulturalCenter(self.site, url)
             center = parser_cultural_center.parse_center(id)
-            print(f'cc = {center.name}')
+            print(f'cc = {center.id} {center.name}')
             centers.add(center)
         return centers
 
