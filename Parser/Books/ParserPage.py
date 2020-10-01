@@ -30,8 +30,8 @@ class ParserBook(ParserData):
             'language': r'<span itemprop="inLanguage" class="desc2">(.*?)</span>'
 
         }
-        # comments = self.parse_comments(id_book)
-        passport = self.parse_passport(regs)
+
+        passport = self.text.parse_passport(regs)
         passport['content'] = self.content
         passport['img_url'] = self.img_url
 

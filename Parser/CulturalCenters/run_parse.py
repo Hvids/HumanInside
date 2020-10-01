@@ -1,19 +1,19 @@
 import  sys
-sys.path.append('../')
+
+sys.path.extend(['../','../../'])
+site = 'https://www.2do2go.ru'
+url = 'https://www.2do2go.ru/msk/kulturnye-centry'
+postfix = '?offset='
+
 from ParserPage import ParserUrlsCulturalCenters, ParserCulturalCenters
 
-site = 'https://www.2do2go.ru'
-url_start_page = 'https://www.2do2go.ru/msk/kulturnye-centry'
-postfix = '?offset='
 range_postfix = [1, 37]
+parser_urls = ParserUrlsCulturalCenters(site,url,postfix)
+urls = parser_urls.get_urls(range_postfix)
 
+parser = ParserCulturalCenters(site,urls)
 
-parser_start_page = ParserUrlsCulturalCenters(site, url_start_page, postfix, range_postfix)
-urls_cultural_centers = parser_start_page.urls
+ccs = parser.cultural_centers
+path_pd = '../../data/csv/'
+ccs.save(path_pd)
 
-parser_cultural_centers = ParserCulturalCenters(site, urls_cultural_centers)
-cultural_centers = parser_cultural_centers.cultural_centers
-
-path_pd = '../../data/csv'
-
-cultural_centers.save(path_pd)

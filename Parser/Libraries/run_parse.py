@@ -1,24 +1,19 @@
 import sys
 
-sys.path.append('../')
-sys.path.append('./')
+sys.path.extend(['../'])
 
-from ParserLibrariesListPage import ParserLibrariesListPage
+from ParserPage import ParserUrlsLibrary, ParserLibraries
 
-from Libraries import Libraries
+url = 'https://www.culture.ru/literature/libraries/location-moskva'
+site = 'https://www.culture.ru'
+postfix = '?page='
+range_page = (1, 2)
 
-if __name__ == '__main__':
-    path_pd = '../../data/csv/libraries.csv'
-    path_img = '../../data/img/libraries/'
-    url_libraries_one_page = 'https://www.culture.ru/literature/libraries/location-moskva'
-    site = 'https://www.culture.ru'
-    url_after_one = ('https://www.culture.ru/literature/libraries/location-moskva?page=', '&limit=16&sort=-views')
-    range_page = (2, 30)
+parser_urls = ParserUrlsLibrary(site, url, postfix)
+urls = parser_urls.get_urls(range_page)
 
-    parser_list_library = ParserLibrariesListPage.create_with_generagte(site, url_libraries_one_page, url_after_one,
-                                                                        range_page)
-    print("make list links")
-    urls_library = parser_list_library.get_urls_library()
+parser_books = ParserLibraries(site,urls)
 
-    libraries = Libraries.parse_urls(urls_library)
-    libraries.save(path_pd, path_img)
+libs = parser_books.libraries
+path_pd = '../../data/csv/'
+libs.save(path_pd)

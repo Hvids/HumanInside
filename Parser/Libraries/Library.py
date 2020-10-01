@@ -7,3 +7,4 @@ class Library(Data):
 
 class Libraries(DataList):
     name = 'Libraries'
+    name_save = 'libraries'

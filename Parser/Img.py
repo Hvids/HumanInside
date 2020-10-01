@@ -29,7 +29,7 @@ class SaverImgs:
 
     def save(self, path):
         for i in tqdm(range(self.size), desc='Save Imgs'):
-            id, url = self.columns_url[i], self.columns_url[i]
+            id, url = self.columns_id[i], self.columns_url[i]
             img = Img(id, url)
             img.save(path)
         return None

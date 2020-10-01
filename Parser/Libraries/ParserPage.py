@@ -40,7 +40,7 @@ class ParserLibrary(ParserData):
             'time_work': r'<div class="attributes_block"><div class="attributes_label"><span class="text text__underline">Часы работы</span>: </div><div class="attributes_value">(.*?)</div></div>'
 
         }
-        passport = self.parse_passport(regs)
+        passport = self.text.parse_passport(regs)
         passport['social_networks'] = self.social_networks
         passport['content'] = self.content
         passport['img_url'] = self.img_url

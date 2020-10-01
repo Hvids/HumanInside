@@ -27,6 +27,7 @@ class Data:
 
 
 class DataList:
+    name_save = 'data_list'
     def __init__(self, data_list=[]):
         self.data_list = deepcopy(data_list)
 
@@ -46,7 +47,7 @@ class DataList:
         for data in tqdm(self.data_list, desc=f'Save {self.name}'):
             row = data.row
             df = df.append(row, ignore_index=True)
-        return df
+        df.to_csv(path + self.name_save + '.csv', index=False)
 
     def __str__(self):
         return str([str(data) for data in self.data_list])

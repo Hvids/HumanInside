@@ -13,10 +13,10 @@ path_img_event = '../../data/img/events/'
 data_ev = pd.read_csv(path_pd_ev)
 data_cc = pd.read_csv(path_pd_cc)
 
-print("save cc img")
+
 saver_imgs_cc = SaverImgs(data_cc.id,data_cc.img_url)
 saver_imgs_cc.save(path_img_cultural_center)
 
-print(f'save ev img')
+
 saver_imgs_ev = SaverImgs(data_ev.id, data_ev.img_url)
 saver_imgs_ev.save(path_img_event)

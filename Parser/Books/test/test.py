@@ -17,5 +17,5 @@ parser_books = ParserBooks(prefix,urls)
 books = parser_books.books
 print(books)
 
-path_pd = '../../../data/csv'
+path_pd = '../../../data/csv/'
 books.save(path_pd)

@@ -11,3 +11,4 @@ class Book(Data):
 
 class Books(DataList):
     name = 'Books'
+    name_save = 'books'

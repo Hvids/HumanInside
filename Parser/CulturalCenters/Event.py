@@ -11,6 +11,7 @@ class Event(Data):
 
 class Events(DataList):
     name = 'Events'
+    name_save = 'events'
     def __init__(self, data_list=[]):
         self.data_list = data_list
 

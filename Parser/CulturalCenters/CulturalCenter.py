@@ -12,7 +12,8 @@ class CulturalCenter(Data):
 
 
 class CulturalCenters(DataList):
-    name = 'CulturalCenter'
+    name = 'CulturalCenters'
+    name_save = 'cultural_center'
 
     def save(self, path_pd):
         super().save(path_pd)
