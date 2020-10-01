@@ -1,15 +1,14 @@
 class Url:
-    def __init__(self, prefix, body, postfix=''):
-        self.prefix = prefix
+    def __init__(self, site, url, postfix=''):
+        self.site = site
+        self.url = url
         self.postfix = postfix
-        self.body = body
-
 
     def link(self, value):
-        return f'{self.prefix}{self.body}{self.postfix}{value}'
+        return f'{self.url}{self.postfix}{value}'
 
-    def concat_prefix_wiht_url(self,urls):
-        return  Url.make_urls_with_site(self.prefix,urls)
+    def concat_site_with_bodies(self, urls):
+        return Url.make_urls_with_site(self.site, urls)
 
     @staticmethod
     def make_urls_with_postfix(url_start, postfix, range_postfix):

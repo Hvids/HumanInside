@@ -16,5 +16,4 @@ cultural_centers = parser_cultural_centers.cultural_centers
 
 path_pd = '../../data/csv'
 
-print('save_csv')
 cultural_centers.save(path_pd)

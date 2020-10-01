@@ -1,6 +1,7 @@
 from PIL import Image
 import requests
 from io import BytesIO
+from tqdm import tqdm
 
 
 class Img:
@@ -9,13 +10,11 @@ class Img:
         self.url = url
 
     def save(self, path_img):
-        print(f'{self.url}')
         try:
             response = requests.get(self.url)
             img = Image.open(BytesIO(response.content))
             img.convert('RGB').save(path_img + str(self.name) + '.png', "PNG", optimize=True)
         except:
-            print(f'non image download {self.name}')
             return None
 
 
@@ -24,8 +23,13 @@ class SaverImgs:
         self.columns_id = columns_id
         self.columns_url = columns_url
 
+    @property
+    def size(self):
+        return len(self.columns_url)
+
     def save(self, path):
-        for id, url in zip(self.columns_id, self.columns_url):
+        for i in tqdm(range(self.size), desc='Save Imgs'):
+            id, url = self.columns_url[i], self.columns_url[i]
             img = Img(id, url)
             img.save(path)
         return None

@@ -1,50 +1,17 @@
-from copy import deepcopy
-import pandas as pd
+import sys
+
+sys.path.extend(['../'])
+from Data import DataList, Data
+
+class Event(Data):
+    name = 'Event'
+    def __init__(self, id_cultural, passport):
+        super().__init__(passport)
+        self.passport['id_cultural'] = id_cultural
+
+class Events(DataList):
+    name = 'Events'
+    def __init__(self, data_list=[]):
+        self.data_list = data_list
 
 
-class Event:
-    counter = 0
-
-    def __init__(self, id_cultural, name, content, img_url, passport):
-        self.id = self.__class__.counter
-        self.__class__.counter += 1
-        self.name = name
-        self.content = content
-        self.img_url = img_url
-        self.passport = passport
-        self.id_cultural = id_cultural
-
-    @property
-    def columns(self):
-        return self.row.keys()
-
-    @property
-    def row(self):
-        res = deepcopy(self.passport)
-        res['id'] = self.id
-        res['id_cultural'] = self.id_cultural
-        res['name'] = self.name
-        res['img_url'] = self.img_url
-        res['content'] = self.content
-        return res
-
-    def __str__(self):
-        return str(self.row)
-
-
-class Events:
-    def __init__(self, events=[]):
-        self.events = deepcopy(events)
-        self.columns_event = ['town',"price","age",'site_buy','date','id','id_cultural','name','img_url',"content"]
-
-    @property
-    def data_frame(self):
-        columns = self.columns_event
-        data_ev = pd.DataFrame(columns=columns)
-        for event in self.events:
-            row = event.row
-            data_ev = data_ev.append(row, ignore_index=True)
-        return data_ev
-
-    def add(self, event):
-        self.events.append(event)

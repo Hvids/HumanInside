@@ -2,7 +2,7 @@ import  sys
 
 sys.path.extend(['../','../../'])
 prefix = 'https://www.litmir.me'
-url = '/bs?rs=5%7C1%7C0'
+url = 'https://www.litmir.me/bs?rs=5%7C1%7C0'
 postfix= '&o=10&p='
 
 
@@ -14,8 +14,8 @@ urls = parser_urls.get_urls(range_postfix)
 
 parser_books = ParserBooks(prefix,urls)
 
-book = parser_books.books
+books = parser_books.books
+print(books)
 
 path_pd = '../../../data/csv'
-print('save')
-book.save(path_pd)
+books.save(path_pd)
