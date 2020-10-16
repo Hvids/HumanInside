@@ -141,7 +141,7 @@ class PreProcessingContent:
 
     def __init__(self, path_models='./models/'):
         self.path_models = path_models
-        self.preprocessing_text = PreProcessingText(path_models)
+        self.preprocessing_text = PreProcessingText()
 
         self.lda_fitter = LatentDirichletAllocation(n_components=100,
                                                     max_iter=30,

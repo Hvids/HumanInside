@@ -30,5 +30,5 @@ df_laguage = preprocessing_dum.make(language)
 
 columns_drop = ['name', 'author','genre', 'seria','language','content','img_url']
 df_books =preprocessing_drop.make(df_books,columns_drop)
-df_preprocessing_result_books = pd.concat([df_genre,df_content_lda,df_content_w2v,df_author,df_laguage],axis=1)
+df_preprocessing_result_books = pd.concat([df_books,df_genre,df_content_lda,df_content_w2v,df_author,df_laguage],axis=1)
 df_preprocessing_result_books.to_csv(full_name_save, index=False)
