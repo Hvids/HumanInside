@@ -1,3 +1,3 @@
 /.i*/**
 /**/__py*/**
- PreProcessing/models/word2vec-ruscorpora-300.model.vectors.npy
+/PreProcessing/models/word2vec-ruscorpora-300.model.vectors.npy
