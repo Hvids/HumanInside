@@ -1,15 +1,21 @@
 import pandas as pd
-from sklearn.preprocessing import OneHotEncoder
+from joblib import dump, load
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import StandardScaler
+import numpy as np
 from tqdm import tqdm
-from gensim.models.phrases import Phrases, Phraser
-import nltk
+import pymorphy2
+from nltk.tokenize import TweetTokenizer
+import gensim.downloader as api
+from sklearn.decomposition import LatentDirichletAllocation
+from sklearn.feature_extraction.text import CountVectorizer
+# import nltk
+
 # nltk.download("stopwords")
 # --------#
 
 from nltk.corpus import stopwords
-from pymystem3 import Mystem
+
 from string import punctuation
 
 
@@ -21,13 +27,8 @@ class PreProcessing:
         pass
 
 
-class PreProcessingGenre(PreProcessing):
-    """
-    В конструтор подается колонка жанров, значение
-    """
-
-    def make(self):
-        genres = self.column
+class PreProcessingGenre:
+    def make(self, genres):
         genres_set = set('')
         genres_books = []
         # Сделать множество всех жанров и списко жанров для каждой книги
@@ -62,70 +63,125 @@ class PreProcessingGenre(PreProcessing):
         return df_genre
 
 
-class PreProcessingDummies(PreProcessing):
+class PreProcessingDummies:
     # подаем значение колонки которую делаем дамми
-    def make(self):
-        df = pd.get_dummies(self.column)
+    def make(self, column):
+        df = pd.get_dummies(column)
         return df
 
 
 class PreProcessingLabelEncoding(PreProcessing):
     # Значение колонок которые енкодим
-    def make(self):
+    def make(self, column):
         label_encoding = LabelEncoder()
-        columns = label_encoding.fit_transform(self.column)
-        return columns
+        column = label_encoding.fit_transform(column)
+        return column
 
 
-class PreProcessingGropColumns(PreProcessing):
+class PreProcessingGropColumns:
     # Column - название колонок которые удаляем, df - откуда удалять
-    def make(self, df):
-        columns_name_drop = self.column
+    def make(self, df, columns):
+        columns_name_drop = columns
         df = df.drop(columns_name_drop, axis=1)
         return df
 
 
 class PreProcessingScaler(PreProcessing):
-    def make(self):
+    def make(self, columns):
         scaler = StandardScaler()
-        res = scaler.fit_transform(self.column)
+        res = scaler.fit_transform(columns)
         return res
 
 
-class PreProcessingText(PreProcessing):
-    def __init__(self, text):
-        self.text = text
-
-        self.mystem = Mystem()
+class PreProcessingText:
+    def __init__(self):
+        self.model_w2v = api.load("word2vec-ruscorpora-300")
+        self.morph = pymorphy2.MorphAnalyzer()
+        self.tkns = TweetTokenizer()
         self.russian_stopwords = stopwords.words("russian")
 
+    def make_vector(self, text):
+        tokens = self.tkns.tokenize(text)
+        size_vector = self.model_w2v.vector_size
+        vector = np.zeros(shape=size_vector)
+        for token in tokens:
+            try:
+                vector += np.array(self.model_w2v.wv[token])
+            except:
+                pass
+        vector = vector if len(tokens) == 0 else vector
+        return list(vector)
 
-    def preprocess_text(self):
+    def make_token(self, word):
+        processed = self.morph.parse(word)[0]
+        normal_phorm = processed.normal_form
+        tag = str(processed.tag).split(',')[0]
+        return normal_phorm + '_' + tag
 
-        tokens = self.mystem.lemmatize(self.text.lower())
-        tokens = [token for token in tokens if token not in self.russian_stopwords \
-                  and token != " " \
+    def make_preprocess_text(self, text):
+        tokens = self.tkns.tokenize(text.lower())
+        tokens = [self.make_token(token) for token in tokens if token not in self.russian_stopwords \
                   and token.strip() not in punctuation
-                  and token not ['–', '«', '…', '—', '»']
+                  and token not in ['–', '«', '…', '—', '»', '', ' ']
+                  and not token.isdigit()
                   ]
 
         text = " ".join(tokens)
 
         return text
 
+    def make_w2v(self, content):
+        text = self.make_preprocess_text(content)
+        vectror = self.make_vector(text)
+        return vectror
 
-    def make(self):
-        text = self.preprocess_text()
-        return text
 
-
-class PreProcessingContent(PreProcessing):
+class PreProcessingContent:
     name = 'PreProcessingContent'
-    def make(self):
-        contents = self.column
+
+    def __init__(self, path_models='./models/'):
+        self.path_models = path_models
+        self.preprocessing_text = PreProcessingText()
+
+        self.lda_fitter = LatentDirichletAllocation(n_components=100,
+                                                    max_iter=30,
+                                                    n_jobs=6,
+                                                    learning_method='batch',
+                                                    verbose=1)
+        self.count_vectorizer_fitter = CountVectorizer()
+
+        self.count_vectorizer_loder = load(f'{path_models}count_vectorizer.joblib')
+        self.lda_loder = load(f'{path_models}lda.joblib')
+
+    def make_matrix_w2v(self, contents):
         res_contents = []
         for content in tqdm(contents, desc=self.name):
-            preprocessing_text = PreProcessingText(content)
-            content_new = preprocessing_text.make()
+            content_new = self.preprocessing_text.make_w2v(content)
             res_contents.append(content_new)
-        return res_contents
+        return pd.DataFrame(res_contents)
+
+    def make_matrix_lda_with_fit(self, contents):
+        res_contents = []
+        for content in tqdm(contents, desc=self.name):
+            content_new = self.preprocessing_text.make_preprocess_text(content)
+            res_contents.append(content_new)
+        self.fit_count_vectorizer(res_contents)
+        res_contents = self.count_vectorizer_fitter.transform(res_contents)
+        self.fit_lda(res_contents)
+        return pd.DataFrame(self.lda_fitter.transform(res_contents))
+
+    def make_matrix_lda_with_load(self, contents):
+        res_contents = []
+        for content in tqdm(contents, desc=self.name):
+            content_new = self.preprocessing_text.make_preprocess_text(content)
+            res_contents.append(content_new)
+        res_contents = self.count_vectorizer_loder.transform(res_contents)
+        return pd.DataFrame(self.lda_loder.transform(res_contents))
+
+    def fit_count_vectorizer(self, contents):
+        self.count_vectorizer_fitter.fit(contents)
+        dump(self.count_vectorizer_fitter, f'{self.path_models}count_vectorizer.joblib')
+
+    def fit_lda(self, contents):
+        self.lda_fitter.fit(contents)
+        dump(self.lda_fitter, f'{self.path_models}lda.joblib')
