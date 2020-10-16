@@ -80,6 +80,11 @@ class LibraryCreator:
                                    image=row['img_url'], content=row['content'])
 
 
+class LibraryBookCreator:
+    def create(self, df):
+        pass
+
+
 class CenterCreator:
     def create(self, df):
         for i, row in tqdm(df.iterrows(), desc='Creating libraries'):
@@ -87,6 +92,15 @@ class CenterCreator:
                                          underground=row['undegroud'], adress=row['adress'], number=row['number'],
                                          email=row['email'], social_net=row['social_netwoks'], latitude=row['latitude'],
                                          longitude=row['logitute'], image=row['img_url'], content=row['content'])
+
+
+class EventCreator:
+    def create(self, df):
+        for i, row in tqdm(df.iterrows(), desc='Creating events'):
+            center = CultureCenter.objects.get(id=row['id_cultural'] + 1)
+            Event.objects.create(id=row['id'] + 1, town=row['town'], title=row['name'], web_site=row['site_buy'],
+                                 date=row['date'], price=row['price'], age_rate=row['age'], image=row['img_url'],
+                                 content=row['content'], id_culture=center)
 
 
 class Command(BaseCommand):
@@ -124,6 +138,11 @@ class Command(BaseCommand):
             CultureCenter.objects.all().delete()
             center_creator = CenterCreator()
             center_creator.create(df)
+
+            df = pd.read_csv('../data/csv/events.csv')
+            Event.objects.all().delete()
+            event_creator = EventCreator()
+            event_creator.create(df)
 
             print("\n...End parsing...\n")
 
@@ -181,7 +200,8 @@ class Command(BaseCommand):
             print("\n...Start parsing...\n")
             df = pd.read_csv('../data/csv/events.csv')
             Event.objects.all().delete()
-
+            event_creator = EventCreator()
+            event_creator.create(df)
             print("\n...End parsing...\n")
 
     def add_arguments(self, parser):

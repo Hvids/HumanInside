@@ -38,10 +38,10 @@ class User(models.Model):
 
 class Event(models.Model):
     town = models.CharField(max_length=255)
-    price = models.FloatField()
-    age_rate = models.IntegerField()
+    price = models.CharField(max_length=255)
+    age_rate = models.CharField(max_length=255)
     social_net = models.URLField()
-    date = models.DateField()
+    date = models.CharField(max_length=255)
     web_site = models.URLField()
     id_culture = models.ForeignKey('CultureCenter', on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
