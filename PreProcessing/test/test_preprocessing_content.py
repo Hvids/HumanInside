@@ -12,5 +12,7 @@ content = df_books.content
 
 content = content.fillna('')
 
-preprocessing_content = PreProcessingContent(content)
-content = preprocessing_content.make()
+preprocessing_content = PreProcessingContent(path_models='../models/')
+# content = preprocessing_content.make_matrix_w2v(content)
+# content = preprocessing_content.make_matrix_lda_with_fit(content)
+content = preprocessing_content.make_matrix_lda_with_load(content)
