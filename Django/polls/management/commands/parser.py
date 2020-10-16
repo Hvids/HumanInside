@@ -87,7 +87,7 @@ class LibraryBookCreator:
 
 class CenterCreator:
     def create(self, df):
-        for i, row in tqdm(df.iterrows(), desc='Creating libraries'):
+        for i, row in tqdm(df.iterrows(), desc='Creating centres'):
             CultureCenter.objects.create(id=row['id'] + 1, title=row['name'], web_site=row['offical_site'],
                                          underground=row['undegroud'], adress=row['adress'], number=row['number'],
                                          email=row['email'], social_net=row['social_netwoks'], latitude=row['latitude'],
