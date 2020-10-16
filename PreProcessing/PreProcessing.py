@@ -6,10 +6,10 @@ import numpy as np
 from tqdm import tqdm
 import pymorphy2
 from nltk.tokenize import TweetTokenizer
-from gensim.models import KeyedVectors
-
+import gensim.downloader as api
 from sklearn.decomposition import LatentDirichletAllocation
 from sklearn.feature_extraction.text import CountVectorizer
+# import nltk
 
 # nltk.download("stopwords")
 # --------#
@@ -94,8 +94,8 @@ class PreProcessingScaler(PreProcessing):
 
 
 class PreProcessingText:
-    def __init__(self, path_models='./models/'):
-        self.model_w2v = KeyedVectors.load(f"{path_models}word2vec-ruscorpora-300.model", mmap='r')
+    def __init__(self):
+        self.model_w2v = api.load("word2vec-ruscorpora-300")
         self.morph = pymorphy2.MorphAnalyzer()
         self.tkns = TweetTokenizer()
         self.russian_stopwords = stopwords.words("russian")
