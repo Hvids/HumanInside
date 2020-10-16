@@ -21,7 +21,8 @@ preprocessing_drop = PreProcessingGropColumns()
 preprocessing_dum = PreProcessingDummies()
 preprocessing_content = PreProcessingContent()
 
-columns_drop = ['name', 'type', 'region', 'location', 'adress', 'number', 'site', 'email', 'content', 'img_url','social_networks','time_work']
+columns_drop = ['name', 'type', 'region', 'location', 'adress', 'number', 'site', 'email', 'content', 'img_url',
+                'social_networks', 'time_work']
 
 df_content_lda = preprocessing_content.make_matrix_lda_with_load(content)
 df_content_w2v = preprocessing_content.make_matrix_w2v(content)
