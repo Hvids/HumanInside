@@ -81,8 +81,22 @@ class LibraryCreator:
 
 
 class LibraryBookCreator:
-    def create(self, df):
-        pass
+    def create(self, df_book, df_lib):
+        books = df_book.shape[0]
+        libs = df_lib.shape[0]
+        id_cnt = 1
+        k = 0
+        for id_lib in tqdm(range(1, libs + 1)):
+            library = Library.objects.get(id=id_lib)
+            if k > 900:
+                k = 900
+            for id_book in tqdm(range(k + 1, 100 + k + 1)):
+                if id_book > books:
+                    break
+                book = Book.objects.get(id=id_book)
+                BooksInLibrary.objects.create(id=id_cnt, id_book=book, id_library=library)
+                id_cnt += 1
+            k += 3
 
 
 class CenterCreator:
@@ -186,6 +200,16 @@ class Command(BaseCommand):
             library_creator.create(df)
             print("\n...End parsing...\n")
 
+        elif options['parse__library__book']:
+            # book in library create
+            print("\n...Start parsing...\n")
+            df_book = pd.read_csv('../data/csv/books.csv')
+            df_lib = pd.read_csv('../data/csv/libraries.csv')
+            BooksInLibrary.objects.all().delete()
+            library_creator = LibraryBookCreator()
+            library_creator.create(df_book, df_lib)
+            print("\n...End parsing...\n")
+
         elif options['parse__cultural__centers']:
             # cultural center create
             print("\n...Start parsing...\n")
@@ -254,11 +278,19 @@ class Command(BaseCommand):
         )
 
         parser.add_argument(
+            '-r',
+            '--parse--library--book',
+            action='store_true',
+            default=False,
+            help='Parsing books in libraries'
+        )
+
+        parser.add_argument(
             '-c',
             '--parse--cultural--centers',
             action='store_true',
             default=False,
-            help='Parsing events'
+            help='Parsing cultural centers'
         )
 
         parser.add_argument(
