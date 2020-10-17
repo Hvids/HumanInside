@@ -11,20 +11,31 @@ class BooksInLibrary(models.Model):
         return f'ID: {self.id}, ID book: {self.id_book}, ID library: {self.id_library}'
 
 
-class LastBooks(models.Model):
+class LastBook(models.Model):
     id_user = models.ForeignKey('User', on_delete=models.CASCADE)
     id_book = models.ForeignKey('Book', on_delete=models.CASCADE)
+    score = models.FloatField(null=True, blank=True, default=None)
 
     def __str__(self):
-        return f'ID: {self.id}, ID user: {self.id_user}, ID book: {self.id_book}'
+        return f'ID: {self.id}, ID user: {self.id_user}, ID book: {self.id_book}, score{self.score}'
 
 
-class LastEvents(models.Model):
+class LastCenter(models.Model):
+    id_user = models.ForeignKey('User', on_delete=models.CASCADE)
+    id_center = models.ForeignKey('CultureCenter', on_delete=models.CASCADE)
+    score = models.FloatField(null=True, blank=True, default=None)
+
+    def __str__(self):
+        return f'ID: {self.id}, ID user: {self.id_user}, ID center: {self.id_center}, score{self.score}'
+
+
+class LastEvent(models.Model):
     id_event = models.ForeignKey('Event', on_delete=models.CASCADE)
     id_user = models.ForeignKey('User', on_delete=models.CASCADE)
+    score = models.FloatField(null=True, blank=True, default=None)
 
     def __str__(self):
-        return f'ID: {self.id}, ID event: {self.id_event}, ID user: {self.id_user}'
+        return f'ID: {self.id}, ID event: {self.id_event}, ID user: {self.id_user}, score{self.score}'
 
 
 class User(models.Model):

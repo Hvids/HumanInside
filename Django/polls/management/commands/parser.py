@@ -4,6 +4,7 @@ from django.db import models
 from polls.models import *
 import pandas as pd
 import numpy as np
+import random
 
 
 class PreProcessingGenre:
@@ -117,6 +118,33 @@ class EventCreator:
                                  content=row['content'], id_culture=center)
 
 
+class UserGen:
+    def create(self, df_center, df_book, df_event):
+        alpha = 'abcdefghijklmnopqrstuvwxyz'
+        id_cnt = 1
+        counter = 1
+        for name in tqdm(alpha, desc='User creating'):
+            user = User.objects.create(id=id_cnt, first_name=name, last_name=name, age=id_cnt)
+            id_cnt += 1
+            for _ in tqdm(range(0, 10), desc='Forms creating'):
+                id_center = random.randint(1, df_center.shape[0])
+                id_book = random.randint(1, df_book.shape[0])
+                id_event = random.randint(1, df_event.shape[0])
+
+                center = CultureCenter.objects.get(id=id_center)
+                book = Book.objects.get(id=id_book)
+                event = Event.objects.get(id=id_event)
+
+                score = round(random.uniform(3, 10), 1)
+                if score < 5:
+                    score = None
+                LastEvent.objects.create(id=counter, id_user=user, id_event=event, score=score)
+                LastBook.objects.create(id=counter, id_user=user, id_book=book, score=score)
+                LastCenter.objects.create(id=counter, id_user=user, id_center=center, score=score)
+
+                counter += 1
+
+
 class Command(BaseCommand):
     help = '__Help__'
 
@@ -163,6 +191,16 @@ class Command(BaseCommand):
             Event.objects.all().delete()
             event_creator = EventCreator()
             event_creator.create(df)
+
+            df_center = pd.read_csv('../data/csv/cultural_centers.csv')
+            df_book = pd.read_csv('../data/csv/books.csv')
+            df_event = pd.read_csv('../data/csv/events.csv')
+            User.objects.all().delete()
+            LastCenter.objects.all().delete()
+            LastEvent.objects.all().delete()
+            LastBook.objects.all().delete()
+            user_gen = UserGen()
+            user_gen.create(df_center, df_book, df_event)
 
             print("\n...End parsing...\n")
 
@@ -232,6 +270,20 @@ class Command(BaseCommand):
             Event.objects.all().delete()
             event_creator = EventCreator()
             event_creator.create(df)
+            print("\n...End parsing...\n")
+
+        elif options['parse__user']:
+            # user create
+            print("\n...Start parsing...\n")
+            df_center = pd.read_csv('../data/csv/cultural_centers.csv')
+            df_book = pd.read_csv('../data/csv/books.csv')
+            df_event = pd.read_csv('../data/csv/events.csv')
+            User.objects.all().delete()
+            LastCenter.objects.all().delete()
+            LastEvent.objects.all().delete()
+            LastBook.objects.all().delete()
+            user_gen = UserGen()
+            user_gen.create(df_center, df_book, df_event)
             print("\n...End parsing...\n")
 
     def add_arguments(self, parser):
@@ -305,4 +357,12 @@ class Command(BaseCommand):
             action='store_true',
             default=False,
             help='Parsing events'
+        )
+
+        parser.add_argument(
+            '-u',
+            '--parse--user',
+            action='store_true',
+            default=False,
+            help='Parsing users'
         )
