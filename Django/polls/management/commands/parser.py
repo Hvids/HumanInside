@@ -148,6 +148,12 @@ class Command(BaseCommand):
             library_creator = LibraryCreator()
             library_creator.create(df)
 
+            df_book = pd.read_csv('../data/csv/books.csv')
+            df_lib = pd.read_csv('../data/csv/libraries.csv')
+            BooksInLibrary.objects.all().delete()
+            library_creator = LibraryBookCreator()
+            library_creator.create(df_book, df_lib)
+
             df = pd.read_csv('../data/csv/cultural_centers.csv')
             CultureCenter.objects.all().delete()
             center_creator = CenterCreator()
