@@ -18,7 +18,7 @@ author = df_books.author
 language = df_books.language
 
 preprocessing_genre =PreProcessingGenre()
-preprocessing_drop = PreProcessingGropColumns()
+preprocessing_drop = PreProcessingDropColumns()
 preprocessing_dum = PreProcessingDummies()
 preprocessing_content = PreProcessingContent()
 

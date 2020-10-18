@@ -78,7 +78,7 @@ class PreProcessingLabelEncoding(PreProcessing):
         return column
 
 
-class PreProcessingGropColumns:
+class PreProcessingDropColumns:
     # Column - название колонок которые удаляем, df - откуда удалять
     def make(self, df, columns):
         columns_name_drop = columns
