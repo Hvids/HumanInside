@@ -16,11 +16,18 @@ class Command(BaseCommand):
             help='Make data for recommedation'
         )
         parser.add_argument(
+            '-p',
+            '--preprocessing',
+            action='store_true',
+            default=False,
+            help='Make preprocessing data '
+        )
+        parser.add_argument(
             '-m',
             '--model',
             action='store_true',
             default=False,
-            help='Make models recomedation'
+            help='Make recommend model '
         )
 
     def handle(self, *args, **options):
@@ -38,7 +45,7 @@ class Command(BaseCommand):
                 df = maker.make(name)
                 maker.save_df(df, path, name)
 
-        elif options['model']:
+        elif options['preprocessing']:
 
             path = './recommendation_system/data/'
             tuple_list = [
@@ -68,12 +75,11 @@ class Command(BaseCommand):
                 )
 
             ]
-            # event = Event.objects.all()
-            # print(event[0])
             for name, select_columns, Temp, MakerTemp in tuple_list:
                 maker = MakerMatrixTemp(Temp)
                 maker_temp = MakerTemp()
                 df = maker.make(select_columns)
-                # print(df.head())
                 df = maker_temp.make(df)
                 maker.save_df(df, path, name)
+        elif options['model']:
+            pass
