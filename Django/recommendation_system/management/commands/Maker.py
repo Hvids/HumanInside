@@ -2,6 +2,10 @@ import pandas as pd
 from tqdm import tqdm
 from polls.models import Genre, GenreBook
 from .PreProcessing import PreProcessingDummies, PreProcessingContent, PreProcessingDropColumns
+from lightfm import LightFM
+from scipy.sparse import csr_matrix
+from joblib import dump
+import numpy as np
 
 
 class MakerMatrix:
@@ -39,6 +43,8 @@ class MakerMatrixUserTemp(MakerMatrix):
             user_values = [self.get_score(id) if id in select_temps else 0 for id in temps_id]
             res_values.append(user_values)
         df = pd.DataFrame(res_values, columns=temps_id)
+        df['id'] = users_id
+
         return df
 
 
@@ -79,7 +85,8 @@ class MakerMatrixBooks:
         df_genre = maker_matrix_genre.make(df.id)
         df_author = preprocessing_dummies.make(df.author)
         df_language = preprocessing_dummies.make(df.language)
-        df_content_lda = preprocessing_content.make_matrix_lda_with_load(df.content) if load else preprocessing_content.make_matrix_lda_with_fit(df.content)
+        df_content_lda = preprocessing_content.make_matrix_lda_with_load(
+            df.content) if load else preprocessing_content.make_matrix_lda_with_fit(df.content)
         df_content_w2v = preprocessing_content.make_matrix_w2v(df.content)
         df = df[select_columns]
         df_preprocessing_result_books = pd.concat(
@@ -93,7 +100,8 @@ class MakerMatrixEvents:
         preprocessing_dummies = PreProcessingDummies()
         preprocessing_content = PreProcessingContent(name='events')
 
-        df_content_lda = preprocessing_content.make_matrix_lda_with_load(df.content) if load else preprocessing_content.make_matrix_lda_with_fit(df.content)
+        df_content_lda = preprocessing_content.make_matrix_lda_with_load(
+            df.content) if load else preprocessing_content.make_matrix_lda_with_fit(df.content)
         df_content_w2v = preprocessing_content.make_matrix_w2v(df.content)
         df_town = preprocessing_dummies.make(df.town)
         df_age_rate = preprocessing_dummies.make(df.age_rate)
@@ -109,7 +117,8 @@ class MakerMatrixCulturalCenters:
         preprocessing_dummies = PreProcessingDummies()
         preprocessing_content = PreProcessingContent(name='cultural_centers')
 
-        df_content_lda = preprocessing_content.make_matrix_lda_with_load(df.content) if load else preprocessing_content.make_matrix_lda_with_fit(df.content)
+        df_content_lda = preprocessing_content.make_matrix_lda_with_load(
+            df.content) if load else preprocessing_content.make_matrix_lda_with_fit(df.content)
         df_content_w2v = preprocessing_content.make_matrix_w2v(df.content)
 
         df_udegroud = preprocessing_dummies.make(df.underground)
@@ -120,12 +129,13 @@ class MakerMatrixCulturalCenters:
 
 
 class MakerMatrixLibraries:
-     def make(self, df, load=True):
+    def make(self, df, load=True):
         select_columns = ['id', 'latitude', 'longitude']
         preprocessing_dummies = PreProcessingDummies()
         preprocessing_content = PreProcessingContent(name='libraries')
 
-        df_content_lda = preprocessing_content.make_matrix_lda_with_load(df.content) if load else preprocessing_content.make_matrix_lda_with_fit(df.content)
+        df_content_lda = preprocessing_content.make_matrix_lda_with_load(
+            df.content) if load else preprocessing_content.make_matrix_lda_with_fit(df.content)
         df_content_w2v = preprocessing_content.make_matrix_w2v(df.content)
 
         df_region = preprocessing_dummies.make(df.region)
@@ -133,3 +143,19 @@ class MakerMatrixLibraries:
         df_preprocessing_result = pd.concat(
             [df, df_region, df_content_lda, df_content_w2v], axis=1)
         return df_preprocessing_result
+
+
+class MakerFilteringModels:
+    def __init__(self, path_save='./recommendation_system/models/', path_data='./recommendation_system/data/'):
+        self.path_data = path_data
+        self.path_save = path_save
+
+    def make(self, name):
+
+        df = pd.read_csv(self.path_data + name + '.csv')
+        df = df.drop('id',axis=1)
+        matrix = csr_matrix(df.values)
+        model = LightFM(loss='warp')
+        model.fit(matrix)
+        dump(model, f'{self.path_save}filter_{name}.joblib')
+

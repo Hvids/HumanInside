@@ -1,8 +1,8 @@
 from django.core.management.base import BaseCommand, CommandError
 from polls.models import *
 from .Maker import MakerMatrixUserTemp, MakerMatrixTemp, MakerMatrixBooks, MakerMatrixEvents, \
-    MakerMatrixCulturalCenters, MakerMatrixLibraries
-
+    MakerMatrixCulturalCenters, MakerMatrixLibraries, MakerFilteringModels
+from tqdm import tqdm
 
 class Command(BaseCommand):
     help = "__Help__"
@@ -23,8 +23,8 @@ class Command(BaseCommand):
             help='Make preprocessing data '
         )
         parser.add_argument(
-            '-m',
-            '--model',
+            '-f',
+            '--filter--models',
             action='store_true',
             default=False,
             help='Make recommend model '
@@ -81,5 +81,8 @@ class Command(BaseCommand):
                 df = maker.make(select_columns)
                 df = maker_temp.make(df)
                 maker.save_df(df, path, name)
-        elif options['model']:
-            pass
+        elif options['filter__models']:
+            maker = MakerFilteringModels()
+            names = ['users_books', 'users_cultural_centers', 'users_events']
+            for name in tqdm(names, desc='Filter Models Create'):
+                maker.make(name)
