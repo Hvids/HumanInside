@@ -53,9 +53,6 @@ class MakerMatrixTemp(MakerMatrix):
 
 
 class MakerMatrixGenre(MakerMatrix):
-    def __init__(self):
-        pass
-
     def make(self, ids_book):
         genres = Genre.objects.all().values_list('id')
         genres = self.covert_tuple(genres)
@@ -72,17 +69,17 @@ class MakerMatrixBooks:
     def __init__(self):
         pass
 
-    def make(self, df):
+    def make(self, df, load=True):
         maker_matrix_genre = MakerMatrixGenre()
         preprocessing_dummies = PreProcessingDummies()
-        preprocessing_content = PreProcessingContent()
+        preprocessing_content = PreProcessingContent(name='books')
 
         select_columns = ['id', 'pages', 'rating']
 
         df_genre = maker_matrix_genre.make(df.id)
         df_author = preprocessing_dummies.make(df.author)
         df_language = preprocessing_dummies.make(df.language)
-        df_content_lda = preprocessing_content.make_matrix_lda_with_fit(df.content)
+        df_content_lda = preprocessing_content.make_matrix_lda_with_load(df.content) if load else preprocessing_content.make_matrix_lda_with_fit(df.content)
         df_content_w2v = preprocessing_content.make_matrix_w2v(df.content)
         df = df[select_columns]
         df_preprocessing_result_books = pd.concat(
@@ -91,12 +88,12 @@ class MakerMatrixBooks:
 
 
 class MakerMatrixEvents:
-    def make(self, df):
+    def make(self, df, load=True):
         select_columns = ['id']
         preprocessing_dummies = PreProcessingDummies()
-        preprocessing_content = PreProcessingContent()
+        preprocessing_content = PreProcessingContent(name='events')
 
-        df_content_lda = preprocessing_content.make_matrix_lda_with_fit(df.content)
+        df_content_lda = preprocessing_content.make_matrix_lda_with_load(df.content) if load else preprocessing_content.make_matrix_lda_with_fit(df.content)
         df_content_w2v = preprocessing_content.make_matrix_w2v(df.content)
         df_town = preprocessing_dummies.make(df.town)
         df_age_rate = preprocessing_dummies.make(df.age_rate)
@@ -107,12 +104,12 @@ class MakerMatrixEvents:
 
 
 class MakerMatrixCulturalCenters:
-    def make(self, df):
+    def make(self, df, load=True):
         select_columns = ['id', 'latitude', 'longitude']
         preprocessing_dummies = PreProcessingDummies()
-        preprocessing_content = PreProcessingContent()
+        preprocessing_content = PreProcessingContent(name='cultural_centers')
 
-        df_content_lda = preprocessing_content.make_matrix_lda_with_fit(df.content)
+        df_content_lda = preprocessing_content.make_matrix_lda_with_load(df.content) if load else preprocessing_content.make_matrix_lda_with_fit(df.content)
         df_content_w2v = preprocessing_content.make_matrix_w2v(df.content)
 
         df_udegroud = preprocessing_dummies.make(df.underground)
@@ -123,12 +120,12 @@ class MakerMatrixCulturalCenters:
 
 
 class MakerMatrixLibraries:
-     def make(self, df):
+     def make(self, df, load=True):
         select_columns = ['id', 'latitude', 'longitude']
         preprocessing_dummies = PreProcessingDummies()
-        preprocessing_content = PreProcessingContent()
+        preprocessing_content = PreProcessingContent(name='libraries')
 
-        df_content_lda = preprocessing_content.make_matrix_lda_with_fit(df.content)
+        df_content_lda = preprocessing_content.make_matrix_lda_with_load(df.content) if load else preprocessing_content.make_matrix_lda_with_fit(df.content)
         df_content_w2v = preprocessing_content.make_matrix_w2v(df.content)
 
         df_region = preprocessing_dummies.make(df.region)

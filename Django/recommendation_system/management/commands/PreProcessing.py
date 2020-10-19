@@ -103,7 +103,8 @@ class PreProcessingText:
 class PreProcessingContent:
     name = 'PreProcessingContent'
 
-    def __init__(self, path_models='./recommendation_system/models/'):
+    def __init__(self, name='', path_models='./recommendation_system/models/'):
+        self.name = name
         self.path_models = path_models
         self.preprocessing_text = PreProcessingText()
 
@@ -114,8 +115,8 @@ class PreProcessingContent:
                                                     verbose=1)
         self.count_vectorizer_fitter = CountVectorizer()
 
-        # self.count_vectorizer_loder = load(f'{path_models}count_vectorizer.joblib')
-        # self.lda_loder = load(f'{path_models}lda.joblib')
+        self.count_vectorizer_loder = load(f'{path_models}{name}_count_vectorizer.joblib')
+        self.lda_loder = load(f'{path_models}{name}_lda.joblib')
 
     def make_matrix_w2v(self, contents):
         res_contents = []
@@ -145,8 +146,8 @@ class PreProcessingContent:
 
     def fit_count_vectorizer(self, contents):
         self.count_vectorizer_fitter.fit(contents)
-        dump(self.count_vectorizer_fitter, f'{self.path_models}count_vectorizer.joblib')
+        dump(self.count_vectorizer_fitter, f'{self.path_models}{self.name}_count_vectorizer.joblib')
 
     def fit_lda(self, contents):
         self.lda_fitter.fit(contents)
-        dump(self.lda_fitter, f'{self.path_models}lda.joblib')
+        dump(self.lda_fitter, f'{self.path_models}{self.name}_lda.joblib')
