@@ -5,7 +5,10 @@ from .PreProcessing import PreProcessingDummies, PreProcessingContent, PreProces
 from lightfm import LightFM
 from scipy.sparse import csr_matrix
 from joblib import dump
+from sklearn.metrics.pairwise import linear_kernel
 import numpy as np
+
+import json
 
 
 class MakerMatrix:
@@ -151,11 +154,26 @@ class MakerFilteringModels:
         self.path_save = path_save
 
     def make(self, name):
-
         df = pd.read_csv(self.path_data + name + '.csv')
-        df = df.drop('id',axis=1)
+        df = df.drop('id', axis=1)
         matrix = csr_matrix(df.values)
         model = LightFM(loss='warp')
         model.fit(matrix)
         dump(model, f'{self.path_save}filter_{name}.joblib')
 
+
+class MakerSimilarJson:
+    def make(self, name, path='./recommendation_system/data/'):
+        df = pd.read_csv(f'{path}preprocessing_{name}.csv')
+        df_t = df.drop('id', axis=1)
+        cosine_similarities = linear_kernel(df_t.values, df_t.values)
+        results = {}
+        for idx, row in tqdm(df.iterrows(), desc=name):
+            similar_indices = cosine_similarities[idx].argsort()[::-1]
+            similar_items = [int(df['id'][i]) for i in similar_indices]
+            results[int(row['id'])] = similar_items[1:]
+        return results
+
+    def save_json(self, data, name, path="./recommendation_system/data/json/"):
+        with open(f"{path}{name}.json", "w") as write_file:
+            json.dump(data, write_file)

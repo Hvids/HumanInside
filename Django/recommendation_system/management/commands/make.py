@@ -1,13 +1,20 @@
 from django.core.management.base import BaseCommand, CommandError
 from polls.models import *
 from .Maker import MakerMatrixUserTemp, MakerMatrixTemp, MakerMatrixBooks, MakerMatrixEvents, \
-    MakerMatrixCulturalCenters, MakerMatrixLibraries, MakerFilteringModels
+    MakerMatrixCulturalCenters, MakerMatrixLibraries, MakerFilteringModels, MakerSimilarJson
 from tqdm import tqdm
 
 class Command(BaseCommand):
     help = "__Help__"
 
     def add_arguments(self, parser):
+        parser.add_argument(
+            '-s',
+            '--similar',
+            action='store_true',
+            default=False,
+            help='Make similar json'
+        )
         parser.add_argument(
             '-d',
             '--data',
@@ -86,3 +93,10 @@ class Command(BaseCommand):
             names = ['users_books', 'users_cultural_centers', 'users_events']
             for name in tqdm(names, desc='Filter Models Create'):
                 maker.make(name)
+        elif options['similar']:
+
+            maker = MakerSimilarJson()
+            names = ['books', 'cultural_centers', 'events']
+            for name in names:
+                res = maker.make(name)
+                maker.save_json(res, name)
