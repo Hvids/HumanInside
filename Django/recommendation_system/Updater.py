@@ -27,11 +27,25 @@ class UpdaterJson:
     def __init__(
             self,
             name,
-            maker
+            select_columns,
+            maker_temp,
+            maker_df,
+            maker_json
+
     ):
         self.name = name
-        self.maker = maker
+        self.maker_temp = maker_temp
+        self.select_columns = select_columns
+        self.maker_json = maker_json
+        self.maker_df = maker_df
 
     def update(self):
-        res = self.maker.make(self.name)
-        self.maker.save_json(res, self.name)
+        path = './recommendation_system/data/'
+        df = self.maker_temp.make(self.select_columns)
+        con, df = self.maker_df.make(df, load=False)
+
+        self.maker_temp.save_df(df, path,'preprocessing_' + self.name + '.csv')
+        self.maker_temp.save_df(con, path, 'content_'+'preprocessing_' + self.name + '.csv')
+
+        res = self.maker_json.make(self.name)
+        self.maker_json.save_json(res, self.name)

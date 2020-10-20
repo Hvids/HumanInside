@@ -74,6 +74,14 @@ class MakerMatrixGenre(MakerMatrix):
         return df
 
 
+class MakerContent:
+    @staticmethod
+    def get_df_content(content_1, content_2, id):
+        df = pd.concat([content_1, content_2], axis=1)
+        df['id'] = id
+        return df
+
+
 class MakerMatrixBooks:
     def __init__(self):
         pass
@@ -88,13 +96,16 @@ class MakerMatrixBooks:
         df_genre = maker_matrix_genre.make(df.id)
         df_author = preprocessing_dummies.make(df.author)
         df_language = preprocessing_dummies.make(df.language)
+
         df_content_lda = preprocessing_content.make_matrix_lda_with_load(
             df.content) if load else preprocessing_content.make_matrix_lda_with_fit(df.content)
         df_content_w2v = preprocessing_content.make_matrix_w2v(df.content)
+
         df = df[select_columns]
         df_preprocessing_result_books = pd.concat(
             [df, df_genre, df_content_lda, df_content_w2v, df_author, df_language], axis=1)
-        return df_preprocessing_result_books
+
+        return MakerContent.get_df_content(df_content_lda, df_content_w2v, df.id), df_preprocessing_result_books
 
 
 class MakerMatrixEvents:
@@ -106,12 +117,13 @@ class MakerMatrixEvents:
         df_content_lda = preprocessing_content.make_matrix_lda_with_load(
             df.content) if load else preprocessing_content.make_matrix_lda_with_fit(df.content)
         df_content_w2v = preprocessing_content.make_matrix_w2v(df.content)
+
         df_town = preprocessing_dummies.make(df.town)
         df_age_rate = preprocessing_dummies.make(df.age_rate)
         df = df[select_columns]
         df_preprocessing_result = pd.concat(
             [df, df_town, df_age_rate, df_content_lda, df_content_w2v], axis=1)
-        return df_preprocessing_result
+        return MakerContent.get_df_content(df_content_lda, df_content_w2v, df.id), df_preprocessing_result
 
 
 class MakerMatrixCulturalCenters:
@@ -128,7 +140,7 @@ class MakerMatrixCulturalCenters:
         df = df[select_columns]
         df_preprocessing_result = pd.concat(
             [df, df_udegroud, df_content_lda, df_content_w2v], axis=1)
-        return df_preprocessing_result
+        return MakerContent.get_df_content(df_content_lda, df_content_w2v, df.id), df_preprocessing_result
 
 
 class MakerMatrixLibraries:
@@ -145,7 +157,7 @@ class MakerMatrixLibraries:
         df = df[select_columns]
         df_preprocessing_result = pd.concat(
             [df, df_region, df_content_lda, df_content_w2v], axis=1)
-        return df_preprocessing_result
+        return MakerContent.get_df_content(df_content_lda, df_content_w2v, df.id), df_preprocessing_result
 
 
 class MakerFilteringModels:

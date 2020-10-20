@@ -1,8 +1,7 @@
 from polls.models import *
 import json
 from .Updater import UpdaterJson
-from .management.commands.Maker import MakerSimilarJson
-
+from .management.commands.Maker import MakerSimilarJson, MakerMatrixBooks, MakerMatrixEvents, MakerMatrixCulturalCenters, MakerMatrixTemp
 
 class ContentBase:
     def load(self, name, path):
@@ -39,7 +38,10 @@ class ContentBaseBooks(ContentBase):
     def update(self):
         updater = UpdaterJson(
             name='books',
-            maker=MakerSimilarJson()
+            select_columns=['id', 'author', 'pages', 'rating', 'language', 'content'],
+            maker_temp = MakerMatrixTemp(Book),
+            maker_df=MakerMatrixBooks(),
+            maker_json=MakerSimilarJson()
         )
         self.update_json(updater)
 
@@ -69,7 +71,10 @@ class ContentBaseEvents(ContentBase):
     def update(self):
         updater = UpdaterJson(
             name='events',
-            maker=MakerSimilarJson()
+            select_columns= ['id', 'town', 'price', 'age_rate', 'content'],
+            maker_temp = MakerMatrixTemp(Event),
+            maker_df=MakerMatrixEvents(),
+            maker_json=MakerSimilarJson()
         )
         self.update_json(updater)
 
@@ -99,7 +104,11 @@ class ContentBaseCulturalCenters(ContentBase):
     def update(self):
         updater = UpdaterJson(
             name='cultural_centers',
-            maker=MakerSimilarJson()
+            select_columns= ['id', 'underground', 'latitude', 'longitude', 'content'],
+            maker_temp = MakerMatrixTemp(CultureCenter),
+            maker_df=MakerMatrixCulturalCenters(),
+            maker_json=MakerSimilarJson(),
         )
         self.update_json(updater)
-# from recommendation_system.ContentBaseModels import ContentBaseBooks, ContentBaseEvents, ContentBaseCulturalCenters; cb = ContentBaseBook();cb.recommend(1)
+# from recommendation_system.ContentBaseModels import ContentBaseBooks, ContentBaseEvents, ContentBaseCulturalCenters; cb = ContentBaseBooks();cb.update()
+

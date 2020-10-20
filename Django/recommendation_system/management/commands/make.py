@@ -4,6 +4,7 @@ from .Maker import MakerMatrixUserTemp, MakerMatrixTemp, MakerMatrixBooks, Maker
     MakerMatrixCulturalCenters, MakerMatrixLibraries, MakerFilteringModels, MakerSimilarJson
 from tqdm import tqdm
 
+
 class Command(BaseCommand):
     help = "__Help__"
 
@@ -86,14 +87,23 @@ class Command(BaseCommand):
                 maker = MakerMatrixTemp(Temp)
                 maker_temp = MakerTemp()
                 df = maker.make(select_columns)
-                df = maker_temp.make(df)
+                con, df = maker_temp.make(df)
                 maker.save_df(df, path, name)
+                maker.save_df(con, path, 'content_' + name)
         elif options['filter__models']:
             maker = MakerFilteringModels()
             names = ['users_books', 'users_cultural_centers', 'users_events']
             for name in tqdm(names, desc='Filter Models Create'):
                 maker.make(name)
         elif options['similar']:
+
+            maker = MakerSimilarJson()
+            names = ['books', 'cultural_centers', 'events']
+            for name in names:
+                res = maker.make(name)
+                maker.save_json(res, name)
+
+        elif options['content']:
 
             maker = MakerSimilarJson()
             names = ['books', 'cultural_centers', 'events']
