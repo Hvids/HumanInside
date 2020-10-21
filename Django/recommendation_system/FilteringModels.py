@@ -1,7 +1,6 @@
 from joblib import load
 import numpy as np
 from .Maker import *
-from polls.models import *
 from .names import *
 from .paths import *
 

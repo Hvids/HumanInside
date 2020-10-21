@@ -296,7 +296,7 @@ class MakerMatrixPreprocessingLibraries(MakerPreprocessingMatrixBase):
                                                                 name_content)
 
 
-class MakeSimilarJSONBase:
+class MakerSimilarJSONBase:
     def __init__(self, name_df, name_json, path_data=PATH_DATA_CSV, path_json=PATH_DATA_JSON):
         self.name_df = name_df
         self.path_data = path_data
@@ -323,19 +323,19 @@ class MakeSimilarJSONBase:
             json.dump(data, write_file)
 
 
-class MakerSimilarJSONBooks(MakeSimilarJSONBase):
+class MakerSimilarJSONBooks(MakerSimilarJSONBase):
     def __init__(self, name_df=PREPROCESSING_BOOKS, name_json=SIMILAR_BOOKS):
-        super(MakeSimilarJSONBooks, self).__init__(name_df, name_json)
+        super(MakerSimilarJSONBooks, self).__init__(name_df, name_json)
 
 
-class MakerSimilarJSONEvents(MakeSimilarJSONBase):
+class MakerSimilarJSONEvents(MakerSimilarJSONBase):
     def __init__(self, name_df=PREPROCESSING_EVENTS, name_json=SIMILAR_EVENTS):
-        super(MakeSimilarJSONEvents, self).__init__(name_df, name_json)
+        super(MakerSimilarJSONEvents, self).__init__(name_df, name_json)
 
 
-class MakerSimilarJSONCulturalCenters(MakeSimilarJSONBase):
+class MakerSimilarJSONCulturalCenters(MakerSimilarJSONBase):
     def __init__(self, name_df=PREPROCESSING_CULTURAL_CENTERS, name_json=SIMILAR_CULTURAL_CENTERS):
-        super(MakeSimilarJSONCulturalCenters, self).__init__(name_df, name_json)
+        super(MakerSimilarJSONCulturalCenters, self).__init__(name_df, name_json)
 
 
 class MakerFilteringModelBase:
