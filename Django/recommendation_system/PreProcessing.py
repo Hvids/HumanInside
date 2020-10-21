@@ -114,13 +114,12 @@ class PreProcessingContent:
 
         self.lda_fitter = LatentDirichletAllocation(n_components=100,
                                                     max_iter=30,
-                                                    n_jobs=6,
                                                     learning_method='batch',
                                                     verbose=1)
         self.count_vectorizer_fitter = CountVectorizer()
 
-        self.count_vectorizer_loder = load(f'{path_models}{name_count_vectorizer}.joblib')
-        self.lda_loder = load(f'{path_models}{name_lda}.joblib')
+        self.count_vectorizer_loder = load(f'{self.path_models}{self.name_count_vectorizer}.joblib')
+        self.lda_loder = load(f'{self.path_models}{self.name_lda}.joblib')
 
     def make_matrix_w2v(self, contents):
         res_contents = []

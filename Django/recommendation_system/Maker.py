@@ -187,8 +187,8 @@ class MakerMatrixEvents(MakerMatrixBase):
             name_matrix=EVENTS,
             columns_dummies=['town', 'age_rate'],
             columns_select=['id'],
-            name_lda=BOOKS_LDA,
-            name_count_vectorizer=BOOKS_COUNT_VECTORIZER,
+            name_lda=EVENTS_LDA,
+            name_count_vectorizer=EVENTS_COUNT_VECTORIZER,
     ):
         super(MakerMatrixEvents, self).__init__(name_matrix, columns_dummies, columns_select, name_lda,
                                                 name_count_vectorizer)
@@ -200,8 +200,8 @@ class MakerMatrixCulturalCenters(MakerMatrixBase):
             name_matrix=CULTURAL_CENTERS,
             columns_dummies=['underground'],
             columns_select=['id', 'latitude', 'longitude'],
-            name_lda=BOOKS_LDA,
-            name_count_vectorizer=BOOKS_COUNT_VECTORIZER,
+            name_lda=CULTURAL_CENTERS_LDA,
+            name_count_vectorizer=CULTURAL_CENTERS_COUNT_VECTORIZER,
     ):
         super(MakerMatrixCulturalCenters, self).__init__(name_matrix, columns_dummies, columns_select, name_lda,
                                                          name_count_vectorizer)
@@ -213,8 +213,8 @@ class MakerMatrixLibraries(MakerMatrixBase):
             name_matrix=LIBRARIES,
             columns_dummies=['region'],
             columns_select=['id', 'latitude', 'longitude'],
-            name_lda=BOOKS_LDA,
-            name_count_vectorizer=BOOKS_COUNT_VECTORIZER,
+            name_lda=LIBRARIES_LDA,
+            name_count_vectorizer=LIBRARIES_COUNT_VECTORIZER,
     ):
         super(MakerMatrixLibraries, self).__init__(name_matrix, columns_dummies, columns_select, name_lda,
                                                    name_count_vectorizer)
@@ -264,7 +264,7 @@ class MakerMatrixPreprocessingEvents(MakerPreprocessingMatrixBase):
             MakerClass=MakerMatrixEvents,
             select_columns=['id', 'town', 'price', 'age_rate', 'content'],
             name_matrix=PREPROCESSING_EVENTS,
-            name_content=PREPROCESSING_CULTURAL_CENTERS,
+            name_content=PREPROCESSING_CONTENT_EVENTS,
     ):
         super(MakerMatrixPreprocessingEvents, self).__init__(Object, MakerClass, select_columns, name_matrix,
                                                              name_content)

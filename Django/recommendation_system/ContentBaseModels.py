@@ -49,7 +49,7 @@ class ContentBaseBooks(ContentBase):
         maker_preprocessing_data = MakerMatrixPreprocessingBooks()
         maker_similar_json = MakerSimilarJSONBooks()
         self.update_with_makers(maker_preprocessing_data, maker_similar_json)
-
+        return ContentBaseBooks.load()
 
 class ContentBaseEvents(ContentBase):
     @classmethod
@@ -61,7 +61,7 @@ class ContentBaseEvents(ContentBase):
         maker_preprocessing_data = MakerMatrixPreprocessingEvents()
         maker_similar_json = MakerSimilarJSONEvents()
         self.update_with_makers(maker_preprocessing_data, maker_similar_json)
-
+        return  ContentBaseEvents.load()
 
 class ContentBaseCulturalCenters(ContentBase):
     @classmethod
@@ -73,4 +73,5 @@ class ContentBaseCulturalCenters(ContentBase):
         maker_preprocessing_data = MakerMatrixPreprocessingCulturalCenters()
         maker_similar_json = MakerSimilarJSONCulturalCenters()
         self.update_with_makers(maker_preprocessing_data, maker_similar_json)
+        return ContentBaseCulturalCenters.load()
 # from recommendation_system.ContentBaseModels import ContentBaseBooks, ContentBaseEvents, ContentBaseCulturalCenters; cb = ContentBaseBooks();cb.update()
