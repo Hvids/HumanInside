@@ -1,14 +1,24 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from polls.models import *
-from .Maker import MakerMatrixUserTemp, MakerMatrixTemp, MakerMatrixBooks, MakerMatrixEvents, \
-    MakerMatrixCulturalCenters, MakerMatrixLibraries, MakerFilteringModels, MakerSimilarJson
-from tqdm import tqdm
+
+from recommendation_system.Maker import MakerFilteringMatrixBooks, MakerFilteringMatrixEvents, \
+    MakerFilteringMatrixCulturalCenters, MakerMatrixPreprocessingBooks, MakerMatrixPreprocessingEvents, \
+    MakerMatrixPreprocessingCulturalCenters, MakerMatrixPreprocessingLibraries, MakerSimilarJSONBooks, \
+    MakerSimilarJSONEvents, MakerSimilarJSONCulturalCenters, MakerFilteringModelBooks, MakerFilteringModelEvents, \
+    MakerFilteringModelCulturalCenters
 
 
 class Command(BaseCommand):
     help = "__Help__"
 
     def add_arguments(self, parser):
+        parser.add_argument(
+            '-a',
+            '--all',
+            action='store_true',
+            default=False,
+            help='Make all'
+        )
         parser.add_argument(
             '-s',
             '--similar',
@@ -17,11 +27,11 @@ class Command(BaseCommand):
             help='Make similar json'
         )
         parser.add_argument(
-            '-d',
-            '--data',
+            '-m',
+            '--filtering--matrix',
             action='store_true',
             default=False,
-            help='Make data for recommedation'
+            help='Make data for coloborative filtering'
         )
         parser.add_argument(
             '-p',
@@ -39,74 +49,45 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        if options['data']:
-            path = './recommendation_system/data/'
-            # Таблица пользователи и книги
-            tuple_list = [
-                ('users_books.csv', Book, LastBook),
-                ('users_events.csv', Event, LastEvent),
-                ('users_cultural_centers.csv', CultureCenter, LastCenter),
-
-            ]
-            for name, Temp, UserTemp in tuple_list:
-                maker = MakerMatrixUserTemp(User, Temp, UserTemp)
-                df = maker.make(name)
-                maker.save_df(df, path, name)
-
+        if options['filtering__matrix']:
+            self.make_filtering_matrix()
         elif options['preprocessing']:
-
-            path = './recommendation_system/data/'
-            tuple_list = [
-                (
-                    'preprocessing_books.csv',
-                    ['id', 'author', 'pages', 'rating', 'language', 'content'],
-                    Book,
-                    MakerMatrixBooks
-                ),
-                (
-                    'preprocessing_events.csv',
-                    ['id', 'town', 'price', 'age_rate', 'content'],
-                    Event,
-                    MakerMatrixEvents
-                ),
-                (
-                    'preprocessing_cultural_centers.csv',
-                    ['id', 'underground', 'latitude', 'longitude', 'content'],
-                    CultureCenter,
-                    MakerMatrixCulturalCenters
-                ),
-                (
-                    'preprocessing_libraries.csv',
-                    ['id', 'region', 'latitude', 'longitude', 'content'],
-                    Library,
-                    MakerMatrixLibraries
-                )
-
-            ]
-            for name, select_columns, Temp, MakerTemp in tuple_list:
-                maker = MakerMatrixTemp(Temp)
-                maker_temp = MakerTemp()
-                df = maker.make(select_columns)
-                con, df = maker_temp.make(df)
-                maker.save_df(df, path, name)
-                maker.save_df(con, path, 'content_' + name)
+            self.make_preprocessing_matirx()
         elif options['filter__models']:
-            maker = MakerFilteringModels()
-            names = ['users_books', 'users_cultural_centers', 'users_events']
-            for name in tqdm(names, desc='Filter Models Create'):
-                maker.make(name)
+            self.make_filtering_models()
         elif options['similar']:
+            self.make_similar_json()
+        elif options['all']:
+            self.make_filtering_matrix()
+            self.make_preprocessing_matirx()
+            self.make_similar_json()
+            self.make_filtering_models()
 
-            maker = MakerSimilarJson()
-            names = ['books', 'cultural_centers', 'events']
-            for name in names:
-                res = maker.make(name)
-                maker.save_json(res, name)
+    def make_filtering_matrix(self):
+        print('Make Filtering Matrix')
+        MakerObjects = [MakerFilteringMatrixBooks, MakerFilteringMatrixEvents, MakerFilteringMatrixCulturalCenters]
+        for MakerObject in MakerObjects:
+            maker = MakerObject()
+            maker.make()
 
-        elif options['content']:
+    def make_preprocessing_matirx(self, fit=False):
+        print('Make Preprocessing Matrix')
+        MakerObjects = [MakerMatrixPreprocessingBooks, MakerMatrixPreprocessingEvents,
+                        MakerMatrixPreprocessingCulturalCenters, MakerMatrixPreprocessingLibraries]
+        for MakerObject in MakerObjects:
+            maker = MakerObject()
+            maker.make(fit=fit)
 
-            maker = MakerSimilarJson()
-            names = ['books', 'cultural_centers', 'events']
-            for name in names:
-                res = maker.make(name)
-                maker.save_json(res, name)
+    def make_similar_json(self):
+        print('Make Similar JSON')
+        MakerObjects = [MakerSimilarJSONBooks, MakerSimilarJSONEvents, MakerSimilarJSONCulturalCenters]
+        for MakerObject in MakerObjects:
+            maker = MakerObject()
+            maker.make()
+
+    def make_filtering_models(self):
+        print('Make Filtering Models')
+        MakerObjects = [MakerFilteringModelBooks, MakerFilteringModelEvents, MakerFilteringModelCulturalCenters]
+        for MakerObject in MakerObjects:
+            maker = MakerObject()
+            maker.make()

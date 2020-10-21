@@ -1,10 +1,9 @@
-from .Updater import *
 from joblib import load
-import pandas as pd
 import numpy as np
-from .management.commands.Maker import MakerMatrixUserTemp, MakerFilteringModels
+from .Maker import *
 from polls.models import *
-from .Updater import UpdateFilterModel
+from .names import *
+from .paths import *
 
 
 class Filtering:
@@ -27,7 +26,7 @@ class Filtering:
 
     @staticmethod
     def load(name, path):
-        model = load(path + name)
+        model = load(path + name + '.joblib')
         return model
 
     def get_know_ids(self, user_id):
@@ -48,73 +47,53 @@ class Filtering:
         recommendation_ids = [self.index_item_dict[rec] for rec in recommendation_ids]
         return recommendation_ids
 
-    def update_with_updater(self, updater):
-        updater.update()
+    def update(self, maker_filtering_matrix, maker_filtering_model):
+        maker_filtering_matrix.make()
+        maker_filtering_model.make()
 
 
 class FilteringBooks(Filtering):
     @classmethod
-    def load_model(cls, name_data='users_books.csv', path_data='./recommendation_system/data/',
-                   name_model='filter_users_books.joblib', path_model='./recommendation_system/models/'):
+    def load_model(cls, name_data=FILTER_MATRIX_USERS_BOOKS, path_data=PATH_DATA_CSV,
+                   name_model=FILTERING_MODEL_BOOKS, path_model=PATH_MODELS):
         model = cls.load(name_model, path_model)
-        df = pd.read_csv(path_data + name_data)
+        df = pd.read_csv(path_data + name_data + '.csv')
         return cls(df, model)
 
     def update(self):
-        updater = UpdateFilterModel(
-            name_matrix='users_books.csv',
-            path_matrix='./recommendation_system/data/',
-            name_model='filter_users_books.joblib',
-            path_model='./recommendation_system/models/',
-            maker_matrix=MakerMatrixUserTemp(User, Book, LastBook),
-            name_for_maker_model='users_books',
-            maker_model=MakerFilteringModels()
-        )
-        self.update_with_updater(updater)
+        maker_filter_matrix = MakerFilteringMatrixBooks()
+        maker_filter_model = MakerFilteringModelBooks()
+        super(FilteringBooks, self).update(maker_filter_matrix, maker_filter_model)
         return FilteringBooks.load_model()
 
 
 class FilteringEvents(Filtering):
 
     @classmethod
-    def load_model(cls, name_data='users_events.csv', path_data='./recommendation_system/data/',
-                   name_model='filter_users_events.joblib', path_model='./recommendation_system/models/'):
+    def load_model(cls, name_data=FILTER_MATRIX_USERS_EVENTS, path_data=PATH_DATA_CSV,
+                   name_model=FILTERING_MODEL_EVENTS, path_model=PATH_MODELS):
         model = cls.load(name_model, path_model)
-        df = pd.read_csv(path_data + name_data)
+        df = pd.read_csv(path_data + name_data + '.csv')
         return cls(df, model)
 
     def update(self):
-        updater = UpdateFilterModel(
-            name_matrix='users_events.csv',
-            path_matrix='./recommendation_system/data/',
-            name_model='filter_users_events.joblib',
-            path_model='./recommendation_system/models/',
-            maker_matrix=MakerMatrixUserTemp(User, Event, LastEvent),
-            name_for_maker_model='users_events',
-            maker_model=MakerFilteringModels()
-        )
-        self.update_with_updater(updater)
-        return FilteringEvents.load_model()
+        maker_filter_matrix = MakerFilteringMatrixEvents()
+        maker_filter_model = MakerFilteringModelEvents()
+        super(FilteringEvents, self).update(maker_filter_matrix, maker_filter_model)
+        return FilteringBooks.load_model()
 
 
 class FilteringCulturalCenters(Filtering):
 
     @classmethod
-    def load_model(cls, name_data='users_cultural_centers.csv', path_data='./recommendation_system/data/',
-                   name_model='filter_users_cultural_centers.joblib', path_model='./recommendation_system/models/'):
+    def load_model(cls, name_data=FILTER_MATRIX_USERS_CULTURAL_CENTERS, path_data=PATH_DATA_CSV,
+                   name_model=FILTERING_MODEL_CULTURAL_CENTERS, path_model=PATH_MODELS):
         model = cls.load(name_model, path_model)
-        df = pd.read_csv(path_data + name_data)
+        df = pd.read_csv(path_data + name_data + '.csv')
         return cls(df, model)
 
     def update(self):
-        updater = UpdateFilterModel(
-            name_matrix='users_cultural_centers.csv',
-            path_matrix='./recommendation_system/data/',
-            name_model='filter_users_cultural_centers.joblib',
-            path_model='./recommendation_system/models/',
-            maker_matrix=MakerMatrixUserTemp(User, CultureCenter, UserTemp),
-            name_for_maker_model='users_cultural_centers',
-            maker_model=MakerFilteringModels()
-        )
-        self.update_with_updater(updater)
-        return FilteringCulturalCenters.load_model()
+        maker_filter_matrix = MakerFilteringMatrixCulturalCenters()
+        maker_filter_model = MakerFilteringModelCulturalCenters()
+        super(FilteringCulturalCenters, self).update(maker_filter_matrix, maker_filter_model)
+        return FilteringBooks.load_model()
