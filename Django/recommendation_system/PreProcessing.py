@@ -10,9 +10,9 @@ import gensim.downloader as api
 from sklearn.decomposition import LatentDirichletAllocation
 from sklearn.feature_extraction.text import CountVectorizer
 from .paths import *
-# import nltk
+import nltk
 
-# nltk.download("stopwords")
+nltk.download("stopwords")
 # --------#
 
 from nltk.corpus import stopwords

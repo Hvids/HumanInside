@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'application',
     'polls',
     'recommendation_system'
 ]
@@ -69,7 +68,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'HumanInside.wsgi.application'
+WSGI_APPLICATION = 'HumanInside.wsgi.polls'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases

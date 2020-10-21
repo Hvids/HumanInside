@@ -6,8 +6,8 @@ from .paths import *
 
 
 class ContentBase:
-    def __init__(self, SeceltObject, data, id_name, k=5):
-        self.k = 5
+    def __init__(self, SeceltObject, data, id_name, count_last=5):
+        self.count_last = count_last
         self.data = data
         self.SelectObject = SeceltObject
         self.id_name = id_name
@@ -17,7 +17,7 @@ class ContentBase:
 
     def recommend(self, id_user):
         objects_read_user = self.SelectObject.objects.filter(id_user=id_user).order_by('-id').values_list(self.id_name)
-        objects_read_user = self.get_list(objects_read_user)[:self.k]
+        objects_read_user = self.get_list(objects_read_user)[:self.count_last]
         result = []
         for object_read_user in objects_read_user:
             best = self.data[str(object_read_user)]
@@ -51,6 +51,7 @@ class ContentBaseBooks(ContentBase):
         self.update_with_makers(maker_preprocessing_data, maker_similar_json)
         return ContentBaseBooks.load()
 
+
 class ContentBaseEvents(ContentBase):
     @classmethod
     def load(cls, name_json=SIMILAR_EVENTS, path_json=PATH_DATA_JSON):
@@ -62,6 +63,7 @@ class ContentBaseEvents(ContentBase):
         maker_similar_json = MakerSimilarJSONEvents()
         self.update_with_makers(maker_preprocessing_data, maker_similar_json)
         return  ContentBaseEvents.load()
+
 
 class ContentBaseCulturalCenters(ContentBase):
     @classmethod
