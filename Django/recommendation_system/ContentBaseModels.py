@@ -41,9 +41,9 @@ class ContentBase:
 
 class ContentBaseBooks(ContentBase):
     @classmethod
-    def load(cls, name_json=SIMILAR_BOOKS, path_json=PATH_DATA_JSON):
+    def load(cls, name_json=SIMILAR_BOOKS, path_json=PATH_DATA_JSON, count_last=5):
         data = cls.load_json(name_json, path_json)
-        return cls(LastBook, data, 'id_book')
+        return cls(LastBook, data, 'id_book', count_last=count_last)
 
     def update(self):
         maker_preprocessing_data = MakerMatrixPreprocessingBooks()
@@ -54,22 +54,22 @@ class ContentBaseBooks(ContentBase):
 
 class ContentBaseEvents(ContentBase):
     @classmethod
-    def load(cls, name_json=SIMILAR_EVENTS, path_json=PATH_DATA_JSON):
+    def load(cls, name_json=SIMILAR_EVENTS, path_json=PATH_DATA_JSON, count_last=5):
         data = cls.load_json(name_json, path_json)
-        return cls(LastEvent, data, 'id_event')
+        return cls(LastEvent, data, 'id_event', count_last=count_last)
 
     def update(self):
         maker_preprocessing_data = MakerMatrixPreprocessingEvents()
         maker_similar_json = MakerSimilarJSONEvents()
         self.update_with_makers(maker_preprocessing_data, maker_similar_json)
-        return  ContentBaseEvents.load()
+        return ContentBaseEvents.load()
 
 
 class ContentBaseCulturalCenters(ContentBase):
     @classmethod
-    def load(cls, name_json=SIMILAR_CULTURAL_CENTERS, path_json=PATH_DATA_JSON):
+    def load(cls, name_json=SIMILAR_CULTURAL_CENTERS, path_json=PATH_DATA_JSON, count_last=5):
         data = cls.load_json(name_json, path_json)
-        return cls(LastCenter, data, 'id_center')
+        return cls(LastCenter, data, 'id_center', count_last=count_last)
 
     def update(self):
         maker_preprocessing_data = MakerMatrixPreprocessingCulturalCenters()

@@ -178,6 +178,7 @@ class MakerMatrixBooks(MakerMatrixBase):
     def make(self, df, fit=True):
         df_genre = self.maker_matrix_genre.make(df.id)
         df_content, df_other = super(MakerMatrixBooks, self).make(df, fit=fit)
+        df_content['id'] = df_other.id
         return df_content, pd.concat([df_other, df_genre], axis=1)
 
 

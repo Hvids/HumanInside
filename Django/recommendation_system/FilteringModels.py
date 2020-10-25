@@ -54,10 +54,10 @@ class Filtering:
 class FilteringBooks(Filtering):
     @classmethod
     def load_model(cls, name_data=FILTER_MATRIX_USERS_BOOKS, path_data=PATH_DATA_CSV,
-                   name_model=FILTERING_MODEL_BOOKS, path_model=PATH_MODELS):
+                   name_model=FILTERING_MODEL_BOOKS, path_model=PATH_MODELS, k=5):
         model = cls.load(name_model, path_model)
         df = pd.read_csv(path_data + name_data + '.csv')
-        return cls(df, model)
+        return cls(df, model, k=k)
 
     def update(self):
         maker_filter_matrix = MakerFilteringMatrixBooks()
@@ -70,10 +70,10 @@ class FilteringEvents(Filtering):
 
     @classmethod
     def load_model(cls, name_data=FILTER_MATRIX_USERS_EVENTS, path_data=PATH_DATA_CSV,
-                   name_model=FILTERING_MODEL_EVENTS, path_model=PATH_MODELS):
+                   name_model=FILTERING_MODEL_EVENTS, path_model=PATH_MODELS, k=5):
         model = cls.load(name_model, path_model)
         df = pd.read_csv(path_data + name_data + '.csv')
-        return cls(df, model)
+        return cls(df, model, k=k)
 
     def update(self):
         maker_filter_matrix = MakerFilteringMatrixEvents()
@@ -86,10 +86,10 @@ class FilteringCulturalCenters(Filtering):
 
     @classmethod
     def load_model(cls, name_data=FILTER_MATRIX_USERS_CULTURAL_CENTERS, path_data=PATH_DATA_CSV,
-                   name_model=FILTERING_MODEL_CULTURAL_CENTERS, path_model=PATH_MODELS):
+                   name_model=FILTERING_MODEL_CULTURAL_CENTERS, path_model=PATH_MODELS, k=5):
         model = cls.load(name_model, path_model)
         df = pd.read_csv(path_data + name_data + '.csv')
-        return cls(df, model)
+        return cls(df, model, k=k)
 
     def update(self):
         maker_filter_matrix = MakerFilteringMatrixCulturalCenters()
