@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Event page</title>
+</head>
+<body>
+<div>
+    <p><b>Название:</b> {{ event.title }}</p>
+    <p><b>Дата:</b> {{ event.date }}</p>
+    <p><b>Город:</b> {{ event.town }}</p>
+    <p><b>Цена:</b> {{ event.price }}</p>
+    <p><b>Возрастной рейтинг:</b> {{ event.age_rate }}</p>
+    <p><b>Веб сайт:</b> {{ event.web_site }}</p>
+    <p><b>Соц сети:</b> {{ event.social_net }}</p>
+    <p><b>Описание:</b> {{ event.content }}</p>
+    <img src="{{ event.image }}" alt="Not found image">
+</div>
+</body>
+</html>

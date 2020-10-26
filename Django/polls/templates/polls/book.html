@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Book page</title>
+</head>
+<body>
+<div>
+    <p><b>Название:</b> {{ book.title }}</p>
+    <p><b>Серия:</b> {{ book.serie }}</p>
+    <p><b>Автор:</b> {{ book.author }}</p>
+    <p><b>Количество страниц:</b> {{ book.pages }}</p>
+    <p><b>Язык:</b> {{ book.language }}</p>
+    <p><b>Рейтинг:</b> {{ book.rating }}</p>
+    <p><b>Описание:</b> {{ book.content }}</p>
+    <img src="{{ book.image }}" alt="Not found image">
+</div>
+</body>
+</html>

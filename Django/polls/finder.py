@@ -18,6 +18,23 @@ class FinderBase:
             recommendation_list.append(self.get_type.objects.get(id=idx))
         return render(request, 'polls/recommendation.html', {'recommendation_list': recommendation_list})
 
+    def findAll(self, request, id_user):
+        allInOne = []
+
+        for loader, type_ in zip(self.loader_type, self.get_type):
+            rec_id = loader.recommend(id_user=id_user)
+            partOf = []
+            for idx in rec_id:
+                partOf.append(type_.objects.get(id=idx))
+            allInOne.append(partOf)
+
+        dictAllInOne = dict()
+        dictAllInOne['ID_user'] = id_user
+        dictAllInOne['Books'] = allInOne[0]
+        dictAllInOne['Events'] = allInOne[1]
+        dictAllInOne['Centers'] = allInOne[2]
+        return render(request, 'polls/home.html', dictAllInOne)
+
 
 class FinderBook(FinderBase):
     def __init__(self, loader_type=FilteringBooks.load_model(), get_type=Book):
@@ -32,3 +49,9 @@ class FinderEvent(FinderBase):
 class FinderCenter(FinderBase):
     def __init__(self, loader_type=FilteringCulturalCenters.load_model(), get_type=CultureCenter):
         super(FinderCenter, self).__init__(loader_type, get_type)
+
+
+class FindAll(FinderBase):
+    def __init__(self, loader_type=[FilteringBooks.load_model(), FilteringEvents.load_model(),
+                                    FilteringCulturalCenters.load_model()], get_type=[Book, Event, CultureCenter]):
+        super(FindAll, self).__init__(loader_type, get_type)
