@@ -1,8 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import *
-from .functions import *
-from recommendation_system.FilteringModels import *
 from .finder import *
 
 
@@ -25,7 +23,7 @@ def recAll(request, id_user):
 
 def book_detail(request, id_user, id_book):
     book = Book.objects.get(id=id_book)
-    return render(request, 'polls/book.html', {'book': book})
+    return render(request, 'polls/book.html', {'book': book, 'user': id_user})
 
 
 def cultural_center_detail(request, id_user, id_center):
@@ -37,3 +35,6 @@ def event_detail(request, id_user, id_event):
     event = Event.objects.get(id=id_event)
     return render(request, 'polls/event.html', {'event': event})
 
+
+def book_searcher(request, id_user):
+    return render(request, 'polls/book_search.html', {'user': id_user})

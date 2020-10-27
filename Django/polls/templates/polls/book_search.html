@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Books</title>
+</head>
+<header>
+    <a href="{% url 'recAll' id_user=user %}"><h1>Главная</h1></a>
+    <a href="{% url 'book_searcher' id_user=user %}"><h1>Книги</h1></a>
+</header>
+<body>
+<div>
+    <header>
+        <h1>Поиск книги</h1>
+    </header>
+    <p>
+    <h3>Я знаю что ищу</h3></p>
+    <form action="/src/" method="post">
+        <label for="src"> Название, описание, автор... </label>
+        <input id="src" type="text" name="src" value="{{ src }}">
+        <input type="submit" value="OK">
+    </form>
+</div>
+<div>
+    <header>
+        <h1>Подбор книги</h1>
+    </header>
+    <p>
+    <h3>Подобрать книгу</h3></p>
+        <h2>Фильтр</h2>
+    <form action="/src/" method="post">
+        <label for="src"> Жанр </label>
+        <input id="src" type="text" name="src" value="{{ src }}">
+        <input type="submit" value="OK">
+    </form>
+    <form action="/src/" method="post">
+        <label for="src"> Автор </label>
+        <input id="src" type="text" name="src" value="{{ src }}">
+        <input type="submit" value="OK">
+    </form>
+    <form action="/src/" method="post">
+        <label for="src"> Год </label>
+        <input id="src" type="text" name="src" value="{{ src }}">
+        <input type="submit" value="OK">
+    </form>
+</div>
+</body>
+</html>
