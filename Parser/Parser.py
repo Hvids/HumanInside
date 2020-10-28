@@ -36,7 +36,7 @@ class ParserContent(ParserElement):
         return content
 
 
-class ParserData(ParserText
+class ParserData(ParserText):
     def __init__(self, site, url):
         self.url = url
         self.site = site
