@@ -112,7 +112,8 @@ class CenterCreator:
 class EventCreator:
     def create(self, df):
         for i, row in tqdm(df.iterrows(), desc='Creating events'):
-            center = CultureCenter.objects.get(id=row['id_cultural'] + 1)
+            center_id = random.randint(1, len(CultureCenter.objects.all()))
+            center = CultureCenter.objects.get(id=center_id)
             Event.objects.create(id=row['id'] + 1, town=row['town'], title=row['name'], web_site=row['site_buy'],
                                  date=row['date'], price=row['price'], age_rate=row['age'], image=row['img_url'],
                                  content=row['content'], id_culture=center)
@@ -127,13 +128,12 @@ class UserGen:
             user = User.objects.create(id=id_cnt, first_name=name, last_name=name, age=id_cnt)
             id_cnt += 1
             for _ in tqdm(range(0, 10), desc='Forms creating'):
-                id_center = random.randint(1, df_center.shape[0])
                 id_book = random.randint(1, df_book.shape[0])
                 id_event = random.randint(1, df_event.shape[0])
 
-                center = CultureCenter.objects.get(id=id_center)
                 book = Book.objects.get(id=id_book)
                 event = Event.objects.get(id=id_event)
+                center = CultureCenter.objects.get(id=event.id_culture.id)
 
                 score = round(random.uniform(3, 10), 1)
                 if score < 5:

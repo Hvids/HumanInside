@@ -28,12 +28,12 @@ def book_detail(request, id_user, id_book):
 
 def cultural_center_detail(request, id_user, id_center):
     cultural_center = CultureCenter.objects.get(id=id_center)
-    return render(request, 'polls/CulturalCenter.html', {'cultural_center': cultural_center})
+    return render(request, 'polls/CulturalCenter.html', {'cultural_center': cultural_center, 'user': id_user})
 
 
 def event_detail(request, id_user, id_event):
     event = Event.objects.get(id=id_event)
-    return render(request, 'polls/event.html', {'event': event})
+    return render(request, 'polls/event.html', {'event': event, 'user': id_user})
 
 
 def book_searcher(request, id_user):

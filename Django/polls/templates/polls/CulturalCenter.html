@@ -5,6 +5,12 @@
     <title>Cultural center page</title>
 </head>
 <body>
+<header>
+    <a href="{% url 'enter_page' %}"><h1>Главная</h1></a>
+    {% if user != 0 %}
+        <a href="{% url 'book_searcher' id_user=user %}"><h1>Книги</h1></a>
+    {% endif %}
+</header>
 <div>
     <p><b>Название:</b> {{ cultural_center.title }}</p>
     <p><b>Метро:</b> {{ cultural_center.underground }}</p>
