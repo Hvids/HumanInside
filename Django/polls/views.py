@@ -4,9 +4,9 @@ from .models import *
 from .finder import *
 
 
-def index(request, id_book=3):
-    method = Methods()
-    return method.get_book(request, id_book)
+def index(request):
+    finder = ColdStart(5)
+    return finder.find(request)
 
 
 def recommend(request, id_user):

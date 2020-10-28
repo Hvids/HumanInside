@@ -1,17 +1,41 @@
+{#<div>#}
+{#    <p><b>Welcome</b></p>#}
+{#    <form action="/your-name/" method="post">#}
+{#        <label for="your_name">Your name: </label>#}
+{#        <input id="your_name" type="text" name="your_name" value="{{ current_name }}">#}
+{#        <label for="Password">Password: </label>#}
+{#        <input id="password" type="text" name="password" value="{{ current_password }}">#}
+{#        <input type="submit" value="OK">#}
+{#    </form>#}
+{#</div>#}
+
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-    <title>Enter page</title>
+    <title>Home page</title>
 </head>
+<header>
+    <a href="{% url 'enter_page' %}"><h1>Главная</h1></a>
+</header>
 <body>
 <div>
-    <p><b>Welcome</b></p>
-    <form action="/your-name/" method="post">
-        <label for="your_name">Your name: </label>
-        <input id="your_name" type="text" name="your_name" value="{{ current_name }}">
-        <label for="Password">Password: </label>
-        <input id="password" type="text" name="password" value="{{ current_password }}">
-        <input type="submit" value="OK">
-    </form>
+    <p><b>Книги которые вам могут понравиться:</b></p>
+    {% for parametr in Books %}
+        <a href="{% url 'book_detail' id_book=parametr.id id_user=6 %}">{{ parametr.title }}</a>
+        <br>
+    {% endfor %}
+    <br>
+    <p><b>События которые вам могут понравиться:</b></p>
+    {% for parametr in Events %}
+        <a href="{% url 'event_detail' id_event=parametr.id id_user=6 %}">{{ parametr.title }}</a>
+        <br>
+    {% endfor %}
+    <br>
+    <p><b>Места которые вам могут понравиться:</b></p>
+    {% for parametr in Centers %}
+        <a href="{% url 'cultural_center_detail' id_center=parametr.id id_user=6 %}">{{ parametr.title }}</a>
+        <br>
+    {% endfor %}
 </div>
 </body>
 </html>

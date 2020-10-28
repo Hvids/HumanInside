@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import *
-from .functions import *
 from recommendation_system.FilteringModels import *
 
 
@@ -55,3 +54,80 @@ class FindAll(FinderBase):
     def __init__(self, loader_type=[FilteringBooks.load_model(), FilteringEvents.load_model(),
                                     FilteringCulturalCenters.load_model()], get_type=[Book, Event, CultureCenter]):
         super(FindAll, self).__init__(loader_type, get_type)
+
+
+class ColdStart:
+    def __init__(self, k):
+        self.k = k
+
+    def find(self, request):
+        books = Book.objects.all()
+        books = books.order_by('-rating')
+        k_book_to_go = books[0:self.k]
+
+        events = LastEvent.objects.all()
+        events = events.order_by('-score')
+        ev_d = dict()
+        for i in range(0, len(events)):
+            if events[i].id_event.id in ev_d.keys():
+                ev_d[events[i].id_event.id].append(events[i].score)
+            else:
+                ev_d[events[i].id_event.id] = [events[i].score]
+
+        out = dict()
+        for k, v in ev_d.items():
+            avg = 0
+            cnt = 0
+            for score in v:
+                if score:
+                    avg += score
+                    cnt += 1
+            if cnt != 0:
+                out[k] = avg / cnt
+
+        out = {k: v for k, v in sorted(out.items(), key=lambda item: item[1], reverse=True)}
+        out_keys = [Event.objects.get(id=k) for k, v in out.items()]
+        k_event_to_go = out_keys[0:self.k]
+
+        k_center_to_go = set()
+        for event_key in out_keys:
+            event = Event.objects.get(id=event_key.id)
+            k_center_to_go.add(CultureCenter.objects.get(id=event.id_culture.id))
+
+        k_center_to_go = [i for i in k_center_to_go]
+        k_center_to_go = k_center_to_go[0:self.k]
+
+        dictAllInOne = dict()
+        dictAllInOne['Books'] = k_book_to_go
+        dictAllInOne['Events'] = k_event_to_go
+        dictAllInOne['Centers'] = k_center_to_go
+        return render(request, 'polls/index.html', dictAllInOne)
+
+
+# events = LastEvent.objects.all()
+# events = events.order_by('-score')
+# ev_d = dict()
+# for i in range(0, len(events)):
+#     if events[i].id_event.id in ev_d.keys():
+#         ev_d[events[i].id_event.id].append(events[i].score)
+#     else:
+#         ev_d[events[i].id_event.id] = [events[i].score]
+#
+# out = dict()
+# for k, v in ev_d.items():
+#     avg = 0
+#     cnt = 0
+#     for score in v:
+#         if score:
+#             avg += score
+#             cnt += 1
+#     if cnt != 0:
+#         out[k] = avg / cnt
+#
+# out = {k: v for k, v in sorted(out.items(), key=lambda item: item[1], reverse=True)}
+# out_keys = [Event.objects.get(id=k) for k, v in out.items()]
+# # k_event_to_go = out_keys[0:self.k]
+# k_center_to_go = set()
+# for event_key in out_keys:
+#     event = Event.objects.get(id=event_key.id)
+#     k_center_to_go.add(CultureCenter.objects.get(id=event.id_culture.id))

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <title>Home page</title>
@@ -8,19 +9,19 @@
 </header>
 <body>
 <div>
-    <p><b>Книги которые вам могут понраиться:</b></p>
+    <p><b>Книги которые вам могут понравиться:</b></p>
     {% for parametr in Books %}
         <a href="{% url 'book_detail' id_book=parametr.id id_user=ID_user %}">{{ parametr.title }}</a>
         <br>
     {% endfor %}
     <br>
-    <p><b>События которые вам могут понраиться:</b></p>
+    <p><b>События которые вам могут понравиться:</b></p>
     {% for parametr in Events %}
         <a href="{% url 'event_detail' id_event=parametr.id id_user=ID_user %}">{{ parametr.title }}</a>
         <br>
     {% endfor %}
     <br>
-    <p><b>Места которые вам могут понраиться:</b></p>
+    <p><b>Места которые вам могут понравиться:</b></p>
     {% for parametr in Centers %}
         <a href="{% url 'cultural_center_detail' id_center=parametr.id id_user=ID_user %}">{{ parametr.title }}</a>
         <br>
