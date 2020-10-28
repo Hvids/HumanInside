@@ -36,8 +36,7 @@ class ParserContent(ParserElement):
         return content
 
 
-class ParserData(ParserText):
-
+class ParserData(ParserText
     def __init__(self, site, url):
         self.url = url
         self.site = site
@@ -70,13 +69,13 @@ class ParserDataList:
             for id in tqdm(range(len(self.urls)), desc=f'{self.name}'):
                 url = self.urls[id]
                 parser = parse_obj(self.site, url)
-                data = parser.parse(id_pred)
+                data = parser.parse(id)
                 data_list.add(data)
         else:
             for id in range(len(self.urls)):
                 url = self.urls[id]
                 parser = parse_obj(self.site, url)
-                data = parser.parse(id_pred)
+                data = parser.parse(id)
                 data_list.add(data)
 
         return data_list
