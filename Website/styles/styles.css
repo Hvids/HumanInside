@@ -1,0 +1,81 @@
+:root {
+    --main-bg-color: #ffffff;
+    --text-default-color: #000000;
+    --register-button-bg-color: #e8e8e8;
+    --imageblocks-margin: 45px;
+}
+
+div {
+    display: block;
+}
+
+div.content_wrap {
+    background-color: #d2d0e8;
+    border-radius: 10px 10px 0 0;
+    padding: 15px 15px 0 15px;
+    position: relative;
+}
+
+table.upper_menu_table {
+    width: 100%;
+    border: 2px solid black;
+}
+
+td.upper_menu_list {
+    font-family: "Roboto Regular", serif;
+    font-size: 20px;
+    overflow: hidden;
+    border: 2px solid black;
+}
+
+td.upper_menu_list > a {
+    color: var(--text-default-color);
+    text-decoration: none;
+}
+
+td.upper_menu_list > a:hover {
+    text-decoration: underline;
+}
+
+td.left_box {
+    float: left;
+    font-family: "Roboto Bold", serif;
+    font-size: 24px;
+    margin-left: 3%;
+    text-align: left;
+}
+
+td.middle_box {
+    float: left;
+    display: block;
+    background-color: lightgoldenrodyellow;
+    margin-left: 5%;
+    margin-right: auto;
+}
+
+td.middle_box > a {
+    padding-left: 30px;
+}
+
+td.right_box {
+    float: right;
+    margin-left: 10%;
+    margin-right: 3%;
+    font-family: "Roboto Medium", serif;
+    font-size: 20px;
+
+}
+
+div.main_image_content {
+    margin-top: var(--imageblocks-margin);
+    max-width: 100%;
+}
+
+div.main_image_content > img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    height: auto;
+    border-radius: 20px;
+}
