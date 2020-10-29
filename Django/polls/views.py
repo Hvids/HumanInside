@@ -4,6 +4,7 @@ from .models import *
 from .finder import *
 
 
+
 def index(request):
     finder = ColdStart(5)
     return finder.find(request)
@@ -38,3 +39,5 @@ def event_detail(request, id_user, id_event):
 
 def book_searcher(request, id_user):
     return render(request, 'polls/book_search.html', {'user': id_user})
+
+
