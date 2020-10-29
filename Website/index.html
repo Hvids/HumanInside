@@ -3,29 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="styles.css" rel="stylesheet" type="text/css">
-    <link href="fonts.css" rel="stylesheet" type="text/css">
+    <link href="styles/styles.css" rel="stylesheet" type="text/css">
+    <link href="styles/fonts.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
-<div class="content_wrap">
-    <table class="upper_menu_table">
-        <tr>
-            <td class="upper_menu_list left_box">
-                <a class="upper_menu_link" href="index.html">РекСерв.Мск</a>
-            </td>
-            <td class="upper_menu_list middle_box">
-                <a class="upper_menu_link" href="index.html">Главная</a>
-                <a class="upper_menu_link" href="index.html">Книги</a>
-                <a class="upper_menu_link" href="index.html">События</a>
-                <a class="upper_menu_link" href="index.html">Места</a>
-                <a class="upper_menu_link" href="index.html">Личный кабинет</a>
-            </td>
-            <td class="upper_menu_list right_box">
-                <a class="upper_menu_link" href="index.html">Войти</a>
-            </td>
-        </tr>
-    </table>
+
+<div class="container__outer">
+
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <a class="title__link" href="#">РекСерв.МСК</a>
+
+                <nav class="nav">
+                    <a class="nav__link" href="#">Главная</a>
+                    <a class="nav__link" href="#">Книги</a>
+                    <a class="nav__link" href="#">События</a>
+                    <a class="nav__link" href="#">Места</a>
+                    <a class="nav__link" href="#">Личный кабинет</a>
+                </nav>
+
+
+                <a class="login__box" href="#">
+                    Войти
+                </a>
+
+            </div>
+        </div>
+    </header>
 
     <div class="main_content">
         <div class="main_image_content main_image">
@@ -43,6 +49,7 @@
             </div>
         </div>
     </div>
+
 </div>
 
 </body>
