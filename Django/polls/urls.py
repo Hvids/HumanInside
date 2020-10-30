@@ -13,5 +13,6 @@ urlpatterns = [
          name='cultural_center_detail'),
     #  поиск
     path('search/user/<int:id_user>/books/', views.book_searcher, name='book_searcher'),
+      path('search/user/<int:id_user>/events/', views.event_searcher, name='event_searcher'),
 
 ]

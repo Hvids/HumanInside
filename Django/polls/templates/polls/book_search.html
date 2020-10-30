@@ -7,6 +7,7 @@
 <header>
     <a href="{% url 'recAll' id_user=ID_user %}"><h1>Главная</h1></a>
     <a href="{% url 'book_searcher' id_user=ID_user %}"><h1>Книги</h1></a>
+    <a href="{% url 'event_searcher' id_user=ID_user %}"><h1>События</h1></a>
 </header>
 <body>
 <div>
@@ -24,6 +25,29 @@
 
         <input type="submit" value="Найти">
     </form>
+
+    <div>
+            {% for book in recommend_book %}
+    <a href="{% url 'book_detail' id_book=book.id id_user=ID_user %}">{{ book.title }}</a>
+
+    <form action="{% url 'book_searcher' id_user=ID_user %}" method="post">
+
+        {% csrf_token %}
+        <input type="hidden" name="type" value="book">
+        <input type="hidden" name="id_book" value="{{ book.id }}">
+        <input type="submit" value="Хочу прочитать">
+    </form>
+    <form action="{% url 'book_searcher' id_user=ID_user %}" method="post">
+
+        {% csrf_token %}
+        <input type="hidden" name="type" value="delete_book">
+        <input type="hidden" name="id_book" value="{{ book.id }}">
+        <input type="submit" value="Удалить из списка">
+    </form>
+    {% endfor %}
+    </div>
+
+
     <form action="{% url 'book_searcher' id_user=ID_user %}" method="GET">
         {% csrf_token %}
         <p>Выбрать фильтр</p>
@@ -55,6 +79,13 @@
         <input type="hidden" name="type" value="book">
         <input type="hidden" name="id_book" value="{{ book.id }}">
         <input type="submit" value="Хочу прочитать">
+    </form>
+    <form action="{% url 'book_searcher' id_user=ID_user %}" method="post">
+
+        {% csrf_token %}
+        <input type="hidden" name="type" value="delete_book">
+        <input type="hidden" name="id_book" value="{{ book.id }}">
+        <input type="submit" value="Удалить из списка">
     </form>
     {% endfor %}
 </div>

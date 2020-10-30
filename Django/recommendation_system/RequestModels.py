@@ -65,7 +65,7 @@ class RequestModelEvents(RequestModelBase):
             cls,
             SelectObject=LastEvent,
             id_name='id_event',
-            MakreMatrixClass=MakerMatrixPreprocessingEvents,
+            MakreMatrixClass=MakerMatrixEvents,
             name=PREPROCESSING_CONTENT_EVENTS,
             path=PATH_DATA_CSV,
             k=5
@@ -84,7 +84,7 @@ class RequestModelCulturalCenters(RequestModelBase):
             cls,
             SelectObject=LastCenter,
             id_name='id_center',
-            MakreMatrixClass=MakerMatrixPreprocessingCulturalCenters,
+            MakreMatrixClass=MakerMatrixCulturalCenters,
             name=PREPROCESSING_CONTENT_CULTURAL_CENTERS,
             path=PATH_DATA_CSV,
             k=5
