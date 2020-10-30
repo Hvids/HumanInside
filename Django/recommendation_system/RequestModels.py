@@ -33,7 +33,7 @@ class RequestModelBase:
         similar_indices = cosine_similarities[0].argsort()[::-1]
         similar_items = [int(self.df['id'][i]) for i in similar_indices if int(self.df['id'][i])]
         results = similar_items[1:]
-        results = [i for i in results if i not in objects_read_user]
+        results = [int(i) for i in results if int(i) not in objects_read_user]
         return results[:self.k]
 
     def update_with_maker(self, maker):

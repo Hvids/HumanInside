@@ -14,37 +14,46 @@ class BooksInLibrary(models.Model):
 class LastBook(models.Model):
     id_user = models.ForeignKey('User', on_delete=models.CASCADE)
     id_book = models.ForeignKey('Book', on_delete=models.CASCADE)
+    status = models.BooleanField()
     score = models.FloatField(null=True, blank=True, default=None)
 
     def __str__(self):
-        return f'ID: {self.id}, ID user: {self.id_user}, ID book: {self.id_book}, score{self.score}'
+        return f'ID: {self.id}, ID user: {self.id_user}, ID book: {self.id_book},' \
+               f' status: {self.status}, score{self.score}'
 
 
 class LastCenter(models.Model):
     id_user = models.ForeignKey('User', on_delete=models.CASCADE)
     id_center = models.ForeignKey('CultureCenter', on_delete=models.CASCADE)
+    status = models.BooleanField()
     score = models.FloatField(null=True, blank=True, default=None)
 
     def __str__(self):
-        return f'ID: {self.id}, ID user: {self.id_user}, ID center: {self.id_center}, score{self.score}'
+        return f'ID: {self.id}, ID user: {self.id_user}, ID center: {self.id_center},' \
+               f' status: {self.status}, score{self.score}'
 
 
 class LastEvent(models.Model):
     id_event = models.ForeignKey('Event', on_delete=models.CASCADE)
     id_user = models.ForeignKey('User', on_delete=models.CASCADE)
+    status = models.BooleanField()
     score = models.FloatField(null=True, blank=True, default=None)
 
     def __str__(self):
-        return f'ID: {self.id}, ID event: {self.id_event}, ID user: {self.id_user}, score{self.score}'
+        return f'ID: {self.id}, ID event: {self.id_event}, ID user: {self.id_user},' \
+               f' status: {self.status} score{self.score}'
 
 
 class User(models.Model):
+    user_login = models.CharField(max_length=255)
+    user_password = models.CharField(max_length=255)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     age = models.IntegerField()
 
     def __str__(self):
-        return f'ID: {self.id}, first name: {self.first_name}, last name: {self.last_name}, age: {self.age}'
+        return f'ID: {self.id}, login: {self.user_login}, password: {self.user_password},' \
+               f' first name: {self.first_name}, last name: {self.last_name}, age: {self.age}'
 
 
 class Event(models.Model):

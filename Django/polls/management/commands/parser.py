@@ -125,7 +125,8 @@ class UserGen:
         id_cnt = 1
         counter = 1
         for name in tqdm(alpha, desc='User creating'):
-            user = User.objects.create(id=id_cnt, first_name=name, last_name=name, age=id_cnt)
+            user = User.objects.create(id=id_cnt, user_login=name+name, user_password="1234", first_name=name,
+                                       last_name=name, age=id_cnt)
             id_cnt += 1
             for _ in tqdm(range(0, 10), desc='Forms creating'):
                 id_book = random.randint(1, df_book.shape[0])
@@ -138,9 +139,9 @@ class UserGen:
                 score = round(random.uniform(3, 10), 1)
                 if score < 5:
                     score = None
-                LastEvent.objects.create(id=counter, id_user=user, id_event=event, score=score)
-                LastBook.objects.create(id=counter, id_user=user, id_book=book, score=score)
-                LastCenter.objects.create(id=counter, id_user=user, id_center=center, score=score)
+                LastEvent.objects.create(id=counter, id_user=user, id_event=event, status=True, score=score)
+                LastBook.objects.create(id=counter, id_user=user, id_book=book, status=True, score=score)
+                LastCenter.objects.create(id=counter, id_user=user, id_center=center, status=True, score=score)
 
                 counter += 1
 

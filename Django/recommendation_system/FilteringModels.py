@@ -3,10 +3,13 @@ import numpy as np
 from .Maker import *
 from .names import *
 from .paths import *
+from polls.models import *
 
 
 class Filtering:
-    def __init__(self, df, model, k=10):
+    def __init__(self, df,  model,LastObject, name_object, k=10):
+        self.LastObject = LastObject
+        self.name_object = name_object
         self.model = model
         self.k = k
         self.df = df
@@ -29,22 +32,24 @@ class Filtering:
         return model
 
     def get_know_ids(self, user_id):
-        user = self.df[self.df.id == user_id]
-        user = user.drop('id', axis=1)
-        user = user.iloc[0]
-        return list(user[user != 0])
+        ids = self.LastObject.objects.filter(id_user=user_id).values_list(self.name_object)
+        ids = [i[0] for i in ids]
+        return ids
 
-    def get_reccomend(self, knows, scores_ids):
-        return [score for score in scores_ids if score not in knows]
+    def get_reccomend(self, knows, rec_ids):
+        return [int(rec) for rec in rec_ids if int(rec) not in knows]
 
     def recommend(self, id_user):
         index_user = self.user_index_dict[id_user]
         scores = pd.Series(self.model.predict(index_user, np.arange(len(self.index_item_dict.keys()))))
         scores_ids = list(pd.Series(scores.sort_values(ascending=False).index))
         know_ids = self.get_know_ids(id_user)
-        recommendation_ids = self.get_reccomend(know_ids, scores_ids)[:self.k]
-        recommendation_ids = [self.index_item_dict[rec] for rec in recommendation_ids]
-        return recommendation_ids
+
+        recommendation_ids = [self.index_item_dict[rec] for rec in scores_ids]
+        # print(know_ids)
+        recommendation_ids = self.get_reccomend(know_ids, recommendation_ids)
+        # print(recommendation_ids)
+        return recommendation_ids[:self.k]
 
     def update(self, maker_filtering_matrix, maker_filtering_model):
         maker_filtering_matrix.make()
@@ -57,7 +62,7 @@ class FilteringBooks(Filtering):
                    name_model=FILTERING_MODEL_BOOKS, path_model=PATH_MODELS, k=5):
         model = cls.load(name_model, path_model)
         df = pd.read_csv(path_data + name_data + '.csv')
-        return cls(df, model, k=k)
+        return cls(df, model, LastObject=LastBook, name_object='id_book', k=k)
 
     def update(self):
         maker_filter_matrix = MakerFilteringMatrixBooks()
@@ -73,7 +78,7 @@ class FilteringEvents(Filtering):
                    name_model=FILTERING_MODEL_EVENTS, path_model=PATH_MODELS, k=5):
         model = cls.load(name_model, path_model)
         df = pd.read_csv(path_data + name_data + '.csv')
-        return cls(df, model, k=k)
+        return cls(df, model, LastObject=LastEvent, name_object='id_event', k=k)
 
     def update(self):
         maker_filter_matrix = MakerFilteringMatrixEvents()
@@ -89,7 +94,7 @@ class FilteringCulturalCenters(Filtering):
                    name_model=FILTERING_MODEL_CULTURAL_CENTERS, path_model=PATH_MODELS, k=5):
         model = cls.load(name_model, path_model)
         df = pd.read_csv(path_data + name_data + '.csv')
-        return cls(df, model, k=k)
+        return cls(df, model, LastObject=LastCenter, name_object='id_center', k=k)
 
     def update(self):
         maker_filter_matrix = MakerFilteringMatrixCulturalCenters()
