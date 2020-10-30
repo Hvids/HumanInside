@@ -12,3 +12,8 @@
     font-family: "Roboto Medium";
     src: url("../fonts/Roboto-Medium.ttf");
 }
+
+@font-face {
+    font-family: "Exo 2 SemiBold";
+    src: url("../fonts/exo2semibold.ttf");
+}

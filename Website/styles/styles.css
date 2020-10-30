@@ -6,7 +6,7 @@
 }
 
 .container__outer {
-    margin: 3% 7%;
+    margin: 2% 7%;
 }
 
 .header {
@@ -22,11 +22,9 @@
     align-items: center;
 }
 
-
 .title__link {
     display: inline-block;
     vertical-align: top;
-    margin: 0 15px;
     position: relative;
 
     font-family: "Roboto Bold", serif;
@@ -39,7 +37,6 @@
 .login__box {
     display: inline-block;
     vertical-align: top;
-    margin: 0 15px;
 
     font-family: "Roboto Medium", serif;
     color: black;
@@ -94,16 +91,80 @@
     opacity: 1;
 }
 
-.main_image_content {
-    margin-top: var(--imageblocks-margin);
-    max-width: 100%;
-}
 
-.main_image_content > img {
+
+.main_image_content {
     display: block;
     margin-left: auto;
     margin-right: auto;
+    margin-top: var(--imageblocks-margin);
+
     width: 100%;
     height: auto;
+
     border-radius: 20px;
+}
+
+.main_image {
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+.bg__main {
+    position: relative;
+
+    z-index: 0;
+
+    top: 0;
+    left: 0;
+
+    opacity: 0.89;
+}
+
+.boy__main {
+    position: absolute;
+
+    z-index: 1;
+
+    width: auto;
+    height: 95%;
+
+    right: 5%;
+    bottom: 0;
+}
+
+.girl__main {
+    position: absolute;
+
+    z-index: 1;
+
+    width: auto;
+    height: 90%;
+
+    left: 5%;
+    bottom: 0;
+}
+
+.line__main {
+    position: absolute;
+
+    z-index: 1;
+
+    width: 65%;
+
+    left: 18%;
+    bottom: 7%;
+}
+
+
+.main_image_main_text {
+    position: absolute;
+
+
+
+    font-family: "Exo 2 SemiBold", serif;
+    font-size: 53px;
+    color: white;
+
 }
