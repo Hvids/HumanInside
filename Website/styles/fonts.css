@@ -17,3 +17,8 @@
     font-family: "Exo 2 SemiBold";
     src: url("../fonts/exo2semibold.ttf");
 }
+
+@font-face {
+    font-family: "Neucha";
+    src: url("../fonts/Neucha-Regular.ttf")
+}

@@ -95,8 +95,6 @@
 
 .main_image_content {
     display: block;
-    margin-left: auto;
-    margin-right: auto;
     margin-top: var(--imageblocks-margin);
 
     width: 100%;
@@ -107,8 +105,6 @@
 
 .main_image {
     position: relative;
-    top: 0;
-    left: 0;
 }
 
 .bg__main {
@@ -157,14 +153,32 @@
     bottom: 7%;
 }
 
-
-.main_image_main_text {
+.main_image__main__text {
     position: absolute;
 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
+    max-width: 100%;
+
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, 0);
+
+    z-index: 2;
 
     font-family: "Exo 2 SemiBold", serif;
-    font-size: 53px;
+    font-size: 40px;
     color: white;
+}
 
+.main__text__help {
+    white-space: pre;
+    padding-bottom: 6px;
+}
+
+.main__text__help_u {
+    border-bottom: 3px solid white;
+    padding-bottom: 3px;
 }
