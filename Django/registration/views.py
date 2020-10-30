@@ -59,3 +59,25 @@ def login(request):
 
 def logout(request):
     pass
+
+
+def profile(request, id_user):
+    to_read = LastBook.objects.filter(id_user=id_user, status=False).values_list('id_book')
+    to_read = [i[0] for i in to_read]
+    to_read = Book.objects.filter(id__in=to_read)
+    last_read = len(LastBook.objects.filter(id_user=id_user, status=True))
+
+    to_event = LastEvent.objects.filter(id_user=id_user, status=False).values_list('id_event')
+    to_event = [i[0] for i in to_event]
+    to_event = Event.objects.filter(id__in=to_event)
+    last_event = len(LastEvent.objects.filter(id_user=id_user, status=True))
+
+    to_center = LastCenter.objects.filter(id_user=id_user, status=False).values_list('id_center')
+    to_center = [i[0] for i in to_center]
+    to_center = CultureCenter.objects.filter(id__in=to_center)
+    last_center = len(LastCenter.objects.filter(id_user=id_user, status=True))
+
+    return render(request, 'registration/profile.html', {'book': to_read, 'last_read': last_read,
+                                                         'event': to_event, 'last_event': last_event,
+                                                         'center': to_center, 'last_center': last_center,
+                                                         'user': id_user})
