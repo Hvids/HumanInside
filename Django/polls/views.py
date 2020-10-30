@@ -54,6 +54,7 @@ def book_searcher(request, id_user):
     genres = Genre.objects.all()
 
     if request.method == 'POST':
+
         post = request.POST
         type_ = post['type']
         if type_ == 'book':
@@ -61,7 +62,8 @@ def book_searcher(request, id_user):
         else:
             rec_model = RequestModelBooks.load()
 
-            content = request.POST['content'][0]
+            content = request.POST['content']
+            print(content)
             rec_list = rec_model.recommend(id_user, content)
             books = Book.objects.filter(id__in=rec_list)
 
