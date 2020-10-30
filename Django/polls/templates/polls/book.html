@@ -5,10 +5,16 @@
     <title>Book page</title>
 </head>
 <header>
-    <a href="{% url 'enter_page' %}"><h1>Главная</h1></a>
+
     {% if user != 0 %}
+        <a href="{% url 'recAll' id_user=user %}"><h1>Главная</h1></a>
         <a href="{% url 'book_searcher' id_user=user %}"><h1>Книги</h1></a>
+        <a href="{% url 'event_searcher' id_user=user %}"><h1>События</h1></a>
+        <a href="{% url 'cultural_center_searcher' id_user=user %}"><h1>Места</h1></a>
+    {% else %}
+        <a href="{% url 'enter_page' %}"><h1>Главная</h1></a>
     {% endif %}
+
 </header><body>
 <div>
     <p><b>Название:</b> {{ book.title }}</p>

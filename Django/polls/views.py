@@ -151,3 +151,37 @@ def event_searcher(request, id_user):
                       'recommend_events': recommend_events,
                       "finder_events": finder_events
                   })
+
+
+def cultural_center_searcher(request, id_user):
+    undergrounds = CultureCenter.objects.all().values_list('underground')
+    undergrounds = list(np.unique([u[0] for u in undergrounds]))
+    cc = ContentBaseCulturalCenters.load()
+
+    recommend_cultural_centers = cc.recommend(id_user)
+    recommend_cultural_centers = CultureCenter.objects.filter(id__in=recommend_cultural_centers)
+    finder_cultural_centers = []
+    if request.method == 'POST':
+        post = request.POST
+        type = post['type']
+        if type == 'search_rec':
+            rc = RequestModelCulturalCenters.load()
+            finder_cultural_centers = rc.recommend(id_user, post['content'])
+            finder_cultural_centers = CultureCenter.objects.filter(id__in=finder_cultural_centers)
+        elif type == 'cultural_center':
+            add_last_cultural_center(id_user, post['id_cultural_center'])
+        elif type == 'delete_cultural_center':
+            add_last_cultural_center(id_user, post['id_cultural_center'], status=True, score=1)
+        elif type == 'filter_search':
+            filter_dict = {}
+            if not post['underground'] == 'default':
+                filter_dict['underground'] = post['underground']
+                finder_cultural_centers = CultureCenter.objects.filter(**filter_dict)
+
+    return render(request, 'polls/cultural_center_search.html',
+                  {
+                      'ID_user': id_user,
+                      'undergrounds': undergrounds,
+                      'recommend_cultural_centers': recommend_cultural_centers,
+                      "finder_cultural_centers": finder_cultural_centers
+                  })
