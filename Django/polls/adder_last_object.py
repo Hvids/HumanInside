@@ -12,27 +12,27 @@ def add_last_object(post, id_user):
         add_last_cultural_center(id_user, post['id_cultural_center'])
 
 
-def add_last_book(id_user, id_book):
+def add_last_book(id_user, id_book, status=False,score=5):
     book = Book.objects.get(id=id_book)
     user = User.objects.get(id=id_user)
-    LastBook.objects.create(id_user=user, id_book=book, status=False, score=5)
+    LastBook.objects.create(id_user=user, id_book=book, status=status, score=score)
     filter_ = FilteringBooks.load_model()
     filter_.update()
 
 
-def add_last_event(id_user, id_event):
+def add_last_event(id_user, id_event, status=False,score=5):
     event = Event.objects.get(id=id_event)
     user = User.objects.get(id=id_user)
-    LastEvent.objects.create(id_user=user, id_event=event, status=False, score=5)
+    LastEvent.objects.create(id_user=user, id_event=event, status=status, score=score)
     filter_ = FilteringEvents.load_model()
 
     filter_.update()
 
 
-def add_last_cultural_center(id_user, id_cultural_center):
+def add_last_cultural_center(id_user, id_cultural_center, status=False,score=5):
     cultural_center = CultureCenter.objects.get(id=id_cultural_center)
     user = User.objects.get(id=id_user)
-    LastCenter.objects.create(id_user=user, id_center=cultural_center, status=False, score=5)
+    LastCenter.objects.create(id_user=user, id_center=cultural_center, status=status, score=score)
     filter_ = FilteringCulturalCenters.load_model()
     filter_.update()
-    finder = FindAll()
+

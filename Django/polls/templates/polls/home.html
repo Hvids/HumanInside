@@ -6,6 +6,7 @@
 <header>
     <a href="{% url 'enter_page' %}"><h1>Главная</h1></a>
     <a href="{% url 'book_searcher' id_user=ID_user %}"><h1>Книги</h1></a>
+    <a href="{% url 'event_searcher' id_user=ID_user %}"><h1>События</h1></a>
 </header>
 <body>
 <div>
@@ -20,6 +21,14 @@
         <input type="hidden" name="id_book" value="{{ parametr.id }}">
         <input type="submit" value="Хочу прочитать">
     </form>
+    <form action="{% url 'recAll' id_user=ID_user %}" method="post">
+
+        {% csrf_token %}
+        <input type="hidden" name="type" value="delete_book">
+        <input type="hidden" name="id_book" value="{{ parametr.id }}">
+        <input type="submit" value="Удалить из списка">
+    </form>
+
 
     <br>
     {% endfor %}
@@ -31,8 +40,14 @@
     <form action="{% url 'recAll' id_user=ID_user %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="type" value="event">
-         <input type="hidden" name="id_event" value="{{ parametr.id }}">
+        <input type="hidden" name="id_event" value="{{ parametr.id }}">
         <input type="submit" value="Хочу посетить">
+    </form>
+    <form action="{% url 'recAll' id_user=ID_user %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="type" value="delete_event">
+        <input type="hidden" name="id_event" value="{{ parametr.id }}">
+        <input type="submit" value="Удалить из списка">
     </form>
     <br>
     {% endfor %}
@@ -45,6 +60,12 @@
         <input type="hidden" name="type" value="cultural_center">
         <input type="hidden" name="id_cultural_center" value="{{ parametr.id }}">
         <input type="submit" value="Хочу посетить">
+    </form>
+    <form action="{% url 'recAll' id_user=ID_user %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="type" value="delete_cultural_center">
+        <input type="hidden" name="id_cultural_center" value="{{ parametr.id }}">
+        <input type="submit" value="Удалить из списка">
     </form>
     <br>
     {% endfor %}
