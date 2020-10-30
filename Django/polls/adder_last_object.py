@@ -16,23 +16,23 @@ def add_last_book(id_user, id_book):
     book = Book.objects.get(id=id_book)
     user = User.objects.get(id=id_user)
     LastBook.objects.create(id_user=user, id_book=book, status=False, score=5)
-    filter = FilteringBooks.load_model()
-    filter.update()
+    filter_ = FilteringBooks.load_model()
+    filter_.update()
 
 
 def add_last_event(id_user, id_event):
     event = Event.objects.get(id=id_event)
     user = User.objects.get(id=id_user)
     LastEvent.objects.create(id_user=user, id_event=event, status=False, score=5)
-    filter = FilteringEvents.load_model()
+    filter_ = FilteringEvents.load_model()
 
-    filter.update()
+    filter_.update()
 
 
 def add_last_cultural_center(id_user, id_cultural_center):
     cultural_center = CultureCenter.objects.get(id=id_cultural_center)
     user = User.objects.get(id=id_user)
     LastCenter.objects.create(id_user=user, id_center=cultural_center, status=False, score=5)
-    filter = FilteringCulturalCenters.load_model()
-    filter.update()
+    filter_ = FilteringCulturalCenters.load_model()
+    filter_.update()
     finder = FindAll()

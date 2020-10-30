@@ -29,6 +29,8 @@ ALLOWED_HOSTS = ['127.0.0.1', '.HumanInside.com']
 
 # Application definition
 
+CRISPY_TEMPLATE_PACK = "bootstrap4"
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'polls',
     'recommendation_system',
-    'registration'
+    'registration',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -117,7 +120,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-LOGIN_URL = 'login'
-LOGOUT_URL = 'logout'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = "/HumanInside"
+LOGOUT_REDIRECT_URL = "/HumanInside"

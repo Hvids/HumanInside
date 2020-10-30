@@ -1,26 +1,28 @@
-{% extends 'registration/base.html' %}
-
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<header>
+    <a href="{% url 'enter_page' %}"><h1>Главная</h1></a>
+</header>
+<body>
 {% block content %}
-  <h2>Log in to My Site</h2>
-  {% if form.errors %}
-    <p style="color: red">Your username and password didn't match. Please try again.</p>
-  {% endif %}
-  <form method="post">
-    {% csrf_token %}
-    <input type="hidden" name="next" value="{{ next }}" />
-    {% for field in form %}
-      <p>
-        {{ field.label_tag }}<br>
-        {{ field }}<br>
-        {% for error in field.errors %}
-          <p style="color: red">{{ error }}</p>
-        {% endfor %}
-        {% if field.help_text %}
-          <p><small style="color: grey">{{ field.help_text }}</small></p>
-        {% endif %}
-      </p>
-    {% endfor %}
-    <button type="submit">Log in</button>
-    <a href="{% url 'signup' %}">New to My Site? Sign up</a>
-  </form>
+    {% if error != None %}
+        <p> {{ error }} </p>
+    {% endif %}
+    <form method="POST" class="form-group">
+        {% csrf_token %}
+        <label for="username"><b>Username:</b></label><br>
+        <input type="text" id="username" name="username" maxlength="255" required><br>
+
+        <label for="password"><b>Password:</b></label><br>
+        <input type="password" id="password" name="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z).{6,}"><br>
+
+        <input type="hidden" name="type" value="login">
+        <button type="submit" class="btn btn-success">Enter</button>
+    </form>
 {% endblock %}
+</body>
+</html>

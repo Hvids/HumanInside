@@ -5,6 +5,8 @@ from recommendation_system.RequestModels import *
 import numpy as np
 from .finder import *
 from .adder_last_object import *
+from .forms import *
+from .Searcher import *
 
 
 def index(request):
@@ -44,11 +46,6 @@ def event_detail(request, id_user, id_event):
     return render(request, 'polls/event.html', {'event': event, 'user': id_user})
 
 
-from .forms import *
-
-from .Searcher import *
-
-
 def book_searcher(request, id_user):
     books = []
     authors = Book.objects.all().values_list('author')
@@ -58,8 +55,8 @@ def book_searcher(request, id_user):
 
     if request.method == 'POST':
         post = request.POST
-        type = post['type']
-        if type == 'book':
+        type_ = post['type']
+        if type_ == 'book':
             add_last_book(id_user, post['id_book'])
         else:
             rec_model = RequestModelBooks.load()
@@ -83,10 +80,10 @@ def book_searcher(request, id_user):
                 filter_dict['id__in'] = book_id
 
             if 'sort_parametr' in get.keys():
-                sort_paramer = get['sort_parametr']
-                if sort_paramer == 'alphavit':
-                    books = search_book(id_user, filter_dict, oreder_title=True)
+                sort_parametr = get['sort_parametr']
+                if sort_parametr == 'alphavit':
+                    books = search_book(id_user, filter_dict, order_title=True)
             else:
-                books = search_book(id_user, filter_dict, oreder_title=False)
+                books = search_book(id_user, filter_dict, order_title=False)
     return render(request, 'polls/book_search.html',
                   {'ID_user': id_user, 'authors': authors, 'genres': genres, 'books': books})

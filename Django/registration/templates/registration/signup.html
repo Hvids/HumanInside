@@ -1,21 +1,71 @@
-{% extends 'registration/base.html' %}
+<script type="text/javascript">
+
+    function checkPassword(str) {
+        var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+        return re.test(str);
+    }
+
+    function checkForm(form) {
+        if (form.password1.value !== "" && form.password1.value === form.password2.value) {
+            if (!checkPassword(form.password1.value)) {
+                alert("The password you have entered is not valid!");
+                form.password1.focus();
+                return false;
+            }
+        } else {
+            alert("Error: Please check that you've entered and confirmed your password!");
+            form.password2.focus();
+            return false;
+        }
+        return true;
+    }
+</script>
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+</head>
+<body>
+{% block title %}Create an Account{% endblock %}
 
 {% block content %}
-  <h2>Sign up</h2>
-  <form method="post">
-    {% csrf_token %}
-    {% for field in form %}
-      <p>
-        {{ field.label_tag }}<br>
-        {{ field }}
-        {% if field.help_text %}
-          <small style="color: grey">{{ field.help_text }}</small>
+    <form method="POST" class="form-group" onsubmit="return checkForm(this);">
+        {% csrf_token %}
+        {% if error != None %}
+            <p>{{ error }}</p>
         {% endif %}
-        {% for error in field.errors %}
-          <p style="color: red">{{ error }}</p>
-        {% endfor %}
-      </p>
-    {% endfor %}
-    <button type="submit">Sign up</button>
-  </form>
+        <label for="username"><b>*Username:</b></label><br>
+        <input type="text" id="username" name="username" maxlength="255" required><br>
+
+        <label for="first_name"><b>*First name:</b></label><br>
+        <input type="text" id="first_name" name="first_name" maxlength="255" required><br>
+
+        <label for="last_name"><b>Last name:</b></label><br>
+        <input type="text" id="last_name" name="last_name" maxlength="255"><br>
+
+        <label for="age"><b>Age:</b></label><br>
+        <input type="number" id="age" name="age" min="5" max="100"><br>
+
+        <p>(Accepted: Заглавные латинские буквы: от A до Z (26
+            символов) <br>
+            Строчные латинские буквы: от a до z (26 символов) <br>
+            Цифры от 0 до 9 (10 символов) <br>
+            Символы: (пробел) ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _` { | } ~ (33
+            символа))</p>
+
+
+        <label for="password1"><b>*Password:</b></label><br>
+        <input type="password" id="password1" name="password1" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z).{6,}"
+               onchange="form.password2.pattern = RegExp.escape(this.value);"><br>
+
+        <label for="password2"><b>*Repeat password:</b></label><br>
+        <input type="password" id="password2" name="password2" required> <br>
+
+        <p><b>"*" - required</b></p>
+        <button type="submit" class="btn btn-success">Register</button>
+    </form>
 {% endblock %}
+</body>
+</html>
