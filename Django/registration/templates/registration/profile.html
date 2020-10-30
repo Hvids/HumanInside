@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<header>
+    <a href="{% url 'recAll' id_user=user %}"><h1>Главная</h1></a>
+    <a href="{% url 'book_searcher' id_user=user %}"><h1>Книги</h1></a>
+</header>
+<body>
+<p>Прочитал книг:</p> {{ last_read }}
+<p>Посетил событий:</p> {{ last_event }}
+<p>Посетил мест:</p> {{ last_center }}
+
+<p><h3>Мои книги</h3></p>
+    {% for each in book %}
+        {{ each.title }}
+        <br>
+    {% endfor %}
+
+<p><h3>Мои события</h3></p>
+    {% for each in event %}
+        {{ each.title }}
+        <br>
+    {% endfor %}
+
+<p><h3>Мои места</h3></p>
+    {% for each in center %}
+        {{ each.title }}
+        <br>
+    {% endfor %}
+</body>
+</html>
