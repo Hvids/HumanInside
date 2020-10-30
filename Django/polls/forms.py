@@ -2,7 +2,5 @@ from django import forms
 
 from .models import Book
 
-class PostLastBook(forms.ModelForm):
-    class Meta:
-        model= Book
-        fields = ('title',)
+class PostSerachBooks(forms.Form):
+    content = forms.CharField(label='content',max_length=255)

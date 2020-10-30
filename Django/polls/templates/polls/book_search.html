@@ -5,8 +5,8 @@
     <title>Books</title>
 </head>
 <header>
-    <a href="{% url 'recAll' id_user=user %}"><h1>Главная</h1></a>
-    <a href="{% url 'book_searcher' id_user=user %}"><h1>Книги</h1></a>
+    <a href="{% url 'recAll' id_user=ID_user %}"><h1>Главная</h1></a>
+    <a href="{% url 'book_searcher' id_user=ID_user %}"><h1>Книги</h1></a>
 </header>
 <body>
 <div>
@@ -15,34 +15,45 @@
     </header>
     <p>
     <h3>Я знаю что ищу</h3></p>
-    <form action="/src/" method="post">
+    <form action="{% url 'book_searcher' id_user=ID_user %}" method="POST">
         <label for="src"> Название, описание, автор... </label>
-        <input id="src" type="text" name="src" value="{{ src }}">
-        <input type="submit" value="OK">
+        {% csrf_token %}
+        <input id="content" type="text" name="content" maxlength="255" required>
+        {{ from }}
+
+        <input type="submit" value="Найти">
     </form>
+    <form action="{% url 'book_searcher' id_user=ID_user %}" method="GET">
+        {% csrf_token %}
+        <p>Выбрать фильтр</p>
+        <select name="author" required>
+            <option>Автор</option>
+            {% for author in authors %}
+            <option value="{{ author }}">{{ author }} </option>
+            {%endfor%}
+        </select>
+        <select name="genre" required>
+            <option >Жанр</option>
+            {% for genre in genres %}
+
+            <option value="{{ genre.id }}">{{ genre.name }} </option>
+            {%endfor%}
+        </select>
+        <p>Сортировать</p>
+       <input type="radio" id="sort_parametr"
+            name="sort_parametr" value="alphavit">
+        <label for="sort_parametr">По алфавиту</label>
+        <input type="submit" value="Поиск">
+    </form>
+    {% for book in books %}
+    <a href="{% url 'book_detail' id_book=book.id id_user=ID_user %}">{{ book.title }}</a>
+
+    <form action="{% url 'add_last_book' id_user=ID_user id_book=book.id %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Хочу прочитать">
+    </form>
+    {% endfor %}
 </div>
-<div>
-    <header>
-        <h1>Подбор книги</h1>
-    </header>
-    <p>
-    <h3>Подобрать книгу</h3></p>
-        <h2>Фильтр</h2>
-    <form action="/src/" method="post">
-        <label for="src"> Жанр </label>
-        <input id="src" type="text" name="src" value="{{ src }}">
-        <input type="submit" value="OK">
-    </form>
-    <form action="/src/" method="post">
-        <label for="src"> Автор </label>
-        <input id="src" type="text" name="src" value="{{ src }}">
-        <input type="submit" value="OK">
-    </form>
-    <form action="/src/" method="post">
-        <label for="src"> Год </label>
-        <input id="src" type="text" name="src" value="{{ src }}">
-        <input type="submit" value="OK">
-    </form>
-</div>
+
 </body>
 </html>

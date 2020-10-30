@@ -11,6 +11,7 @@ urlpatterns = [
     path('home/user/<int:id_user>/event/<int:id_event>/', views.event_detail, name='event_detail'),
     path('home/user/<int:id_user>/center/<int:id_center>/', views.cultural_center_detail,
          name='cultural_center_detail'),
+    #  поиск
     path('search/user/<int:id_user>/books/', views.book_searcher, name='book_searcher'),
 
     # Добавка post Запросом и возврат на главную
