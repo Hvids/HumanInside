@@ -13,8 +13,11 @@
     {% for parametr in Books %}
     <a href="{% url 'book_detail' id_book=parametr.id id_user=ID_user %}">{{ parametr.title }}</a>
 
-    <form action="{% url 'add_last_book' id_user=ID_user id_book=parametr.id %}" method="post">
+    <form action="{% url 'recAll' id_user=ID_user %}" method="post">
+
         {% csrf_token %}
+        <input type="hidden" name="type" value="book">
+        <input type="hidden" name="id_book" value="{{ parametr.id }}">
         <input type="submit" value="Хочу прочитать">
     </form>
 
@@ -25,8 +28,10 @@
     {% for parametr in Events %}
 
     <a href="{% url 'event_detail' id_event=parametr.id id_user=ID_user %}">{{ parametr.title }}</a>
-    <form action="{% url 'add_last_event' id_user=ID_user id_event=parametr.id %}" method="post">
+    <form action="{% url 'recAll' id_user=ID_user %}" method="post">
         {% csrf_token %}
+        <input type="hidden" name="type" value="event">
+         <input type="hidden" name="id_event" value="{{ parametr.id }}">
         <input type="submit" value="Хочу посетить">
     </form>
     <br>
@@ -35,8 +40,10 @@
     <p><b>Места которые вам могут понравиться:</b></p>
     {% for parametr in Centers %}
     <a href="{% url 'cultural_center_detail' id_center=parametr.id id_user=ID_user %}">{{ parametr.title }}</a>
-    <form action="{% url 'add_last_cultural_center' id_user=ID_user id_cultural_center=parametr.id %}" method="post">
+    <form action="{% url 'recAll' id_user=ID_user %}" method="post">
         {% csrf_token %}
+        <input type="hidden" name="type" value="cultural_center">
+        <input type="hidden" name="id_cultural_center" value="{{ parametr.id }}">
         <input type="submit" value="Хочу посетить">
     </form>
     <br>

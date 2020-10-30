@@ -18,6 +18,7 @@
     <form action="{% url 'book_searcher' id_user=ID_user %}" method="POST">
         <label for="src"> Название, описание, автор... </label>
         {% csrf_token %}
+        <input type="hidden" name="type" value="search_rec">
         <input id="content" type="text" name="content" maxlength="255" required>
         {{ from }}
 
@@ -29,27 +30,30 @@
         <select name="author" required>
             <option>Автор</option>
             {% for author in authors %}
-            <option value="{{ author }}">{{ author }} </option>
+            <option value="{{ author }}">{{ author }}</option>
             {%endfor%}
         </select>
         <select name="genre" required>
-            <option >Жанр</option>
+            <option>Жанр</option>
             {% for genre in genres %}
 
-            <option value="{{ genre.id }}">{{ genre.name }} </option>
+            <option value="{{ genre.id }}">{{ genre.name }}</option>
             {%endfor%}
         </select>
         <p>Сортировать</p>
-       <input type="radio" id="sort_parametr"
-            name="sort_parametr" value="alphavit">
+        <input type="radio" id="sort_parametr"
+               name="sort_parametr" value="alphavit">
         <label for="sort_parametr">По алфавиту</label>
         <input type="submit" value="Поиск">
     </form>
     {% for book in books %}
     <a href="{% url 'book_detail' id_book=book.id id_user=ID_user %}">{{ book.title }}</a>
 
-    <form action="{% url 'add_last_book' id_user=ID_user id_book=book.id %}" method="post">
+    <form action="{% url 'book_searcher' id_user=ID_user %}" method="post">
+
         {% csrf_token %}
+        <input type="hidden" name="type" value="book">
+        <input type="hidden" name="id_book" value="{{ book.id }}">
         <input type="submit" value="Хочу прочитать">
     </form>
     {% endfor %}
