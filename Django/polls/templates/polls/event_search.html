@@ -23,6 +23,16 @@
 </div>
 
 <div>
+    <h3>Поиск по названию</h3>
+    <form action="{% url 'event_searcher' id_user=ID_user %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="type" value="search_title">
+        <input type="text" name="pattern" maxlength="255" required>
+        <input type="submit" value="Найти">
+    </form>
+</div>
+
+<div>
     {% for event in recommend_events %}
         <a href="{% url 'event_detail' id_event=event.id id_user=ID_user %}">{{ event.title }}</a>
 

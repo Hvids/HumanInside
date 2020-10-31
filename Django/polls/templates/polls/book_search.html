@@ -19,11 +19,19 @@
     <p>
     <h3>Я знаю что ищу</h3></p>
     <form action="{% url 'book_searcher' id_user=ID_user %}" method="POST">
-        <label for="src"> Название, описание, автор... </label>
+        <label for="src"> Найти книгу по описанию </label>
         {% csrf_token %}
         <input type="hidden" name="type" value="search_rec">
-        <input id="content" type="text" name="content" maxlength="255" required>
-        {{ from }}
+        <input type="text" name="content" maxlength="255" required>
+
+        <input type="submit" value="Найти">
+    </form>
+
+    <form action="{% url 'book_searcher' id_user=ID_user %}" method="POST">
+        <label for="src"> Найти книгу по названию </label>
+        {% csrf_token %}
+        <input type="hidden" name="type" value="search_title">
+        <input type="text" name="pattern" maxlength="255" required>
 
         <input type="submit" value="Найти">
     </form>
