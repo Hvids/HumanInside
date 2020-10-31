@@ -7,7 +7,7 @@ from polls.models import *
 
 
 class Filtering:
-    def __init__(self, df,  model,LastObject, name_object, k=10):
+    def __init__(self, df, model, LastObject, name_object, k=10):
         self.LastObject = LastObject
         self.name_object = name_object
         self.model = model
@@ -86,18 +86,30 @@ class FilteringEvents(Filtering):
         super(FilteringEvents, self).update(maker_filter_matrix, maker_filter_model)
         return FilteringBooks.load_model()
 
+    def recommend(self, id_user):
+        index_user = self.user_index_dict[id_user]
+        scores = pd.Series(self.model.predict(index_user, np.arange(len(self.index_item_dict.keys()))))
+        scores_ids = list(pd.Series(scores.sort_values(ascending=False).index))
+        know_ids = self.get_know_ids(id_user)
 
-class FilteringCulturalCenters(Filtering):
+        recommendation_ids = [self.index_item_dict[rec] for rec in scores_ids]
+        # print(know_ids)git
+        recommendation_ids = self.get_reccomend(know_ids, recommendation_ids)
+        # print(recommendation_ids)
+        return recommendation_ids[:self.k]
+
+
+class FilteringSections(Filtering):
 
     @classmethod
-    def load_model(cls, name_data=FILTER_MATRIX_USERS_CULTURAL_CENTERS, path_data=PATH_DATA_CSV,
-                   name_model=FILTERING_MODEL_CULTURAL_CENTERS, path_model=PATH_MODELS, k=5):
+    def load_model(cls, name_data=FILTER_MATRIX_USERS_SECTIONS, path_data=PATH_DATA_CSV,
+                   name_model=FILTERING_MODEL_SECTIONS, path_model=PATH_MODELS, k=5):
         model = cls.load(name_model, path_model)
         df = pd.read_csv(path_data + name_data + '.csv')
-        return cls(df, model, LastObject=LastCenter, name_object='id_center', k=k)
+        return cls(df, model, LastObject=LastSection, name_object='id_center', k=k)
 
     def update(self):
-        maker_filter_matrix = MakerFilteringMatrixCulturalCenters()
-        maker_filter_model = MakerFilteringModelCulturalCenters()
-        super(FilteringCulturalCenters, self).update(maker_filter_matrix, maker_filter_model)
+        maker_filter_matrix = MakerFilteringMatrixSections()
+        maker_filter_model = MakerFilteringModelSections()
+        super(FilteringSections, self).update(maker_filter_matrix, maker_filter_model)
         return FilteringBooks.load_model()

@@ -75,25 +75,7 @@ class RequestModelEvents(RequestModelBase):
 
     def update(self, k=5, maker=MakerMatrixPreprocessingEvents):
         self.update_with_maker(maker)
-        return RequestModelBooks.load(k=k)
+        return RequestModelEvents.load(k=k)
 
-
-class RequestModelCulturalCenters(RequestModelBase):
-    @classmethod
-    def load(
-            cls,
-            SelectObject=LastCenter,
-            id_name='id_center',
-            MakreMatrixClass=MakerMatrixCulturalCenters,
-            name=PREPROCESSING_CONTENT_CULTURAL_CENTERS,
-            path=PATH_DATA_CSV,
-            k=5
-    ):
-        df = cls.load_df(path, name)
-        return cls(SelectObject=SelectObject, id_name=id_name, MakerMatrixClass=MakreMatrixClass, df=df, k=k)
-
-    def update(self, k=5, maker=MakerMatrixPreprocessingCulturalCenters):
-        self.update_with_maker(maker)
-        return RequestModelBooks.load(k=k)
 
 # from recommendation_system.RequestModels import  RequestModelBooks; r = RequestModelBooks.load(); пг

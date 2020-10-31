@@ -1,11 +1,7 @@
 from django.core.management.base import BaseCommand
 from polls.models import *
 
-from recommendation_system.Maker import MakerFilteringMatrixBooks, MakerFilteringMatrixEvents, \
-    MakerFilteringMatrixCulturalCenters, MakerMatrixPreprocessingBooks, MakerMatrixPreprocessingEvents, \
-    MakerMatrixPreprocessingCulturalCenters, MakerMatrixPreprocessingLibraries, MakerSimilarJSONBooks, \
-    MakerSimilarJSONEvents, MakerSimilarJSONCulturalCenters, MakerFilteringModelBooks, MakerFilteringModelEvents, \
-    MakerFilteringModelCulturalCenters
+from recommendation_system.Maker import *
 
 
 class Command(BaseCommand):
@@ -65,7 +61,7 @@ class Command(BaseCommand):
 
     def make_filtering_matrix(self):
         print('Make Filtering Matrix')
-        MakerObjects = [MakerFilteringMatrixBooks, MakerFilteringMatrixEvents, MakerFilteringMatrixCulturalCenters]
+        MakerObjects = [MakerFilteringMatrixBooks, MakerFilteringMatrixEvents, MakerFilteringMatrixSections]
         for MakerObject in MakerObjects:
             maker = MakerObject()
             maker.make()
@@ -73,21 +69,21 @@ class Command(BaseCommand):
     def make_preprocessing_matirx(self, fit=False):
         print('Make Preprocessing Matrix')
         MakerObjects = [MakerMatrixPreprocessingBooks, MakerMatrixPreprocessingEvents,
-                        MakerMatrixPreprocessingCulturalCenters, MakerMatrixPreprocessingLibraries]
+                        MakerMatrixPreprocessingSections]
         for MakerObject in MakerObjects:
             maker = MakerObject()
             maker.make(fit=fit)
 
     def make_similar_json(self):
         print('Make Similar JSON')
-        MakerObjects = [MakerSimilarJSONBooks, MakerSimilarJSONEvents, MakerSimilarJSONCulturalCenters]
+        MakerObjects = [MakerSimilarJSONBooks, MakerSimilarJSONEvents, MakerFilteringModelSections]
         for MakerObject in MakerObjects:
             maker = MakerObject()
             maker.make()
 
     def make_filtering_models(self):
         print('Make Filtering Models')
-        MakerObjects = [MakerFilteringModelBooks, MakerFilteringModelEvents, MakerFilteringModelCulturalCenters]
+        MakerObjects = [MakerFilteringModelBooks, MakerFilteringModelEvents, MakerFilteringModelSections]
         for MakerObject in MakerObjects:
             maker = MakerObject()
             maker.make()

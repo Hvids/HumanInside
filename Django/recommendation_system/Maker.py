@@ -83,17 +83,16 @@ class MakerFilteringMatrixEvents(MakerFilteringMatrixBase):
                                                          name_matrix)
 
 
-class MakerFilteringMatrixCulturalCenters(MakerFilteringMatrixBase):
+class MakerFilteringMatrixSections(MakerFilteringMatrixBase):
     def __init__(
             self,
             ObjectWhoSelect=User,
-            ObjectWhatSelect=CultureCenter,
-            WhoWhatObjectSelect=LastCenter,
-            name_matrix=FILTER_MATRIX_USERS_CULTURAL_CENTERS
+            ObjectWhatSelect=Section,
+            WhoWhatObjectSelect=LastSection,
+            name_matrix=FILTER_MATRIX_USERS_SECTIONS
     ):
-        super(MakerFilteringMatrixCulturalCenters, self).__init__(ObjectWhoSelect, ObjectWhatSelect,
-                                                                  WhoWhatObjectSelect,
-                                                                  name_matrix)
+        super(MakerFilteringMatrixSections, self).__init__(ObjectWhoSelect, ObjectWhatSelect, WhoWhatObjectSelect,
+                                                           name_matrix)
 
 
 class MakerMatrixForPreprocessing:
@@ -186,7 +185,8 @@ class MakerMatrixEvents(MakerMatrixBase):
     def __init__(
             self,
             name_matrix=EVENTS,
-            columns_dummies=['town', 'age_rate'],
+            columns_dummies=['status', 'type_center', 'price', 'type_event', 'folow_event', 'holiday', 'is_online',
+                             'is_acess_ovz', 'age_rate'],
             columns_select=['id'],
             name_lda=EVENTS_LDA,
             name_count_vectorizer=EVENTS_COUNT_VECTORIZER,
@@ -195,17 +195,24 @@ class MakerMatrixEvents(MakerMatrixBase):
                                                 name_count_vectorizer)
 
 
-class MakerMatrixCulturalCenters(MakerMatrixBase):
+class MakerMatrixSections(MakerMatrixBase):
     def __init__(
             self,
-            name_matrix=CULTURAL_CENTERS,
-            columns_dummies=['underground'],
-            columns_select=['id', 'latitude', 'longitude'],
-            name_lda=CULTURAL_CENTERS_LDA,
-            name_count_vectorizer=CULTURAL_CENTERS_COUNT_VECTORIZER,
+            name_matrix=SECTIONS,
+            columns_dummies=['type_pice', 'type_shedule', 'time_learn', 'one_duration'],
+            columns_select=['id'],
+            name_lda=SECTIONS_LDA,
+            name_count_vectorizer=SECTIONS_COUNT_VECTORIZER,
     ):
-        super(MakerMatrixCulturalCenters, self).__init__(name_matrix, columns_dummies, columns_select, name_lda,
-                                                         name_count_vectorizer)
+        super(MakerMatrixSections, self).__init__(name_matrix, columns_dummies, columns_select, name_lda,
+                                                  name_count_vectorizer)
+
+    def make(self, df, fit=True):
+        df_dummies = self.make_dummies(df)
+        df_select = self.make_select(df)
+        df_concat = pd.concat([df_select, df_dummies], axis=1)
+
+        return df_concat
 
 
 class MakerMatrixLibraries(MakerMatrixBase):
@@ -263,25 +270,13 @@ class MakerMatrixPreprocessingEvents(MakerPreprocessingMatrixBase):
             self,
             Object=Event,
             MakerClass=MakerMatrixEvents,
-            select_columns=['id', 'town', 'price', 'age_rate', 'content'],
+            select_columns=['id', 'status', 'type_center', 'price', 'type_event', 'folow_event', 'holiday', 'is_online',
+                            'is_acess_ovz', 'age_rate', 'content'],
             name_matrix=PREPROCESSING_EVENTS,
             name_content=PREPROCESSING_CONTENT_EVENTS,
     ):
         super(MakerMatrixPreprocessingEvents, self).__init__(Object, MakerClass, select_columns, name_matrix,
                                                              name_content)
-
-
-class MakerMatrixPreprocessingCulturalCenters(MakerPreprocessingMatrixBase):
-    def __init__(
-            self,
-            Object=CultureCenter,
-            MakerClass=MakerMatrixCulturalCenters,
-            select_columns=['id', 'underground', 'latitude', 'longitude', 'content'],
-            name_matrix=PREPROCESSING_CULTURAL_CENTERS,
-            name_content=PREPROCESSING_CONTENT_CULTURAL_CENTERS,
-    ):
-        super(MakerMatrixPreprocessingCulturalCenters, self).__init__(Object, MakerClass, select_columns, name_matrix,
-                                                                      name_content)
 
 
 class MakerMatrixPreprocessingLibraries(MakerPreprocessingMatrixBase):
@@ -295,6 +290,30 @@ class MakerMatrixPreprocessingLibraries(MakerPreprocessingMatrixBase):
     ):
         super(MakerMatrixPreprocessingLibraries, self).__init__(Object, MakerClass, select_columns, name_matrix,
                                                                 name_content)
+
+
+class MakerMatrixPreprocessingSections(MakerPreprocessingMatrixBase):
+    def __init__(
+            self,
+            Object=Section,
+            MakerClass=MakerMatrixSections,
+            select_columns=['id', 'type_pice', 'type_shedule', 'time_learn', "one_duration"],
+            name_matrix=PREPROCESSING_SECTIONS,
+            name_content=PREPROCESSING_CONTENT_SECTIONS,
+    ):
+        super(MakerMatrixPreprocessingSections, self).__init__(Object, MakerClass, select_columns, name_matrix,
+                                                               name_content)
+
+    def make(self, save=True, fit=True):
+        maker_matrix_for_preprocessing = self.MakerMatrixForPreprocessingClass(self.Object)
+        df_for_preprocessing = maker_matrix_for_preprocessing.make(self.select_columns)
+        maker_matrix = self.MakerClass()
+        df_preprocessing = maker_matrix.make(df_for_preprocessing, fit=fit)
+
+        if save:
+            self.save_df(df_preprocessing, self.path_csv, self.name_matrix)
+            # self.save_df(df_content, self.path_csv, self.name_content)
+        return df_preprocessing
 
 
 class MakerSimilarJSONBase:
@@ -334,9 +353,9 @@ class MakerSimilarJSONEvents(MakerSimilarJSONBase):
         super(MakerSimilarJSONEvents, self).__init__(name_df, name_json)
 
 
-class MakerSimilarJSONCulturalCenters(MakerSimilarJSONBase):
-    def __init__(self, name_df=PREPROCESSING_CULTURAL_CENTERS, name_json=SIMILAR_CULTURAL_CENTERS):
-        super(MakerSimilarJSONCulturalCenters, self).__init__(name_df, name_json)
+class MakerSimilarJSONSections(MakerSimilarJSONBase):
+    def __init__(self, name_df=PREPROCESSING_SECTIONS, name_json=SIMILAR_SECTIONS):
+        super(MakerSimilarJSONSections, self).__init__(name_df, name_json)
 
 
 class MakerFilteringModelBase:
@@ -367,6 +386,6 @@ class MakerFilteringModelEvents(MakerFilteringModelBase):
         super(MakerFilteringModelEvents, self).__init__(name_df, name_model)
 
 
-class MakerFilteringModelCulturalCenters(MakerFilteringModelBase):
-    def __init__(self, name_df=FILTER_MATRIX_USERS_CULTURAL_CENTERS, name_model=FILTERING_MODEL_CULTURAL_CENTERS):
-        super(MakerFilteringModelCulturalCenters, self).__init__(name_df, name_model)
+class MakerFilteringModelSections(MakerFilteringModelBase):
+    def __init__(self, name_df=FILTER_MATRIX_USERS_SECTIONS, name_model=FILTERING_MODEL_SECTIONS):
+        super(MakerFilteringModelSections, self).__init__(name_df, name_model)

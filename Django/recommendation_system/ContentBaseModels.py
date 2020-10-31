@@ -64,16 +64,18 @@ class ContentBaseEvents(ContentBase):
         self.update_with_makers(maker_preprocessing_data, maker_similar_json)
         return ContentBaseEvents.load()
 
-
-class ContentBaseCulturalCenters(ContentBase):
+class ContentBaseSections(ContentBase):
     @classmethod
-    def load(cls, name_json=SIMILAR_CULTURAL_CENTERS, path_json=PATH_DATA_JSON, count_last=5):
+    def load(cls, name_json=SIMILAR_SECTIONS, path_json=PATH_DATA_JSON, count_last=5):
         data = cls.load_json(name_json, path_json)
-        return cls(LastCenter, data, 'id_center', count_last=count_last)
+        return cls(LastSection, data, 'id_section', count_last=count_last)
 
     def update(self):
-        maker_preprocessing_data = MakerMatrixPreprocessingCulturalCenters()
-        maker_similar_json = MakerSimilarJSONCulturalCenters()
+        maker_preprocessing_data = MakerMatrixPreprocessingSections()
+        maker_similar_json = MakerSimilarJSONSections()
         self.update_with_makers(maker_preprocessing_data, maker_similar_json)
-        return ContentBaseCulturalCenters.load()
+        return ContentBaseEvents.load()
+
+
+
 # from recommendation_system.ContentBaseModels import ContentBaseBooks, ContentBaseEvents, ContentBaseCulturalCenters; cb = ContentBaseBooks();cb.update()
