@@ -139,9 +139,9 @@ class UserGen:
                 score = round(random.uniform(3, 10), 1)
                 if score < 5:
                     score = None
-                LastEvent.objects.create(id=counter, id_user=user, id_event=event, status=True, score=score)
-                LastBook.objects.create(id=counter, id_user=user, id_book=book, status=True, score=score)
-                LastCenter.objects.create(id=counter, id_user=user, id_center=center, status=True, score=score)
+                LastEvent.objects.create(id=counter, id_user=user, id_event=event, status=1, score=score)
+                LastBook.objects.create(id=counter, id_user=user, id_book=book, status=1, score=score)
+                LastCenter.objects.create(id=counter, id_user=user, id_center=center, status=1, score=score)
 
                 counter += 1
 

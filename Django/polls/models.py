@@ -14,7 +14,7 @@ class BooksInLibrary(models.Model):
 class LastBook(models.Model):
     id_user = models.ForeignKey('User', on_delete=models.CASCADE)
     id_book = models.ForeignKey('Book', on_delete=models.CASCADE)
-    status = models.BooleanField()
+    status = models.IntegerField()
     score = models.FloatField(null=True, blank=True, default=None)
 
     def __str__(self):
@@ -25,7 +25,7 @@ class LastBook(models.Model):
 class LastCenter(models.Model):
     id_user = models.ForeignKey('User', on_delete=models.CASCADE)
     id_center = models.ForeignKey('CultureCenter', on_delete=models.CASCADE)
-    status = models.BooleanField()
+    status = models.IntegerField()
     score = models.FloatField(null=True, blank=True, default=None)
 
     def __str__(self):
@@ -36,7 +36,7 @@ class LastCenter(models.Model):
 class LastEvent(models.Model):
     id_event = models.ForeignKey('Event', on_delete=models.CASCADE)
     id_user = models.ForeignKey('User', on_delete=models.CASCADE)
-    status = models.BooleanField()
+    status = models.IntegerField()
     score = models.FloatField(null=True, blank=True, default=None)
 
     def __str__(self):

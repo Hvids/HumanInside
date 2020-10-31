@@ -29,24 +29,24 @@
     </form>
 
     <div>
-            {% for book in recommend_book %}
-    <a href="{% url 'book_detail' id_book=book.id id_user=ID_user %}">{{ book.title }}</a>
+        {% for book in recommend_book %}
+            <a href="{% url 'book_detail' id_book=book.id id_user=ID_user %}">{{ book.title }}</a>
 
-    <form action="{% url 'book_searcher' id_user=ID_user %}" method="post">
+            <form action="{% url 'book_searcher' id_user=ID_user %}" method="post">
 
-        {% csrf_token %}
-        <input type="hidden" name="type" value="book">
-        <input type="hidden" name="id_book" value="{{ book.id }}">
-        <input type="submit" value="Хочу прочитать">
-    </form>
-    <form action="{% url 'book_searcher' id_user=ID_user %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="type" value="book">
+                <input type="hidden" name="id_book" value="{{ book.id }}">
+                <input type="submit" value="Хочу прочитать">
+            </form>
+            <form action="{% url 'book_searcher' id_user=ID_user %}" method="post">
 
-        {% csrf_token %}
-        <input type="hidden" name="type" value="delete_book">
-        <input type="hidden" name="id_book" value="{{ book.id }}">
-        <input type="submit" value="Удалить из списка">
-    </form>
-    {% endfor %}
+                {% csrf_token %}
+                <input type="hidden" name="type" value="delete_book">
+                <input type="hidden" name="id_book" value="{{ book.id }}">
+                <input type="submit" value="Удалить из списка">
+            </form>
+        {% endfor %}
     </div>
 
 
@@ -56,15 +56,15 @@
         <select name="author" required>
             <option>Автор</option>
             {% for author in authors %}
-            <option value="{{ author }}">{{ author }}</option>
-            {%endfor%}
+                <option value="{{ author }}">{{ author }}</option>
+            {% endfor %}
         </select>
         <select name="genre" required>
             <option>Жанр</option>
             {% for genre in genres %}
 
-            <option value="{{ genre.id }}">{{ genre.name }}</option>
-            {%endfor%}
+                <option value="{{ genre.id }}">{{ genre.name }}</option>
+            {% endfor %}
         </select>
         <p>Сортировать</p>
         <input type="radio" id="sort_parametr"
@@ -73,22 +73,22 @@
         <input type="submit" value="Поиск">
     </form>
     {% for book in books %}
-    <a href="{% url 'book_detail' id_book=book.id id_user=ID_user %}">{{ book.title }}</a>
+        <a href="{% url 'book_detail' id_book=book.id id_user=ID_user %}">{{ book.title }}</a>
 
-    <form action="{% url 'book_searcher' id_user=ID_user %}" method="post">
+        <form action="{% url 'book_searcher' id_user=ID_user %}" method="post">
 
-        {% csrf_token %}
-        <input type="hidden" name="type" value="book">
-        <input type="hidden" name="id_book" value="{{ book.id }}">
-        <input type="submit" value="Хочу прочитать">
-    </form>
-    <form action="{% url 'book_searcher' id_user=ID_user %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="type" value="book">
+            <input type="hidden" name="id_book" value="{{ book.id }}">
+            <input type="submit" value="Хочу прочитать">
+        </form>
+        <form action="{% url 'book_searcher' id_user=ID_user %}" method="post">
 
-        {% csrf_token %}
-        <input type="hidden" name="type" value="delete_book">
-        <input type="hidden" name="id_book" value="{{ book.id }}">
-        <input type="submit" value="Удалить из списка">
-    </form>
+            {% csrf_token %}
+            <input type="hidden" name="type" value="delete_book">
+            <input type="hidden" name="id_book" value="{{ book.id }}">
+            <input type="submit" value="Удалить из списка">
+        </form>
     {% endfor %}
 </div>
 

@@ -27,11 +27,11 @@ def recAll(request, id_user):
         print(request.POST)
         post = request.POST
         if post['type'] == 'delete_book':
-            add_last_book(id_user, post['id_book'], status=True, score=1)
+            add_last_book(id_user, post['id_book'], status=2, score=1)
         elif post['type'] == 'delete_event':
-            add_last_event(id_user, post['id_event'], status=True, score=1)
+            add_last_event(id_user, post['id_event'], status=2, score=1)
         elif post['type'] == 'delete_cultural_center':
-            add_last_cultural_center(id_user, post['id_cultural_center'], status=True, score=1)
+            add_last_cultural_center(id_user, post['id_cultural_center'], status=2, score=1)
         else:
             add_last_object(post, id_user)
 
@@ -66,9 +66,9 @@ def book_searcher(request, id_user):
         post = request.POST
         type_ = post['type']
         if type_ == 'book':
-            add_last_book(id_user, post['id_book'])
+            add_last_book(id_user, post['id_book'], status=0)
         elif type_ == 'delete_book':
-            add_last_book(id_user, post['id_book'], status=True, score=1)
+            add_last_book(id_user, post['id_book'], status=2, score=1)
         else:
             rec_model = RequestModelBooks.load()
 
@@ -129,9 +129,9 @@ def event_searcher(request, id_user):
             if len(filter_dict.keys()) > 0:
                 finder_events = Event.objects.filter(**filter_dict)
         elif type == 'event':
-            add_last_event(id_user, post['id_event'])
+            add_last_event(id_user, post['id_event'], status=0)
         elif type == 'delete_event':
-            add_last_event(id_user, post['id_event'], score=1, status=True)
+            add_last_event(id_user, post['id_event'], score=1, status=2)
     filter_parms = Event.objects.all().values_list('town', 'date', 'price', 'age_rate')
     towns = list(np.unique([t[0] for t in filter_parms]))
     dates = list(np.unique([t[1] for t in filter_parms]))
@@ -162,9 +162,9 @@ def cultural_center_searcher(request, id_user):
             finder_cultural_centers = rc.recommend(id_user, post['content'])
             finder_cultural_centers = CultureCenter.objects.filter(id__in=finder_cultural_centers)
         elif type == 'cultural_center':
-            add_last_cultural_center(id_user, post['id_cultural_center'])
+            add_last_cultural_center(id_user, post['id_cultural_center'], status=0)
         elif type == 'delete_cultural_center':
-            add_last_cultural_center(id_user, post['id_cultural_center'], status=True, score=1)
+            add_last_cultural_center(id_user, post['id_cultural_center'], status=2, score=1)
         elif type == 'filter_search':
             filter_dict = {}
             if not post['underground'] == 'default':
