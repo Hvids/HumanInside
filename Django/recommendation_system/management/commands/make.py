@@ -68,8 +68,9 @@ class Command(BaseCommand):
 
     def make_preprocessing_matirx(self, fit=False):
         print('Make Preprocessing Matrix')
-        MakerObjects = [MakerMatrixPreprocessingBooks, MakerMatrixPreprocessingEvents,
-                        MakerMatrixPreprocessingSections]
+        # MakerObjects = [MakerMatrixPreprocessingBooks, MakerMatrixPreprocessingEvents,
+        #                 MakerMatrixPreprocessingSections]
+        MakerObjects = [MakerMatrixPreprocessingSections]
         for MakerObject in MakerObjects:
             maker = MakerObject()
             maker.make(fit=fit)
