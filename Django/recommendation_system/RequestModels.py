@@ -77,4 +77,20 @@ class RequestModelEvents(RequestModelBase):
         self.update_with_maker(maker)
         return RequestModelEvents.load(k=k)
 
+    def recommend(self, id_user, text):
+        df_text = pd.DataFrame([text], columns=['content'])
+        objects_read_user = self.SelectObject.objects.filter(id_user=id_user).order_by('-id').values_list(self.id_name)
+        objects_read_user = self.get_list(objects_read_user)
+        content = self.maker_matrix.make_content(df_text, fit=False)
+        cosine_similarities = linear_kernel(content.values, self.df.drop('id', axis=1).values)
+        similar_indices = cosine_similarities[0].argsort()[::-1]
+        similar_items = [int(self.df['id'][i]) for i in similar_indices if int(self.df['id'][i])]
+        results = similar_items[1:]
+        ids_open = Event.objects.filter(status__in=['Утверждено', 'Запланировано',
+                                                    'Уточняется', 'Опубликовано']).values_list('id')
+        ids_open = [i[0] for i in ids_open]
+        results = [int(i) for i in results if int(i) not in objects_read_user and int(i) in ids_open]
+
+        return results[:self.k]
+
 # from recommendation_system.RequestModels import  RequestModelBooks; r = RequestModelBooks.load(); пг
