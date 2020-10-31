@@ -31,6 +31,7 @@ class FinderBase:
         dictAllInOne['ID_user'] = id_user
         dictAllInOne['Books'] = allInOne[0]
         dictAllInOne['Events'] = allInOne[1]
+        dictAllInOne['Sections'] = allInOne[2]
         return render(request, 'polls/home.html', dictAllInOne)
 
 
@@ -44,8 +45,14 @@ class FinderEvent(FinderBase):
         super(FinderEvent, self).__init__(loader_type, get_type)
 
 
+class FinderSection(FinderBase):
+    def __init__(self, loader_type=FilteringSections.load_model(), get_type=Section):
+        super(FinderSection, self).__init__(loader_type, get_type)
+
+
 class FindAll(FinderBase):
-    def __init__(self, loader_type=[FilteringBooks.load_model(), FilteringEvents.load_model()], get_type=[Book, Event]):
+    def __init__(self, loader_type=[FilteringBooks.load_model(), FilteringEvents.load_model(),
+                                    FilteringSections.load_model()], get_type=[Book, Event, Section]):
         super(FindAll, self).__init__(loader_type, get_type)
 
 
@@ -112,7 +119,6 @@ class ColdStart:
         dictAllInOne['Events'] = k_event_to_go
         dictAllInOne['Sections'] = k_section_to_go
         return render(request, 'polls/index.html', dictAllInOne)
-
 
 # events = LastEvent.objects.all()
 # events = events.order_by('-score')

@@ -8,13 +8,13 @@
     <a href="{% url 'recAll' id_user=user %}"><h1>Главная</h1></a>
     <a href="{% url 'book_searcher' id_user=user %}"><h1>Книги</h1></a>
     <a href="{% url 'event_searcher' id_user=user %}"><h1>События</h1></a>
-    <a href="{% url 'section_searcher' id_user=user %}"><h1>кружки</h1></a>
+    <a href="{% url 'section_searcher' id_user=user %}"><h1>Кружки</h1></a>
     <a href="{% url 'profile' id_user=user %}"><h1>Личный кабинет</h1></a>
 </header>
 <body>
 <p>Прочитал книг:</p> {{ last_read }}
 <p>Посетил событий:</p> {{ last_event }}
-<p>Посетил мест:</p> {{ last_center }}
+<p>Посетил кружков:</p> {{ last_section }}
 
 <p>
 <h3>Мои книги</h3></p>
@@ -61,22 +61,22 @@
 {% endfor %}
 
 <p>
-<h3>Мои места</h3></p>
-{% for each in center %}
-    <a href="{% url 'cultural_center_detail' id_center=each.id id_user=user %}">{{ each.title }}</a>
+<h3>Мои кружки</h3></p>
+{% for each in section %}
+    <a href="{% url 'section_detail' id_section=each.id id_user=user %}">{{ each.title }}</a>
 
     <form action="{% url 'profile' id_user=user %}" method="post">
 
         {% csrf_token %}
-        <input type="hidden" name="type" value="visit_cultural_center">
-        <input type="hidden" name="id_cultural_center" value="{{ each.id }}">
+        <input type="hidden" name="type" value="visit_section">
+        <input type="hidden" name="id_section" value="{{ each.id }}">
         <input type="submit" value="Посетил">
     </form>
     <form action="{% url 'profile' id_user=user %}" method="post">
 
         {% csrf_token %}
-        <input type="hidden" name="type" value="delete_cultural_center">
-        <input type="hidden" name="id_cultural_center" value="{{ each.id }}">
+        <input type="hidden" name="type" value="delete_section">
+        <input type="hidden" name="id_section" value="{{ each.id }}">
         <input type="submit" value="Удалить из списка">
     </form>
 

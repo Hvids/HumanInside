@@ -74,6 +74,10 @@ def profile(request, id_user):
             visit_event(id_user, post['id_event'], status=1)
         if type_ == 'delete_event':
             visit_event(id_user, post['id_event'], score=1, status=2)
+        if type_ == 'visit_section':
+            visit_section(id_user, post['id_section'], status=1)
+        if type_ == 'delete_section':
+            visit_section(id_user, post['id_section'], score=1, status=2)
 
     to_read = LastBook.objects.filter(id_user=id_user, status=0).values_list('id_book')
     to_read = [i[0] for i in to_read]
@@ -85,6 +89,12 @@ def profile(request, id_user):
     to_event = Event.objects.filter(id__in=to_event)
     last_event = len(LastEvent.objects.filter(id_user=id_user, status=1))
 
+    to_section = LastSection.objects.filter(id_user=id_user, status=0).values_list('id_section')
+    to_section = [i[0] for i in to_section]
+    to_section = Section.objects.filter(id__in=to_section)
+    last_section = len(LastSection.objects.filter(id_user=id_user, status=1))
+
     return render(request, 'registration/profile.html', {'book': to_read, 'last_read': last_read,
                                                          'event': to_event, 'last_event': last_event,
+                                                         'section': to_section, 'last_section': last_section,
                                                          'user': id_user})

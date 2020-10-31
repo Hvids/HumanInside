@@ -117,12 +117,14 @@ def event_searcher(request, id_user):
             finder_events = Event.objects.filter(id__in=finder_events)
         elif type_ == 'filter_search':
             filter_dict = {}
-            if not post['town'] == 'default':
-                filter_dict['town'] = post['town']
-            if not post['date'] == 'default':
-                filter_dict['date'] = post['date']
+            if not post['type_center'] == 'default':
+                filter_dict['type_center'] = post['type_center']
             if not post['price'] == 'default':
                 filter_dict['price'] = post['price']
+            if not post['type_event'] == 'default':
+                filter_dict['type_event'] = post['type_event']
+            if not post['holiday'] == 'default':
+                filter_dict['holiday'] = post['holiday']
             if not post['age_rate'] == 'default':
                 filter_dict['age_rate'] = post['age_rate']
             if len(filter_dict.keys()) > 0:
@@ -131,20 +133,22 @@ def event_searcher(request, id_user):
             add_last_event(id_user, post['id_event'], status=0)
         elif type_ == 'delete_event':
             add_last_event(id_user, post['id_event'], score=1, status=2)
-    filter_parms = Event.objects.all().values_list('town', 'date', 'price', 'age_rate')
-    towns = list(np.unique([t[0] for t in filter_parms]))
-    dates = list(np.unique([t[1] for t in filter_parms]))
-    prices = list(np.unique([t[2] for t in filter_parms]))
-    age_rates = list(np.unique([t[3] for t in filter_parms]))
+    filter_parms = Event.objects.all().values_list('type_center', 'price', 'type_event', 'holiday', 'age_rate')
+    type_centers = list(np.unique([t[0] for t in filter_parms]))
+    prices = list(np.unique([t[1] for t in filter_parms]))
+    type_events = list(np.unique([t[2] for t in filter_parms]))
+    holidays = list(np.unique([t[3] for t in filter_parms]))
+    age_rates = list(np.unique([t[4] for t in filter_parms]))
     ce = ContentBaseEvents.load()
     recommend_events = ce.recommend(id_user)
     recommend_events = Event.objects.filter(id__in=recommend_events)
     return render(request, 'polls/event_search.html',
                   {
                       'ID_user': id_user,
-                      'towns': towns,
-                      'dates': dates,
+                      'type_centers': type_centers,
                       'prices': prices,
+                      'type_events': type_events,
+                      'holidays': holidays,
                       'age_rates': age_rates,
                       'recommend_events': recommend_events,
                       "finder_events": finder_events

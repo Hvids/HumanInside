@@ -10,13 +10,14 @@
         <a href="{% url 'recAll' id_user=user %}"><h1>Главная</h1></a>
         <a href="{% url 'book_searcher' id_user=user %}"><h1>Книги</h1></a>
         <a href="{% url 'event_searcher' id_user=user %}"><h1>События</h1></a>
-        <a href="{% url 'section_searcher' id_user=user %}"><h1>кружки</h1></a>
+        <a href="{% url 'section_searcher' id_user=user %}"><h1>Кружки</h1></a>
         <a href="{% url 'profile' id_user=user %}"><h1>Личный кабинет</h1></a>
     {% else %}
         <a href="{% url 'enter_page' %}"><h1>Главная</h1></a>
     {% endif %}
 
-</header><body>
+</header>
+<body>
 <div>
     <p><b>Название:</b> {{ book.title }}</p>
     <p><b>Серия:</b> {{ book.serie }}</p>
