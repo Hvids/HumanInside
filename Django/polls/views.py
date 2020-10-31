@@ -77,12 +77,9 @@ def book_searcher(request, id_user):
             rec_list = rec_model.recommend(id_user, content)
             books = Book.objects.filter(id__in=rec_list)
 
-
-
     cb = ContentBaseBooks.load()
     rec_ids_book = cb.recommend(id_user)
     recommend_book = Book.objects.filter(id__in=rec_ids_book)
-
 
     if request.method == 'GET':
 
@@ -110,9 +107,6 @@ def book_searcher(request, id_user):
 
 
 def event_searcher(request, id_user):
-    ce = ContentBaseEvents.load()
-    recommend_events = ce.recommend(id_user)
-    recommend_events = Event.objects.filter(id__in=recommend_events)
     finder_events = []
     if request.method == 'POST':
         post = request.POST
@@ -143,7 +137,9 @@ def event_searcher(request, id_user):
     dates = list(np.unique([t[1] for t in filter_parms]))
     prices = list(np.unique([t[2] for t in filter_parms]))
     age_rates = list(np.unique([t[3] for t in filter_parms]))
-
+    ce = ContentBaseEvents.load()
+    recommend_events = ce.recommend(id_user)
+    recommend_events = Event.objects.filter(id__in=recommend_events)
     return render(request, 'polls/event_search.html',
                   {
                       'ID_user': id_user,
@@ -157,12 +153,6 @@ def event_searcher(request, id_user):
 
 
 def cultural_center_searcher(request, id_user):
-    undergrounds = CultureCenter.objects.all().values_list('underground')
-    undergrounds = list(np.unique([u[0] for u in undergrounds]))
-    cc = ContentBaseCulturalCenters.load()
-
-    recommend_cultural_centers = cc.recommend(id_user)
-    recommend_cultural_centers = CultureCenter.objects.filter(id__in=recommend_cultural_centers)
     finder_cultural_centers = []
     if request.method == 'POST':
         post = request.POST
@@ -181,6 +171,12 @@ def cultural_center_searcher(request, id_user):
                 filter_dict['underground'] = post['underground']
                 finder_cultural_centers = CultureCenter.objects.filter(**filter_dict)
 
+    undergrounds = CultureCenter.objects.all().values_list('underground')
+    undergrounds = list(np.unique([u[0] for u in undergrounds]))
+    cc = ContentBaseCulturalCenters.load()
+
+    recommend_cultural_centers = cc.recommend(id_user)
+    recommend_cultural_centers = CultureCenter.objects.filter(id__in=recommend_cultural_centers)
     return render(request, 'polls/cultural_center_search.html',
                   {
                       'ID_user': id_user,
