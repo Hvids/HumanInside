@@ -72,7 +72,6 @@ class FilteringBooks(Filtering):
 
 
 class FilteringEvents(Filtering):
-
     @classmethod
     def load_model(cls, name_data=FILTER_MATRIX_USERS_EVENTS, path_data=PATH_DATA_CSV,
                    name_model=FILTERING_MODEL_EVENTS, path_model=PATH_MODELS, k=5):
@@ -96,6 +95,10 @@ class FilteringEvents(Filtering):
         # print(know_ids)git
         recommendation_ids = self.get_reccomend(know_ids, recommendation_ids)
         # print(recommendation_ids)
+        ids_open = Event.obejtct.filter(status__in=['Утверждено', 'Запланировано',
+                                                     'Уточняется', 'Опубликовано']).values_list('id')
+        ids_open = [i[0] for i in ids_open]
+        recommendation_ids = [r for r in recommendation_ids if r in ids_open]
         return recommendation_ids[:self.k]
 
 

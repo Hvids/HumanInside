@@ -70,7 +70,7 @@ class Command(BaseCommand):
         print('Make Preprocessing Matrix')
         # MakerObjects = [MakerMatrixPreprocessingBooks, MakerMatrixPreprocessingEvents,
         #                 MakerMatrixPreprocessingSections]
-        MakerObjects = [MakerMatrixPreprocessingSections]
+        MakerObjects = [MakerMatrixPreprocessingEvents]
         for MakerObject in MakerObjects:
             maker = MakerObject()
             maker.make(fit=fit)
