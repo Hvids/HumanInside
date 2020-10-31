@@ -11,9 +11,6 @@
 }
 
 .header {
-    margin-left: 0;
-    margin-right: 0;
-
     position: relative;
 }
 
@@ -257,4 +254,102 @@
     font-family: "Roboto Bold", serif;
     font-size: 30px;
     color: white;
+}
+
+.recommendations_items {
+    z-index: 0;
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    margin-left: 0;
+    margin-right: 0;
+
+    left: 0;
+    top: 0;
+}
+
+.flex_item {
+    position: relative;
+
+    width: 30%;
+    height: 68%;
+
+    top: 20%;
+    margin-left: 4%;
+    margin-right: 4%;
+}
+
+.flex_item > .image_bg {
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: #dfdfdf;
+    border-radius: 20px;
+
+    opacity: 50%;
+}
+
+.flex_item > img {
+    position: relative;
+
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+    margin-top: 5%;
+
+    width: 60%;
+    height: auto;
+
+    opacity: 100%;
+}
+
+.flex_item > .book_name {
+    position: relative;
+
+    text-align: center;
+
+    display: block;
+    margin-top: 5%;
+
+    font-family: "Roboto Medium", serif;
+    font-size: 17px;
+}
+
+.flex_item > .book_autor {
+    position: relative;
+
+    text-align: center;
+
+    display: block;
+    margin-top: 2%;
+
+    font-family: "Roboto Regular", serif;
+    font-size: 15px;
+}
+
+.flex_item > .book_rating {
+    display: inline-flex;
+    justify-content: center;
+
+    margin-top: 5%;
+}
+
+.book_rating > .book_rating_word {
+    position: relative;
+    
+    font-family: "Roboto Regular", serif;
+    font-size: 15px;
+    opacity: 100%;
+}
+
+.book_rating > .book_rating_value {
+    position: relative;
+    font-family: "Roboto Bold", serif;
+    font-size: 20px;
+    opacity: 69%;
 }
