@@ -135,7 +135,7 @@ class UserGen:
         id_cnt = 1
         counter = 1
         for name in tqdm(alpha, desc='User creating'):
-            user = User.objects.create(id=id_cnt, user_login=name+name, user_password="1234", first_name=name,
+            user = User.objects.create(id=id_cnt, user_login=name + name, user_password="1234", first_name=name,
                                        last_name=name, age=id_cnt)
             id_cnt += 1
             for _ in tqdm(range(0, 10), desc='Forms creating'):

@@ -185,8 +185,7 @@ class MakerMatrixEvents(MakerMatrixBase):
     def __init__(
             self,
             name_matrix=EVENTS,
-            columns_dummies=['status', 'type_center', 'price', 'type_event', 'folow_event', 'holiday', 'is_online',
-                             'is_acess_ovz', 'age_rate'],
+            columns_dummies=['type_center', 'price', 'type_event', 'follow_event', 'holiday', 'age_rate'],
             columns_select=['id'],
             name_lda=EVENTS_LDA,
             name_count_vectorizer=EVENTS_COUNT_VECTORIZER,
@@ -199,13 +198,15 @@ class MakerMatrixSections(MakerMatrixBase):
     def __init__(
             self,
             name_matrix=SECTIONS,
-            columns_dummies=['type_pice', 'type_shedule', 'time_learn', 'one_duration'],
+            columns_dummies=['type_price', 'type_schedule', 'time_learn', 'one_duration', 'underground'],
             columns_select=['id'],
-            name_lda=SECTIONS_LDA,
-            name_count_vectorizer=SECTIONS_COUNT_VECTORIZER,
+            # name_lda=SECTIONS_LDA,
+            # name_count_vectorizer=SECTIONS_COUNT_VECTORIZER,
     ):
-        super(MakerMatrixSections, self).__init__(name_matrix, columns_dummies, columns_select, name_lda,
-                                                  name_count_vectorizer)
+        self.columns_dummies = columns_dummies
+        self.columns_select = columns_select
+        self.name_matrix = name_matrix
+        self.preprocessing_dummies = PreProcessingDummies()
 
     def make(self, df, fit=True):
         df_dummies = self.make_dummies(df)
@@ -270,8 +271,8 @@ class MakerMatrixPreprocessingEvents(MakerPreprocessingMatrixBase):
             self,
             Object=Event,
             MakerClass=MakerMatrixEvents,
-            select_columns=['id', 'status', 'type_center', 'price', 'type_event', 'folow_event', 'holiday', 'is_online',
-                            'is_acess_ovz', 'age_rate', 'content'],
+            select_columns=['id', 'type_center', 'price', 'type_event', 'follow_event', 'holiday', 'age_rate',
+                            'content'],
             name_matrix=PREPROCESSING_EVENTS,
             name_content=PREPROCESSING_CONTENT_EVENTS,
     ):
@@ -297,7 +298,7 @@ class MakerMatrixPreprocessingSections(MakerPreprocessingMatrixBase):
             self,
             Object=Section,
             MakerClass=MakerMatrixSections,
-            select_columns=['id', 'type_pice', 'type_shedule', 'time_learn', "one_duration"],
+            select_columns=['id', 'type_price', 'type_schedule', 'time_learn', 'one_duration', 'underground'],
             name_matrix=PREPROCESSING_SECTIONS,
             name_content=PREPROCESSING_CONTENT_SECTIONS,
     ):
@@ -384,7 +385,6 @@ class MakerFilteringModelBooks(MakerFilteringModelBase):
 class MakerFilteringModelEvents(MakerFilteringModelBase):
     def __init__(self, name_df=FILTER_MATRIX_USERS_EVENTS, name_model=FILTERING_MODEL_EVENTS):
         super(MakerFilteringModelEvents, self).__init__(name_df, name_model)
-
 
 
 class MakerFilteringModelSections(MakerFilteringModelBase):

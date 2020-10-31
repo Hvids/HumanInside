@@ -72,7 +72,6 @@ class FilteringBooks(Filtering):
 
 
 class FilteringEvents(Filtering):
-
     @classmethod
     def load_model(cls, name_data=FILTER_MATRIX_USERS_EVENTS, path_data=PATH_DATA_CSV,
                    name_model=FILTERING_MODEL_EVENTS, path_model=PATH_MODELS, k=5):
@@ -96,6 +95,10 @@ class FilteringEvents(Filtering):
         # print(know_ids)git
         recommendation_ids = self.get_reccomend(know_ids, recommendation_ids)
         # print(recommendation_ids)
+        ids_open = Event.objects.filter(status__in=['Утверждено', 'Запланировано',
+                                                     'Уточняется', 'Опубликовано']).values_list('id')
+        ids_open = [i[0] for i in ids_open]
+        recommendation_ids = [r for r in recommendation_ids if r in ids_open]
         return recommendation_ids[:self.k]
 
 
@@ -106,10 +109,17 @@ class FilteringSections(Filtering):
                    name_model=FILTERING_MODEL_SECTIONS, path_model=PATH_MODELS, k=5):
         model = cls.load(name_model, path_model)
         df = pd.read_csv(path_data + name_data + '.csv')
-        return cls(df, model, LastObject=LastSection, name_object='id_center', k=k)
+        return cls(df, model, LastObject=LastSection, name_object='id_section', k=k)
 
     def update(self):
         maker_filter_matrix = MakerFilteringMatrixSections()
         maker_filter_model = MakerFilteringModelSections()
         super(FilteringSections, self).update(maker_filter_matrix, maker_filter_model)
         return FilteringBooks.load_model()
+
+# from recommendation_system.FilteringModels import FilteringSections, FilteringEvents, FilteringBooks, FilteringBooks
+#  fb = FilteringBooks.load_model()
+#  fe = FilteringEvents.load_model()
+# fe.recommend(1)
+# fs = FilteringSections.load_model()
+# fs.recommend(1)

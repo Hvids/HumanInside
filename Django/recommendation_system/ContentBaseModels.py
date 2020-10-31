@@ -64,6 +64,26 @@ class ContentBaseEvents(ContentBase):
         self.update_with_makers(maker_preprocessing_data, maker_similar_json)
         return ContentBaseEvents.load()
 
+    def recommend(self, id_user):
+        print(self.SelectObject)
+        objects_read_user = self.SelectObject.objects.filter(id_user=id_user).order_by('-id').values_list(self.id_name)
+        print(objects_read_user)
+        objects_read_user = self.get_list(objects_read_user)[:self.count_last]
+        result = []
+        ids_open = Event.objects.filter(status__in=['Утверждено', 'Запланировано',
+                                                    'Уточняется', 'Опубликовано']).values_list('id')
+        ids_open = [i[0] for i in ids_open]
+
+        for object_read_user in objects_read_user:
+            best = self.data[str(object_read_user)]
+            for i in best:
+                if i not in objects_read_user and i not in result and i in ids_open:
+                    result.append(i)
+                    break
+
+        return result
+
+
 class ContentBaseSections(ContentBase):
     @classmethod
     def load(cls, name_json=SIMILAR_SECTIONS, path_json=PATH_DATA_JSON, count_last=5):
@@ -76,4 +96,9 @@ class ContentBaseSections(ContentBase):
         self.update_with_makers(maker_preprocessing_data, maker_similar_json)
         return ContentBaseEvents.load()
 
-# from recommendation_system.ContentBaseModels import ContentBaseBooks, ContentBaseEvents, ContentBaseCulturalCenters; cb = ContentBaseBooks();cb.update()
+# from recommendation_system.ContentBaseModels import ContentBaseBooks, ContentBaseEvents, ContentBaseSections
+#  fb = ContentBaseBooks.load()
+#  fe = ContentBaseEvents.load()
+# fe.recommend(1)
+# fs = ContentBaseSections.load()
+# fs.recommend(1)

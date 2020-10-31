@@ -70,13 +70,14 @@ class Command(BaseCommand):
         print('Make Preprocessing Matrix')
         MakerObjects = [MakerMatrixPreprocessingBooks, MakerMatrixPreprocessingEvents,
                         MakerMatrixPreprocessingSections]
+        # MakerObjects = [MakerMatrixPreprocessingEvents]
         for MakerObject in MakerObjects:
             maker = MakerObject()
             maker.make(fit=fit)
 
     def make_similar_json(self):
         print('Make Similar JSON')
-        MakerObjects = [MakerSimilarJSONBooks, MakerSimilarJSONEvents, MakerFilteringModelSections]
+        MakerObjects = [MakerSimilarJSONBooks, MakerSimilarJSONEvents, MakerSimilarJSONSections]
         for MakerObject in MakerObjects:
             maker = MakerObject()
             maker.make()
