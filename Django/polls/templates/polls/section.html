@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Section page</title>
+</head>
+<body>
+<header>
+    {% if user != 0 %}
+        <a href="{% url 'recAll' id_user=user %}"><h1>Главная</h1></a>
+        <a href="{% url 'book_searcher' id_user=user %}"><h1>Книги</h1></a>
+        <a href="{% url 'event_searcher' id_user=user %}"><h1>События</h1></a>
+        <a href="{% url 'section_searcher' id_user=user %}"><h1>Кружки</h1></a>
+        <a href="{% url 'profile' id_user=user %}"><h1>Личный кабинет</h1></a>
+    {% else %}
+        <a href="{% url 'enter_page' %}"><h1>Главная</h1></a>
+    {% endif %}
+</header>
+<div>
+    <p><b>Название:</b> {{ section.title }}</p>
+    <p><b>Метро:</b> {{ section.underground }}</p>
+    <p><b>Адрес:</b> {{ section.street }}</p>
+    <p><b>Цена:</b> {{ section.type_price }}</p>
+    <p><b>Расписание:</b> {{ section.type_schedule }}</p>
+    <p><b>Длительность:</b> {{ section.time_learn }} {{ section.one_duration }}</p>
+    <p><b>Организация:</b> {{ section.name_org }}</p>
+</div>
+</body>
+</html>

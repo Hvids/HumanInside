@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Events</title>
+</head>
+<body>
+<header>
+    <a href="{% url 'recAll' id_user=user %}"><h1>Главная</h1></a>
+    <a href="{% url 'book_searcher' id_user=user %}"><h1>Книги</h1></a>
+    <a href="{% url 'event_searcher' id_user=user %}"><h1>События</h1></a>
+    <a href="{% url 'section_searcher' id_user=user %}"><h1>кружки</h1></a>
+    <a href="{% url 'profile' id_user=user %}"><h1>Личный кабинет</h1></a>
+</header>
+
+<div>
+    <h3>Поиск по описанию</h3>
+    <form action="{% url 'section_searcher' id_user=ID_user %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="type" value="search_rec">
+        <input id="content" type="text" name="content" maxlength="255" required>
+        <input type="submit" value="Найти">
+    </form>
+</div>
+
+<div>
+    {% for section in recommend_section %}
+        <a href="{% url 'section_detail' id_section=section.id id_user=ID_user %}">{{ section.title }}</a>
+
+        <form action="{% url 'section_searcher' id_user=ID_user %}" method="post">
+
+            {% csrf_token %}
+            <input type="hidden" name="type" value="section">
+            <input type="hidden" name="id_section" value="{{ section.id }}">
+            <input type="submit" value="Хочу посетить">
+        </form>
+        <form action="{% url 'section_searcher' id_user=ID_user %}" method="post">
+
+            {% csrf_token %}
+            <input type="hidden" name="type" value="delete_section">
+            <input type="hidden" name="id_section" value="{{ section.id }}">
+            <input type="submit" value="Удалить из списка">
+        </form>
+    {% endfor %}
+
+</div>
+
+
+<div>
+    <h3>Подобрать место</h3>
+    <form action="{% url 'section_searcher' id_user=ID_user %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="type" value="filter_search">
+        <select name="underground" required>
+            <option value="default">Метро</option>
+            {% for underground in undergrounds %}
+                <option value="{{ underground }}">{{ underground }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Поиск">
+    </form>
+</div>
+
+<div>
+    {% for section in finder_sections %}
+        <a href="{% url 'section_detail' id_section=section.id id_user=ID_user %}">{{ section.title }}</a>
+
+        <form action="{% url 'section_searcher' id_user=ID_user %}" method="post">
+
+            {% csrf_token %}
+            <input type="hidden" name="type" value="section">
+            <input type="hidden" name="id_section" value="{{ cultural_center.id }}">
+            <input type="submit" value="Хочу посетить">
+        </form>
+
+
+        <form action="{% url 'section_searcher' id_user=ID_user %}" method="post">
+
+            {% csrf_token %}
+            <input type="hidden" name="type" value="delete_cultural_center">
+            <input type="hidden" name="id_cultural_center" value="{{ cultural_center.id }}">
+            <input type="submit" value="Удалить из списка">
+        </form>
+    {% endfor %}
+
+</div>
+
+
+</body>
+</html>

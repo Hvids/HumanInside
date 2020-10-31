@@ -7,69 +7,69 @@
     <a href="{% url 'enter_page' %}"><h1>Главная</h1></a>
     <a href="{% url 'book_searcher' id_user=ID_user %}"><h1>Книги</h1></a>
     <a href="{% url 'event_searcher' id_user=ID_user %}"><h1>События</h1></a>
-    <a href="{% url 'cultural_center_searcher' id_user=ID_user %}"><h1>Места</h1></a>
+    <a href="{% url 'section_searcher' id_user=ID_user %}"><h1>Кружки</h1></a>
     <a href="{% url 'profile' id_user=ID_user %}"><h1>Личный кабинет</h1></a>
 </header>
 <body>
 <div>
     <p><b>Книги которые вам могут понравиться:</b></p>
     {% for parametr in Books %}
-    <a href="{% url 'book_detail' id_book=parametr.id id_user=ID_user %}">{{ parametr.title }}</a>
+        <a href="{% url 'book_detail' id_book=parametr.id id_user=ID_user %}">{{ parametr.title }}</a>
 
-    <form action="{% url 'recAll' id_user=ID_user %}" method="post">
+        <form action="{% url 'recAll' id_user=ID_user %}" method="post">
 
-        {% csrf_token %}
-        <input type="hidden" name="type" value="book">
-        <input type="hidden" name="id_book" value="{{ parametr.id }}">
-        <input type="submit" value="Хочу прочитать">
-    </form>
-    <form action="{% url 'recAll' id_user=ID_user %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="type" value="book">
+            <input type="hidden" name="id_book" value="{{ parametr.id }}">
+            <input type="submit" value="Хочу прочитать">
+        </form>
+        <form action="{% url 'recAll' id_user=ID_user %}" method="post">
 
-        {% csrf_token %}
-        <input type="hidden" name="type" value="delete_book">
-        <input type="hidden" name="id_book" value="{{ parametr.id }}">
-        <input type="submit" value="Удалить из списка">
-    </form>
+            {% csrf_token %}
+            <input type="hidden" name="type" value="delete_book">
+            <input type="hidden" name="id_book" value="{{ parametr.id }}">
+            <input type="submit" value="Удалить из списка">
+        </form>
 
 
-    <br>
+        <br>
     {% endfor %}
     <br>
     <p><b>События которые вам могут понравиться:</b></p>
     {% for parametr in Events %}
 
-    <a href="{% url 'event_detail' id_event=parametr.id id_user=ID_user %}">{{ parametr.title }}</a>
-    <form action="{% url 'recAll' id_user=ID_user %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="type" value="event">
-        <input type="hidden" name="id_event" value="{{ parametr.id }}">
-        <input type="submit" value="Хочу посетить">
-    </form>
-    <form action="{% url 'recAll' id_user=ID_user %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="type" value="delete_event">
-        <input type="hidden" name="id_event" value="{{ parametr.id }}">
-        <input type="submit" value="Удалить из списка">
-    </form>
-    <br>
+        <a href="{% url 'event_detail' id_event=parametr.id id_user=ID_user %}">{{ parametr.title }}</a>
+        <form action="{% url 'recAll' id_user=ID_user %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="type" value="event">
+            <input type="hidden" name="id_event" value="{{ parametr.id }}">
+            <input type="submit" value="Хочу посетить">
+        </form>
+        <form action="{% url 'recAll' id_user=ID_user %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="type" value="delete_event">
+            <input type="hidden" name="id_event" value="{{ parametr.id }}">
+            <input type="submit" value="Удалить из списка">
+        </form>
+        <br>
     {% endfor %}
     <br>
-    <p><b>Места которые вам могут понравиться:</b></p>
-    {% for parametr in Centers %}
-    <a href="{% url 'cultural_center_detail' id_center=parametr.id id_user=ID_user %}">{{ parametr.title }}</a>
-    <form action="{% url 'recAll' id_user=ID_user %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="type" value="cultural_center">
-        <input type="hidden" name="id_cultural_center" value="{{ parametr.id }}">
-        <input type="submit" value="Хочу посетить">
-    </form>
-    <form action="{% url 'recAll' id_user=ID_user %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="type" value="delete_cultural_center">
-        <input type="hidden" name="id_cultural_center" value="{{ parametr.id }}">
-        <input type="submit" value="Удалить из списка">
-    </form>
-    <br>
+    <p><b>Кружки которые вам могут понравиться:</b></p>
+    {% for parametr in Sections %}
+        <a href="{% url 'section_detail' id_section=parametr.id id_user=ID_user %}">{{ parametr.title }}</a>
+        <form action="{% url 'recAll' id_user=ID_user %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="type" value="section">
+            <input type="hidden" name="id_section" value="{{ parametr.id }}">
+            <input type="submit" value="Хочу посетить">
+        </form>
+        <form action="{% url 'recAll' id_user=ID_user %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="type" value="delete_section">
+            <input type="hidden" name="id_section" value="{{ parametr.id }}">
+            <input type="submit" value="Удалить из списка">
+        </form>
+        <br>
     {% endfor %}
 </div>
 </body>

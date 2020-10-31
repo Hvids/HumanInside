@@ -6,26 +6,26 @@
 </head>
 <body>
 <header>
-   {% if user != 0 %}
+    {% if user != 0 %}
         <a href="{% url 'recAll' id_user=user %}"><h1>Главная</h1></a>
         <a href="{% url 'book_searcher' id_user=user %}"><h1>Книги</h1></a>
         <a href="{% url 'event_searcher' id_user=user %}"><h1>События</h1></a>
-        <a href="{% url 'cultural_center_searcher' id_user=user %}"><h1>Места</h1></a>
-    <a href="{% url 'profile' id_user=user %}"><h1>Личный кабинет</h1></a>
+        <a href="{% url 'section_searcher' id_user=user %}"><h1>кружки</h1></a>
+        <a href="{% url 'profile' id_user=user %}"><h1>Личный кабинет</h1></a>
     {% else %}
         <a href="{% url 'enter_page' %}"><h1>Главная</h1></a>
     {% endif %}
 </header>
 <div>
     <p><b>Название:</b> {{ event.title }}</p>
-    <p><b>Дата:</b> {{ event.date }}</p>
-    <p><b>Город:</b> {{ event.town }}</p>
+    <p><b>Дата начала:</b> {{ event.date_start }}</p>
+    <p><b>Время начала:</b> {{ event.time_start }}</p>
+    <p><b>Дата конца:</b> {{ event.date_end }}</p>
+    <p><b>Время конца:</b> {{ event.time_end }}</p>
+    <p><b>Где:</b> {{ event.name_center }}</p>
     <p><b>Цена:</b> {{ event.price }}</p>
     <p><b>Возрастной рейтинг:</b> {{ event.age_rate }}</p>
-    <p><b>Веб сайт:</b> {{ event.web_site }}</p>
-    <p><b>Соц сети:</b> {{ event.social_net }}</p>
     <p><b>Описание:</b> {{ event.content }}</p>
-    <img src="{{ event.image }}" alt="Image not found">
 </div>
 </body>
 </html>

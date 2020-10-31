@@ -82,9 +82,35 @@ class ColdStart:
         out_keys = [Event.objects.get(id=k) for k, v in out.items()]
         k_event_to_go = out_keys[0:self.k]
 
+        sections = LastSection.objects.all()
+        sections = sections.order_by('-score')
+        sec_d = dict()
+
+        for i in range(0, len(sections)):
+            if sections[i].id_section.id in sec_d.keys():
+                sec_d[sections[i].id_section.id].append(sections[i].score)
+            else:
+                sec_d[sections[i].id_section.id] = [sections[i].score]
+
+        out = dict()
+        for k, v in sec_d.items():
+            avg = 0
+            cnt = 0
+            for score in v:
+                if score:
+                    avg += score
+                    cnt += 1
+            if cnt != 0:
+                out[k] = avg / cnt
+
+        out = {k: v for k, v in sorted(out.items(), key=lambda item: item[1], reverse=True)}
+        out_keys = [Section.objects.get(id=k) for k, v in out.items()]
+        k_section_to_go = out_keys[0:self.k]
+
         dictAllInOne = dict()
         dictAllInOne['Books'] = k_book_to_go
         dictAllInOne['Events'] = k_event_to_go
+        dictAllInOne['Sections'] = k_section_to_go
         return render(request, 'polls/index.html', dictAllInOne)
 
 

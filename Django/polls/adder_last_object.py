@@ -8,6 +8,8 @@ def add_last_object(post, id_user):
         add_last_book(id_user, post['id_book'], status=0)
     if post['type'] == 'event':
         add_last_event(id_user, post['id_event'], status=0)
+    if post['type'] == 'section':
+        add_last_section(id_user, post['id_section'], status=0)
 
 
 def add_last_book(id_user, id_book, status=0, score=5):
@@ -27,6 +29,15 @@ def add_last_event(id_user, id_event, status=0, score=5):
     filter_.update()
 
 
+def add_last_section(id_user, id_section, status=0, score=5):
+    section = Section.objects.get(id=id_section)
+    user = User.objects.get(id=id_user)
+    LastSection.objects.create(id_user=user, id_section=section, status=status, score=score)
+    filter_ = FilteringSections.load_model()
+
+    filter_.update()
+
+
 def read_book(id_user, id_book, status=1, score=8):
     last_book = LastBook.objects.get(id_user=id_user, id_book=id_book)
     last_book.status = status
@@ -40,3 +51,9 @@ def visit_event(id_user, id_event, status=1, score=8):
     last.score = score
     last.save()
 
+
+def visit_section(id_user, id_section, status=1, score=8):
+    last = LastSection.objects.get(id_user=id_user, id_section=id_section)
+    last.status = status
+    last.score = score
+    last.save()

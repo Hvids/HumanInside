@@ -20,9 +20,9 @@
         <br>
     {% endfor %}
     <br>
-    <p><b>Места которые вам могут понравиться:</b></p>
-    {% for parametr in Centers %}
-        <a href="{% url 'cultural_center_detail' id_center=parametr.id id_user=0 %}">{{ parametr.title }}</a>
+    <p><b>Кружки которые вам могут понравиться:</b></p>
+    {% for parametr in Sections %}
+        <a href="{% url 'section_detail' id_section=parametr.id id_user=0 %}">{{ parametr.title }}</a>
         <br>
     {% endfor %}
 </div>

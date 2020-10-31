@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Events</title>
-    <a href="{% url 'recAll' id_user=ID_user %}"><h1>Главная</h1></a>
-    <a href="{% url 'book_searcher' id_user=ID_user %}"><h1>Книги</h1></a>
-    <a href="{% url 'event_searcher' id_user=ID_user %}"><h1>События</h1></a>
-    <a href="{% url 'cultural_center_searcher' id_user=ID_user %}"><h1>Места</h1></a>
-    <a href="{% url 'profile' id_user=ID_user %}"><h1>Личный кабинет</h1></a>
 </head>
 <body>
-
+<header>
+    <a href="{% url 'recAll' id_user=user %}"><h1>Главная</h1></a>
+    <a href="{% url 'book_searcher' id_user=user %}"><h1>Книги</h1></a>
+    <a href="{% url 'event_searcher' id_user=user %}"><h1>События</h1></a>
+    <a href="{% url 'section_searcher' id_user=user %}"><h1>кружки</h1></a>
+    <a href="{% url 'profile' id_user=user %}"><h1>Личный кабинет</h1></a>
+</header>
 <div>
     <h3>Поиск по описанию</h3>
     <form action="{% url 'event_searcher' id_user=ID_user %}" method="POST">
@@ -23,22 +24,22 @@
 
 <div>
     {% for event in recommend_events %}
-    <a href="{% url 'event_detail' id_event=event.id id_user=ID_user %}">{{ event.title }}</a>
+        <a href="{% url 'event_detail' id_event=event.id id_user=ID_user %}">{{ event.title }}</a>
 
-    <form action="{% url 'event_searcher' id_user=ID_user %}" method="post">
+        <form action="{% url 'event_searcher' id_user=ID_user %}" method="post">
 
-        {% csrf_token %}
-        <input type="hidden" name="type" value="event">
-        <input type="hidden" name="id_event" value="{{ event.id }}">
-        <input type="submit" value="Хочу посетить">
-    </form>
-    <form action="{% url 'event_searcher' id_user=ID_user %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="type" value="event">
+            <input type="hidden" name="id_event" value="{{ event.id }}">
+            <input type="submit" value="Хочу посетить">
+        </form>
+        <form action="{% url 'event_searcher' id_user=ID_user %}" method="post">
 
-        {% csrf_token %}
-        <input type="hidden" name="type" value="delete_event">
-        <input type="hidden" name="id_event" value="{{ event.id }}">
-        <input type="submit" value="Удалить из списка">
-    </form>
+            {% csrf_token %}
+            <input type="hidden" name="type" value="delete_event">
+            <input type="hidden" name="id_event" value="{{ event.id }}">
+            <input type="submit" value="Удалить из списка">
+        </form>
     {% endfor %}
 
 </div>
@@ -52,25 +53,25 @@
         <select name="town" required>
             <option value="default">Город</option>
             {% for town in towns %}
-            <option value="{{ town }}">{{ town }}</option>
+                <option value="{{ town }}">{{ town }}</option>
             {% endfor %}
         </select>
         <select name="date" required>
             <option value="default">Дата</option>
             {% for date in dates %}
-            <option value="{{ date }}">{{ date }}</option>
+                <option value="{{ date }}">{{ date }}</option>
             {% endfor %}
         </select>
         <select name="price" required>
             <option value="default">Цена</option>
             {% for price in prices %}
-            <option value="{{ price }}">{{ price }}</option>
+                <option value="{{ price }}">{{ price }}</option>
             {% endfor %}
         </select>
         <select name="age_rate" required>
             <option value="default">Возраст</option>
             {% for age_rate in age_rates %}
-            <option value="{{ age_rate }}">{{ age_rate }}</option>
+                <option value="{{ age_rate }}">{{ age_rate }}</option>
             {% endfor %}
         </select>
         <input type="submit" value="Поиск">
@@ -79,24 +80,24 @@
 
 <div>
     {% for event in finder_events %}
-    <a href="{% url 'event_detail' id_event=event.id id_user=ID_user %}">{{ event.title }}</a>
+        <a href="{% url 'event_detail' id_event=event.id id_user=ID_user %}">{{ event.title }}</a>
 
-    <form action="{% url 'event_searcher' id_user=ID_user %}" method="post">
+        <form action="{% url 'event_searcher' id_user=ID_user %}" method="post">
 
-        {% csrf_token %}
-        <input type="hidden" name="type" value="event">
-        <input type="hidden" name="id_event" value="{{ event.id }}">
-        <input type="submit" value="Хочу посетить">
-    </form>
+            {% csrf_token %}
+            <input type="hidden" name="type" value="event">
+            <input type="hidden" name="id_event" value="{{ event.id }}">
+            <input type="submit" value="Хочу посетить">
+        </form>
 
 
-    <form action="{% url 'event_searcher' id_user=ID_user %}" method="post">
+        <form action="{% url 'event_searcher' id_user=ID_user %}" method="post">
 
-        {% csrf_token %}
-        <input type="hidden" name="type" value="delete_event">
-        <input type="hidden" name="id_event" value="{{ event.id }}">
-        <input type="submit" value="Удалить из списка">
-    </form>
+            {% csrf_token %}
+            <input type="hidden" name="type" value="delete_event">
+            <input type="hidden" name="id_event" value="{{ event.id }}">
+            <input type="submit" value="Удалить из списка">
+        </form>
     {% endfor %}
 
 </div>

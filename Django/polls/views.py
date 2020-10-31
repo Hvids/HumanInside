@@ -29,6 +29,8 @@ def recAll(request, id_user):
             add_last_book(id_user, post['id_book'], status=2, score=1)
         elif post['type'] == 'delete_event':
             add_last_event(id_user, post['id_event'], status=2, score=1)
+        elif post['type'] == 'delete_section':
+            add_last_section(id_user, post['id_section'], status=2, score=1)
         else:
             add_last_object(post, id_user)
 
@@ -44,6 +46,11 @@ def book_detail(request, id_user, id_book):
 def event_detail(request, id_user, id_event):
     event = Event.objects.get(id=id_event)
     return render(request, 'polls/event.html', {'event': event, 'user': id_user})
+
+
+def section_detail(request, id_user, id_section):
+    section = Section.objects.get(id=id_section)
+    return render(request, 'polls/section.html', {'section': section, 'user': id_user})
 
 
 def book_searcher(request, id_user):
@@ -102,13 +109,13 @@ def event_searcher(request, id_user):
     finder_events = []
     if request.method == 'POST':
         post = request.POST
-        type = post['type']
-        if type == 'search_rec':
+        type_ = post['type']
+        if type_ == 'search_rec':
             re = RequestModelEvents.load()
             content = post['content']
             finder_events = re.recommend(id_user, content)
             finder_events = Event.objects.filter(id__in=finder_events)
-        elif type == 'filter_search':
+        elif type_ == 'filter_search':
             filter_dict = {}
             if not post['town'] == 'default':
                 filter_dict['town'] = post['town']
@@ -120,9 +127,9 @@ def event_searcher(request, id_user):
                 filter_dict['age_rate'] = post['age_rate']
             if len(filter_dict.keys()) > 0:
                 finder_events = Event.objects.filter(**filter_dict)
-        elif type == 'event':
+        elif type_ == 'event':
             add_last_event(id_user, post['id_event'], status=0)
-        elif type == 'delete_event':
+        elif type_ == 'delete_event':
             add_last_event(id_user, post['id_event'], score=1, status=2)
     filter_parms = Event.objects.all().values_list('town', 'date', 'price', 'age_rate')
     towns = list(np.unique([t[0] for t in filter_parms]))
@@ -142,3 +149,50 @@ def event_searcher(request, id_user):
                       'recommend_events': recommend_events,
                       "finder_events": finder_events
                   })
+
+
+def section_searcher(request, id_user):
+    pass
+#     section_events = []
+#     if request.method == 'POST':
+#         post = request.POST
+#         type_ = post['type']
+#         if type_ == 'search_rec':
+#             re = RequestModelEvents.load()
+#             content = post['content']
+#             finder_sections = re.recommend(id_user, content)
+#             finder_sections = Event.objects.filter(id__in=finder_sections)
+#         elif type_ == 'filter_search':
+#             filter_dict = {}
+#             if not post['town'] == 'default':
+#                 filter_dict['town'] = post['town']
+#             if not post['date'] == 'default':
+#                 filter_dict['date'] = post['date']
+#             if not post['price'] == 'default':
+#                 filter_dict['price'] = post['price']
+#             if not post['age_rate'] == 'default':
+#                 filter_dict['age_rate'] = post['age_rate']
+#             if len(filter_dict.keys()) > 0:
+#                 finder_sections = Event.objects.filter(**filter_dict)
+#         elif type_ == 'event':
+#             add_last_event(id_user, post['id_event'], status=0)
+#         elif type_ == 'delete_event':
+#             add_last_event(id_user, post['id_event'], score=1, status=2)
+#     filter_parms = Event.objects.all().values_list('town', 'date', 'price', 'age_rate')
+#     towns = list(np.unique([t[0] for t in filter_parms]))
+#     dates = list(np.unique([t[1] for t in filter_parms]))
+#     prices = list(np.unique([t[2] for t in filter_parms]))
+#     age_rates = list(np.unique([t[3] for t in filter_parms]))
+#     ce = ContentBaseEvents.load()
+#     recommend_events = ce.recommend(id_user)
+#     recommend_events = Event.objects.filter(id__in=recommend_events)
+#     return render(request, 'polls/event_search.html',
+#                   {
+#                       'ID_user': id_user,
+#                       'towns': towns,
+#                       'dates': dates,
+#                       'prices': prices,
+#                       'age_rates': age_rates,
+#                       'recommend_events': recommend_events,
+#                       "finder_sections": finder_sections
+#                   })
