@@ -9,11 +9,8 @@ urlpatterns = [
     path('home/user/<int:id_user>/', views.recAll, name='recAll'),
     path('home/user/<int:id_user>/book/<int:id_book>/', views.book_detail, name='book_detail'),
     path('home/user/<int:id_user>/event/<int:id_event>/', views.event_detail, name='event_detail'),
-    path('home/user/<int:id_user>/center/<int:id_center>/', views.cultural_center_detail,
-         name='cultural_center_detail'),
     #  поиск
     path('search/user/<int:id_user>/books/', views.book_searcher, name='book_searcher'),
     path('search/user/<int:id_user>/events/', views.event_searcher, name='event_searcher'),
-    path('search/user/<int:id_user>/cultural_centers/', views.cultural_center_searcher, name='cultural_center_searcher'),
 
 ]

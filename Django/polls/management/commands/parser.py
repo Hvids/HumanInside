@@ -11,7 +11,7 @@ class PreProcessingGenre:
     def make(self, genres):
         genres_set = set('')
         genres_books = []
-        # Сделать множество всех жанров и списко жанров для каждой книги
+        # Сделать множество всех жанров и списков жанров для каждой книги
         for genres_book_str in genres:
             genres_book_list = []
             genres_book_words_list = genres_book_str.split(' ')
@@ -100,27 +100,37 @@ class LibraryBookCreator:
             k += 3
 
 
-class CenterCreator:
-    def create(self, df):
-        for i, row in tqdm(df.iterrows(), desc='Creating centres'):
-            CultureCenter.objects.create(id=row['id'] + 1, title=row['name'], web_site=row['offical_site'],
-                                         underground=row['undegroud'], adress=row['adress'], number=row['number'],
-                                         email=row['email'], social_net=row['social_netwoks'], latitude=row['latitude'],
-                                         longitude=row['logitute'], image=row['img_url'], content=row['content'])
-
-
 class EventCreator:
     def create(self, df):
+        cnt = 0
         for i, row in tqdm(df.iterrows(), desc='Creating events'):
-            center_id = random.randint(1, len(CultureCenter.objects.all()))
-            center = CultureCenter.objects.get(id=center_id)
-            Event.objects.create(id=row['id'] + 1, town=row['town'], title=row['name'], web_site=row['site_buy'],
-                                 date=row['date'], price=row['price'], age_rate=row['age'], image=row['img_url'],
-                                 content=row['content'], id_culture=center)
+            Event.objects.create(id=cnt, title=row['name'], status=row['status'], name_center=row['name_center'],
+                                 type_center=row['type_center'], name_district=['name_district'],
+                                 price=row['price'], type_event=row['type_event'], follow_event=row['folow_event'],
+                                 holiday=row['holiday'], name_holiday=row['name_holiday'], date_start=row['date_start'],
+                                 time_start=row['time_start'], date_end=row['date_end'], time_end=row['time_end'],
+                                 content=row['content'], age_rate=row['age_rate'], age_category=row['age_category'],
+                                 goal_auditory=row['goal_auditory'])
+            if i == 1000:
+                break
+            cnt += 1
+
+
+class SectionCreator:
+    def create(self, df):
+        cnt = 0
+        for i, row in tqdm(df.iterrows(), desc='Creating sections'):
+            Section.objects.create(id=cnt, title=row['name'], type_price=row['type_price'],
+                                   type_schedule=row['type_shedule'], time_learn=row['time_learn'],
+                                   one_duration=row['one_duration'], name_org=row['name_org'],
+                                   street=row['street'], underground=row['undergroud'])
+            if i == 1000:
+                break
+            cnt += 1
 
 
 class UserGen:
-    def create(self, df_center, df_book, df_event):
+    def create(self, df_book, df_event):
         alpha = 'abcdefghijklmnopqrstuvwxyz'
         id_cnt = 1
         counter = 1
@@ -130,18 +140,19 @@ class UserGen:
             id_cnt += 1
             for _ in tqdm(range(0, 10), desc='Forms creating'):
                 id_book = random.randint(1, df_book.shape[0])
-                id_event = random.randint(1, df_event.shape[0])
+                id_event = random.randint(1, 1000)
+                id_section = random.randint(1, 1000)
 
                 book = Book.objects.get(id=id_book)
                 event = Event.objects.get(id=id_event)
-                center = CultureCenter.objects.get(id=event.id_culture.id)
+                section = Section.objects.get(id=id_section)
 
                 score = round(random.uniform(3, 10), 1)
                 if score < 5:
                     score = None
-                LastEvent.objects.create(id=counter, id_user=user, id_event=event, status=True, score=score)
-                LastBook.objects.create(id=counter, id_user=user, id_book=book, status=True, score=score)
-                LastCenter.objects.create(id=counter, id_user=user, id_center=center, status=True, score=score)
+                LastEvent.objects.create(id=counter, id_user=user, id_event=event, status=1, score=score)
+                LastBook.objects.create(id=counter, id_user=user, id_book=book, status=1, score=score)
+                LastSection.objects.create(id=counter, id_user=user, id_section=section, status=1, score=score)
 
                 counter += 1
 
@@ -183,25 +194,23 @@ class Command(BaseCommand):
             library_creator = LibraryBookCreator()
             library_creator.create(df_book, df_lib)
 
-            df = pd.read_csv('../data/csv/cultural_centers.csv')
-            CultureCenter.objects.all().delete()
-            center_creator = CenterCreator()
-            center_creator.create(df)
-
-            df = pd.read_csv('../data/csv/events.csv')
+            df = pd.read_csv('../data/csv_hac/event.df')
             Event.objects.all().delete()
             event_creator = EventCreator()
             event_creator.create(df)
 
-            df_center = pd.read_csv('../data/csv/cultural_centers.csv')
+            df = pd.read_csv('../data/csv_hac/sections.csv')
+            Section.objects.all().delete()
+            section_creator = SectionCreator()
+            section_creator.create(df)
+
             df_book = pd.read_csv('../data/csv/books.csv')
-            df_event = pd.read_csv('../data/csv/events.csv')
+            df_event = pd.read_csv('../data/csv_hac/events.csv')
             User.objects.all().delete()
-            LastCenter.objects.all().delete()
             LastEvent.objects.all().delete()
             LastBook.objects.all().delete()
             user_gen = UserGen()
-            user_gen.create(df_center, df_book, df_event)
+            user_gen.create(df_book, df_event)
 
             print("\n...End parsing...\n")
 
@@ -255,36 +264,35 @@ class Command(BaseCommand):
             library_creator.create(df_book, df_lib)
             print("\n...End parsing...\n")
 
-        elif options['parse__cultural__centers']:
-            # cultural center create
-            print("\n...Start parsing...\n")
-            df = pd.read_csv('../data/csv/cultural_centers.csv')
-            CultureCenter.objects.all().delete()
-            center_creator = CenterCreator()
-            center_creator.create(df)
-            print("\n...End parsing...\n")
-
         elif options['parse__events']:
             # event create
             print("\n...Start parsing...\n")
-            df = pd.read_csv('../data/csv/events.csv')
+            df = pd.read_csv('../data/csv_hac/events.csv')
             Event.objects.all().delete()
             event_creator = EventCreator()
             event_creator.create(df)
             print("\n...End parsing...\n")
 
+        elif options['parse__section']:
+            # section create
+            print("\n...Start parsing...\n")
+            df = pd.read_csv('../data/csv_hac/sections.csv')
+            Section.objects.all().delete()
+            section_creator = SectionCreator()
+            section_creator.create(df)
+            print("\n...End parsing...\n")
+
         elif options['parse__user']:
             # user create
             print("\n...Start parsing...\n")
-            df_center = pd.read_csv('../data/csv/cultural_centers.csv')
             df_book = pd.read_csv('../data/csv/books.csv')
-            df_event = pd.read_csv('../data/csv/events.csv')
+            df_event = pd.read_csv('../data/csv_hac/events.csv')
             User.objects.all().delete()
-            LastCenter.objects.all().delete()
             LastEvent.objects.all().delete()
             LastBook.objects.all().delete()
+            LastSection.objects.all().delete()
             user_gen = UserGen()
-            user_gen.create(df_center, df_book, df_event)
+            user_gen.create(df_book, df_event)
             print("\n...End parsing...\n")
 
     def add_arguments(self, parser):
@@ -345,19 +353,19 @@ class Command(BaseCommand):
         )
 
         parser.add_argument(
-            '-c',
-            '--parse--cultural--centers',
-            action='store_true',
-            default=False,
-            help='Parsing cultural centers'
-        )
-
-        parser.add_argument(
             '-e',
             '--parse--events',
             action='store_true',
             default=False,
             help='Parsing events'
+        )
+
+        parser.add_argument(
+            '-c',
+            '--parse--section',
+            action='store_true',
+            default=False,
+            help='Parsing sections'
         )
 
         parser.add_argument(

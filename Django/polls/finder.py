@@ -31,7 +31,6 @@ class FinderBase:
         dictAllInOne['ID_user'] = id_user
         dictAllInOne['Books'] = allInOne[0]
         dictAllInOne['Events'] = allInOne[1]
-        dictAllInOne['Centers'] = allInOne[2]
         return render(request, 'polls/home.html', dictAllInOne)
 
 
@@ -45,14 +44,8 @@ class FinderEvent(FinderBase):
         super(FinderEvent, self).__init__(loader_type, get_type)
 
 
-class FinderCenter(FinderBase):
-    def __init__(self, loader_type=FilteringCulturalCenters.load_model(), get_type=CultureCenter):
-        super(FinderCenter, self).__init__(loader_type, get_type)
-
-
 class FindAll(FinderBase):
-    def __init__(self, loader_type=[FilteringBooks.load_model(), FilteringEvents.load_model(),
-                                    FilteringCulturalCenters.load_model()], get_type=[Book, Event, CultureCenter]):
+    def __init__(self, loader_type=[FilteringBooks.load_model(), FilteringEvents.load_model()], get_type=[Book, Event]):
         super(FindAll, self).__init__(loader_type, get_type)
 
 
@@ -89,18 +82,9 @@ class ColdStart:
         out_keys = [Event.objects.get(id=k) for k, v in out.items()]
         k_event_to_go = out_keys[0:self.k]
 
-        k_center_to_go = set()
-        for event_key in out_keys:
-            event = Event.objects.get(id=event_key.id)
-            k_center_to_go.add(CultureCenter.objects.get(id=event.id_culture.id))
-
-        k_center_to_go = [i for i in k_center_to_go]
-        k_center_to_go = k_center_to_go[0:self.k]
-
         dictAllInOne = dict()
         dictAllInOne['Books'] = k_book_to_go
         dictAllInOne['Events'] = k_event_to_go
-        dictAllInOne['Centers'] = k_center_to_go
         return render(request, 'polls/index.html', dictAllInOne)
 
 
@@ -127,7 +111,3 @@ class ColdStart:
 # out = {k: v for k, v in sorted(out.items(), key=lambda item: item[1], reverse=True)}
 # out_keys = [Event.objects.get(id=k) for k, v in out.items()]
 # # k_event_to_go = out_keys[0:self.k]
-# k_center_to_go = set()
-# for event_key in out_keys:
-#     event = Event.objects.get(id=event_key.id)
-#     k_center_to_go.add(CultureCenter.objects.get(id=event.id_culture.id))

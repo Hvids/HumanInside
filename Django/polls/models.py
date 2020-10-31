@@ -14,7 +14,7 @@ class BooksInLibrary(models.Model):
 class LastBook(models.Model):
     id_user = models.ForeignKey('User', on_delete=models.CASCADE)
     id_book = models.ForeignKey('Book', on_delete=models.CASCADE)
-    status = models.BooleanField()
+    status = models.IntegerField()
     score = models.FloatField(null=True, blank=True, default=None)
 
     def __str__(self):
@@ -22,21 +22,10 @@ class LastBook(models.Model):
                f' status: {self.status}, score{self.score}'
 
 
-class LastCenter(models.Model):
-    id_user = models.ForeignKey('User', on_delete=models.CASCADE)
-    id_center = models.ForeignKey('CultureCenter', on_delete=models.CASCADE)
-    status = models.BooleanField()
-    score = models.FloatField(null=True, blank=True, default=None)
-
-    def __str__(self):
-        return f'ID: {self.id}, ID user: {self.id_user}, ID center: {self.id_center},' \
-               f' status: {self.status}, score{self.score}'
-
-
 class LastEvent(models.Model):
     id_event = models.ForeignKey('Event', on_delete=models.CASCADE)
     id_user = models.ForeignKey('User', on_delete=models.CASCADE)
-    status = models.BooleanField()
+    status = models.IntegerField()
     score = models.FloatField(null=True, blank=True, default=None)
 
     def __str__(self):
@@ -57,43 +46,52 @@ class User(models.Model):
 
 
 class Event(models.Model):
-    town = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
+    status = models.CharField(max_length=255)
+    name_center = models.CharField(max_length=255)
+    type_center = models.CharField(max_length=255)
+    name_district = models.CharField(max_length=255)
     price = models.CharField(max_length=255)
+    type_event = models.CharField(max_length=255)
+    follow_event = models.CharField(max_length=255)
+    holiday = models.CharField(max_length=255)
+    name_holiday = models.CharField(max_length=255)
+    date_start = models.CharField(max_length=255)
+    time_start = models.CharField(max_length=255)
+    date_end = models.CharField(max_length=255)
+    time_end = models.CharField(max_length=255)
+    content = models.TextField()
     age_rate = models.CharField(max_length=255)
-    social_net = models.URLField()
-    date = models.CharField(max_length=255)
-    web_site = models.URLField()
-    id_culture = models.ForeignKey('CultureCenter', on_delete=models.CASCADE)
-    title = models.CharField(max_length=255)
-    image = models.URLField()
-    content = models.TextField()
+    age_category = models.CharField(max_length=255)
+    goal_auditory = models.CharField(max_length=255)
 
     def __str__(self):
-        return f'ID: {self.id}, town: {self.town}, price: {self.price}, age rate: {self.age_rate}, social_net: ' \
-               f'{self.social_net}, date: {self.date}, web site: {self.web_site}, ID culture: {self.id_culture}, ' \
-               f'title: {self.title}, image: {self.image},' \
-               f'\n content: {self.content}'
+        return f'ID: {self.id}, title: {self.title}'
 
 
-class CultureCenter(models.Model):
-    adress = models.CharField(max_length=255)
-    number = models.CharField(max_length=255)
-    email = models.EmailField()
-    social_net = models.TextField()
+class LastSection(models.Model):
+    id_user = models.ForeignKey('User', on_delete=models.CASCADE)
+    id_section = models.ForeignKey('Section', on_delete=models.CASCADE)
+    status = models.IntegerField()
+    score = models.FloatField(null=True, blank=True, default=None)
+
+    def __str__(self):
+        return f'ID: {self.id}, ID event: {self.id_section}, ID user: {self.id_user},' \
+               f' status: {self.status} score{self.score}'
+    
+
+class Section(models.Model):
+    title = models.CharField(max_length=255)
+    type_price = models.CharField(max_length=255)
+    type_schedule = models.CharField(max_length=255)
+    time_learn = models.CharField(max_length=255)
+    one_duration = models.CharField(max_length=255)
+    name_org = models.CharField(max_length=255)
+    street = models.CharField(max_length=255)
     underground = models.CharField(max_length=255)
-    latitude = models.FloatField()
-    longitude = models.FloatField()
-    web_site = models.URLField()
-    title = models.CharField(max_length=255)
-    image = models.URLField()
-    content = models.TextField()
 
     def __str__(self):
-        return f'ID: {self.id}, adress: {self.adress}, number: {self.number}, email: {self.email}, social net: ' \
-               f'{self.social_net}, underground: {self.underground}, latitude: {self.latitude}, ' \
-               f'longitude: {self.longitude}, web site: {self.web_site}, title: {self.title}, ' \
-               f'image: {self.image},' \
-               f'\n content: {self.content}'
+        return f'ID: {self.id}, title: {self.title}'
 
 
 class Genre(models.Model):

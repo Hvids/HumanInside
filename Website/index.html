@@ -65,7 +65,7 @@
                             <div class="book_rating_word">Рейтинг: </div>
                             <div class="book_rating_value">4.6</div>
                         </div>
-                        <select>
+                        <select class="book_selector">
                             <option value="" disabled="disabled" selected="selected">Подробнее</option>
                             <option value="choose_book">Выбрать книгу</option>
                             <option value="add_to_interesting">Интересно</option>
@@ -82,7 +82,7 @@
                             <div class="book_rating_word">Рейтинг: </div>
                             <div class="book_rating_value">4.8</div>
                         </div>
-                        <select>
+                        <select class="book_selector">
                             <option value="" disabled="disabled" selected="selected">Подробнее</option>
                             <option value="choose_book">Выбрать книгу</option>
                             <option value="add_to_interesting">Интересно</option>
@@ -99,7 +99,7 @@
                             <div class="book_rating_word">Рейтинг: </div>
                             <div class="book_rating_value">4.7</div>
                         </div>
-                        <select>
+                        <select class="book_selector">
                             <option value="" disabled="disabled" selected="selected">Подробнее</option>
                             <option value="choose_book">Выбрать книгу</option>
                             <option value="add_to_interesting">Интересно</option>
@@ -112,7 +112,45 @@
             <div class="bg_div bg_big_div bg_div__events">
                 <div class="block_name_div">Рекомендация событий</div>
                 <div class="block_title_name_div">События для вас</div>
+
+                <div class="bg_big_div recommendations_items">
+                    <div class="flex_item flex_item_event">
+                        <div class="image_bg"></div>
+                        <img class="event_img" src="images/main_page/event_recommendations/event1.png" alt="">
+                        <div class="event_name">Клубняк-тусняк</div>
+                        <div class="event_description">Приходите к нам в сельский клуб! Погрузитесь в мир
+                        незабываемых приключений и детских забав. Детям до 7 лет скидка на алкоголь!</div>
+                        <div class="event_date">Дата: 8 ноября</div>
+                        <div class="event_time">Начало: 17:00</div>
+                        <div class="event_place">Место: Культурный центр ЗИЛ</div>
+
+
+                        <select class="event_selector">
+                            <option value="" disabled="disabled" selected="selected">Подробнее</option>
+                            <option value="choose_book">Посетить</option>
+                            <option value="not_interested">Не интересно</option>
+                        </select>
+                    </div>
+
+                    <div class="flex_item flex_item_event">
+                        <div class="image_bg"></div>
+                        <img class="event_img" src="images/main_page/event_recommendations/event2.png" alt="">
+                        <div class="event_name">Бальный вечер</div>
+                        <div class="event_description">Давно не танцевали со своей второй половинкой? Теперь у вас
+                        есть уникальная возможность вспомнить молодость и тряхнуть стариной!</div>
+                        <div class="event_date">Дата: 8 ноября</div>
+                        <div class="event_time">Начало: 17:00</div>
+                        <div class="event_place">Место: ВДНХ</div>
+
+                        <select class="event_selector">
+                            <option value="" disabled="disabled" selected="selected">Подробнее</option>
+                            <option value="choose_book">Посетить</option>
+                            <option value="not_interested">Не интересно</option>
+                        </select>
+                    </div>
+                </div>
             </div>
+
             <div class="bg_div bg_big_div bg_div__places">
                 <div class="block_name_div">Рекомендация мест</div>
                 <div class="block_title_name_div">Места для вас</div>
