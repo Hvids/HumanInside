@@ -85,19 +85,3 @@ class FilteringEvents(Filtering):
         maker_filter_model = MakerFilteringModelEvents()
         super(FilteringEvents, self).update(maker_filter_matrix, maker_filter_model)
         return FilteringBooks.load_model()
-
-
-class FilteringCulturalCenters(Filtering):
-
-    @classmethod
-    def load_model(cls, name_data=FILTER_MATRIX_USERS_CULTURAL_CENTERS, path_data=PATH_DATA_CSV,
-                   name_model=FILTERING_MODEL_CULTURAL_CENTERS, path_model=PATH_MODELS, k=5):
-        model = cls.load(name_model, path_model)
-        df = pd.read_csv(path_data + name_data + '.csv')
-        return cls(df, model, LastObject=LastCenter, name_object='id_center', k=k)
-
-    def update(self):
-        maker_filter_matrix = MakerFilteringMatrixCulturalCenters()
-        maker_filter_model = MakerFilteringModelCulturalCenters()
-        super(FilteringCulturalCenters, self).update(maker_filter_matrix, maker_filter_model)
-        return FilteringBooks.load_model()

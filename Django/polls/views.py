@@ -16,8 +16,7 @@ def index(request):
 
 
 def recommend(request, id_user):
-    finder = FinderCenter()
-    # finder = FinderBook()
+    finder = FinderBook()
     # finder = FinderEvent
     return finder.find(request, id_user)
 
@@ -30,8 +29,6 @@ def recAll(request, id_user):
             add_last_book(id_user, post['id_book'], status=2, score=1)
         elif post['type'] == 'delete_event':
             add_last_event(id_user, post['id_event'], status=2, score=1)
-        elif post['type'] == 'delete_cultural_center':
-            add_last_cultural_center(id_user, post['id_cultural_center'], status=2, score=1)
         else:
             add_last_object(post, id_user)
 
@@ -42,11 +39,6 @@ def recAll(request, id_user):
 def book_detail(request, id_user, id_book):
     book = Book.objects.get(id=id_book)
     return render(request, 'polls/book.html', {'book': book, 'user': id_user})
-
-
-def cultural_center_detail(request, id_user, id_center):
-    cultural_center = CultureCenter.objects.get(id=id_center)
-    return render(request, 'polls/CulturalCenter.html', {'cultural_center': cultural_center, 'user': id_user})
 
 
 def event_detail(request, id_user, id_event):
@@ -149,38 +141,4 @@ def event_searcher(request, id_user):
                       'age_rates': age_rates,
                       'recommend_events': recommend_events,
                       "finder_events": finder_events
-                  })
-
-
-def cultural_center_searcher(request, id_user):
-    finder_cultural_centers = []
-    if request.method == 'POST':
-        post = request.POST
-        type = post['type']
-        if type == 'search_rec':
-            rc = RequestModelCulturalCenters.load()
-            finder_cultural_centers = rc.recommend(id_user, post['content'])
-            finder_cultural_centers = CultureCenter.objects.filter(id__in=finder_cultural_centers)
-        elif type == 'cultural_center':
-            add_last_cultural_center(id_user, post['id_cultural_center'], status=0)
-        elif type == 'delete_cultural_center':
-            add_last_cultural_center(id_user, post['id_cultural_center'], status=2, score=1)
-        elif type == 'filter_search':
-            filter_dict = {}
-            if not post['underground'] == 'default':
-                filter_dict['underground'] = post['underground']
-                finder_cultural_centers = CultureCenter.objects.filter(**filter_dict)
-
-    undergrounds = CultureCenter.objects.all().values_list('underground')
-    undergrounds = list(np.unique([u[0] for u in undergrounds]))
-    cc = ContentBaseCulturalCenters.load()
-
-    recommend_cultural_centers = cc.recommend(id_user)
-    recommend_cultural_centers = CultureCenter.objects.filter(id__in=recommend_cultural_centers)
-    return render(request, 'polls/cultural_center_search.html',
-                  {
-                      'ID_user': id_user,
-                      'undergrounds': undergrounds,
-                      'recommend_cultural_centers': recommend_cultural_centers,
-                      "finder_cultural_centers": finder_cultural_centers
                   })
