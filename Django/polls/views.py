@@ -156,47 +156,39 @@ def event_searcher(request, id_user):
 
 
 def section_searcher(request, id_user):
-    pass
-#     section_events = []
-#     if request.method == 'POST':
-#         post = request.POST
-#         type_ = post['type']
-#         if type_ == 'search_rec':
-#             re = RequestModelEvents.load()
-#             content = post['content']
-#             finder_sections = re.recommend(id_user, content)
-#             finder_sections = Event.objects.filter(id__in=finder_sections)
-#         elif type_ == 'filter_search':
-#             filter_dict = {}
-#             if not post['town'] == 'default':
-#                 filter_dict['town'] = post['town']
-#             if not post['date'] == 'default':
-#                 filter_dict['date'] = post['date']
-#             if not post['price'] == 'default':
-#                 filter_dict['price'] = post['price']
-#             if not post['age_rate'] == 'default':
-#                 filter_dict['age_rate'] = post['age_rate']
-#             if len(filter_dict.keys()) > 0:
-#                 finder_sections = Event.objects.filter(**filter_dict)
-#         elif type_ == 'event':
-#             add_last_event(id_user, post['id_event'], status=0)
-#         elif type_ == 'delete_event':
-#             add_last_event(id_user, post['id_event'], score=1, status=2)
-#     filter_parms = Event.objects.all().values_list('town', 'date', 'price', 'age_rate')
-#     towns = list(np.unique([t[0] for t in filter_parms]))
-#     dates = list(np.unique([t[1] for t in filter_parms]))
-#     prices = list(np.unique([t[2] for t in filter_parms]))
-#     age_rates = list(np.unique([t[3] for t in filter_parms]))
-#     ce = ContentBaseEvents.load()
-#     recommend_events = ce.recommend(id_user)
-#     recommend_events = Event.objects.filter(id__in=recommend_events)
-#     return render(request, 'polls/event_search.html',
-#                   {
-#                       'ID_user': id_user,
-#                       'towns': towns,
-#                       'dates': dates,
-#                       'prices': prices,
-#                       'age_rates': age_rates,
-#                       'recommend_events': recommend_events,
-#                       "finder_sections": finder_sections
-#                   })
+    finder_sections = []
+    if request.method == 'POST':
+        post = request.POST
+        type_ = post['type']
+
+        if type_ == 'filter_search':
+            filter_dict = {}
+            if not post['type_price'] == 'default':
+                filter_dict['type_price'] = post['type_price']
+            if not post['type_schedule'] == 'default':
+                filter_dict['type_schedule'] = post['type_schedule']
+            if not post['underground'] == 'default':
+                filter_dict['underground'] = post['underground']
+            if len(filter_dict.keys()) > 0:
+                finder_sections = Section.objects.filter(**filter_dict)
+        elif type_ == 'section':
+            add_last_section(id_user, post['id_section'], status=0)
+        elif type_ == 'delete_section':
+            add_last_section(id_user, post['id_section'], score=1, status=2)
+    cs = ContentBaseSections.load()
+    recommend_sections = cs.recommend(id_user)
+    recommend_sections = Event.objects.filter(id__in=recommend_sections)
+    filter_parms = Section.objects.all().values_list('type_price', 'type_schedule', 'underground')
+    type_prices = list(np.unique([t[0] for t in filter_parms]))
+    type_schedules = list(np.unique([t[1] for t in filter_parms]))
+    undergrounds = list(np.unique([t[2] for t in filter_parms]))
+    return render(request, 'polls/section_search.html',
+                  {
+                      'ID_user': id_user,
+                      'type_prices': type_prices,
+                      'type_schedules': type_schedules,
+                      'undergrounds': undergrounds,
+                      'recommend_sections': recommend_sections,
+                      'finder_sections': finder_sections
+
+                  })
