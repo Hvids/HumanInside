@@ -61,10 +61,6 @@ def book_searcher(request, id_user):
     authors = list(np.unique(authors))
     genres = Genre.objects.all()
 
-    cb = ContentBaseBooks.load()
-    rec_ids_book = cb.recommend(id_user)
-    recommend_book = Book.objects.filter(id__in=rec_ids_book)
-
     if request.method == 'POST':
 
         post = request.POST
@@ -80,6 +76,13 @@ def book_searcher(request, id_user):
             print(content)
             rec_list = rec_model.recommend(id_user, content)
             books = Book.objects.filter(id__in=rec_list)
+
+
+
+    cb = ContentBaseBooks.load()
+    rec_ids_book = cb.recommend(id_user)
+    recommend_book = Book.objects.filter(id__in=rec_ids_book)
+
 
     if request.method == 'GET':
 

@@ -5,6 +5,9 @@ from polls.models import *
 from recommendation_system.FilteringModels import *
 from polls.views import *
 
+from polls.adder_last_object import *
+
+
 def register(request):
     err = None
     if request.method == "POST":
@@ -62,6 +65,22 @@ def logout(request):
 
 
 def profile(request, id_user):
+    if request.method == 'POST':
+        post = request.POST
+        type = post['type']
+        if type == 'read_book':
+            read_book(id_user, post['id_book'])
+        if type == 'delete_book':
+            read_book(id_user, post['id_book'], score=1)
+        if type == 'visit_event':
+            visit_event(id_user, post['id_event'])
+        if type == 'delete_event':
+            visit_event(id_user, post['id_event'], score=1)
+        if type == 'visit_cultural_center':
+            visit_cultural_center(id_user, post['id_cultural_center'])
+        if type == 'delete_cultural_center':
+            visit_cultural_center(id_user, post['id_cultural_center'], score=1)
+
     to_read = LastBook.objects.filter(id_user=id_user, status=False).values_list('id_book')
     to_read = [i[0] for i in to_read]
     to_read = Book.objects.filter(id__in=to_read)
