@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="{% static 'polls/styles/style.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'polls/styles/fonts.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+</head>
+<body>
+<div class="container__outer">
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <a class="title__link" href="#">РекСерв.Мск</a>
+
+                <nav class="nav">
+                     <a class="nav__link" href="{% url 'enter_page' %}"><h1>Главная</h1></a>
+                    <a class="nav__link" href="{% url 'book_searcher' id_user=ID_user %}"><h1>Книги</h1></a>
+                    <a class="nav__link" href="{% url 'event_searcher' id_user=ID_user %}"><h1>События</h1></a>
+                    <a class="nav__link" href="{% url 'section_searcher' id_user=ID_user %}"><h1>Кружки</h1></a>
+                    <a class="nav__link" href="{% url 'profile' id_user=ID_user %}"><h1>Личный кабинет</h1></a>
+                </nav>
+
+                <a class="login__box" href="#">
+                    Войти
+                </a>
+
+            </div>
+        </div>
+    </header>
+    <div class="main_content">
+        <div class="main_image">
+            <div class="main_image__main__text">
+                <div class="main__text__help">Найдём всё, что </div>
+                <div class="main__text__help main__text__help_u">Вам нравится</div>
+            </div>
+
+            <div class="main_image__secondary__text__1">События</div>
+            <div class="main_image__secondary__text__2">Книги</div>
+            <div class="main_image__secondary__text__3">Места</div>
+
+            <div class="bg_div bg_div__main"></div>
+            <img class="line__main" src="{% static 'polls/images/main_page/welcome/main_image_line.png' %}" alt="">
+            <img class="boy__main" src="{% static 'polls/images/main_page/welcome/main_image_boy.png' %}" alt="Happy boy">
+            <img class="girl__main" src="{% static 'polls/images/main_page/welcome/main_image_girl.png' %}" alt="Happy girl">
+
+        </div>
+        <div class="recommendations">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
