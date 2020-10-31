@@ -111,7 +111,7 @@
 }
 
 .bg_big_div {
-    height: 430px;
+    height: 500px;
 }
 
 .bg_div__recommend {
@@ -274,7 +274,7 @@
     position: relative;
 
     width: 30%;
-    height: 68%;
+    height: 75%;
 
     top: 20%;
     margin-left: 4%;
@@ -297,13 +297,15 @@
     position: relative;
 
     display: block;
+
+    margin-top: 5%;
     margin-left: auto;
     margin-right: auto;
 
-    margin-top: 5%;
-
     width: 60%;
-    height: auto;
+    height: 55%;
+
+    border-radius: 20px;
 
     opacity: 100%;
 }
@@ -312,6 +314,8 @@
     position: relative;
 
     text-align: center;
+
+    white-space: normal;
 
     display: block;
     margin-top: 5%;
@@ -333,15 +337,20 @@
 }
 
 .flex_item > .book_rating {
-    display: inline-flex;
-    justify-content: center;
+    position: relative;
 
-    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+
+    margin-top: 2%;
 }
 
 .book_rating > .book_rating_word {
     position: relative;
-    
+
+    white-space: pre;
+
     font-family: "Roboto Regular", serif;
     font-size: 15px;
     opacity: 100%;
@@ -349,7 +358,21 @@
 
 .book_rating > .book_rating_value {
     position: relative;
+
     font-family: "Roboto Bold", serif;
     font-size: 20px;
     opacity: 69%;
+}
+
+.flex_item > select {
+    position: absolute;
+
+    left: 50%;
+    bottom: 5%;
+    transform: translate(-50%);
+
+    border-radius: 10px;
+    border-color: white;
+
+    z-index: 99;
 }
