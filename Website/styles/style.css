@@ -364,7 +364,7 @@
     opacity: 69%;
 }
 
-.flex_item > select {
+.flex_item > .book_selector {
     position: absolute;
 
     left: 50%;
@@ -375,4 +375,85 @@
     border-color: white;
 
     z-index: 99;
+}
+
+.flex_item > .event_img {
+    position: relative;
+
+    float: left;
+
+    width: 40%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.flex_item > .event_name {
+    position: relative;
+
+    margin-top: 5%;
+
+    font-family: "Roboto Medium", serif;
+    font-size: 17px;
+
+    z-index: 99;
+}
+
+.flex_item_event {
+    position: relative;
+
+    width: 40%;
+    height: 75%;
+
+    top: 20%;
+    margin-left: 3%;
+    margin-right: 3%;
+}
+
+.flex_item > .event_description {
+    position: relative;
+
+    font-family: "Roboto Regular", serif;
+    font-size: 15px;
+
+    margin-right: 3%;
+    margin-top: 5%;
+}
+
+.flex_item > .event_date {
+    position: absolute;
+
+    font-family: "Roboto Regular", serif;
+    font-size: 15px;
+
+    bottom: 30%;
+    margin-left: 5%;
+}
+
+.flex_item > .event_time {
+    position: absolute;
+
+    font-family: "Roboto Regular", serif;
+    font-size: 15px;
+
+    bottom: 25%;
+    margin-left: 5%;
+}
+
+.flex_item > .event_place {
+    position: absolute;
+
+    font-family: "Roboto Regular", serif;
+    font-size: 15px;
+
+    bottom: 20%;
+    margin-left: 5%;
+}
+
+.flex_item > .event_selector {
+    position: absolute;
+
+    bottom: 10%;
+    right: 5%;
+
+    border-radius: 10px;
 }
