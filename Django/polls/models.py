@@ -78,7 +78,7 @@ class LastSection(models.Model):
     def __str__(self):
         return f'ID: {self.id}, ID event: {self.id_section}, ID user: {self.id_user},' \
                f' status: {self.status} score{self.score}'
-    
+
 
 class Section(models.Model):
     title = models.CharField(max_length=255)
