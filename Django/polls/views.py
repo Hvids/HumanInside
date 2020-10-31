@@ -68,6 +68,11 @@ def book_searcher(request, id_user):
             add_last_book(id_user, post['id_book'], status=0)
         elif type_ == 'delete_book':
             add_last_book(id_user, post['id_book'], status=2, score=1)
+        elif type_ == 'search_title':
+            pattern = post['pattern']
+            nearest_ids = search_by_name(pattern, Book)
+            books = Book.objects.filter(id__in=nearest_ids)
+
         else:
             rec_model = RequestModelBooks.load()
 
@@ -115,6 +120,10 @@ def event_searcher(request, id_user):
             content = post['content']
             finder_events = re.recommend(id_user, content)
             finder_events = Event.objects.filter(id__in=finder_events)
+        elif type_ == 'search_title':
+            pattern = post['pattern']
+            nearest_ids = search_by_name(pattern, Event)
+            finder_events = Event.objects.filter(id__in=nearest_ids)
         elif type_ == 'filter_search':
             filter_dict = {}
             if not post['type_center'] == 'default':
@@ -171,6 +180,10 @@ def section_searcher(request, id_user):
                 filter_dict['underground'] = post['underground']
             if len(filter_dict.keys()) > 0:
                 finder_sections = Section.objects.filter(**filter_dict)
+        elif type_ == 'search_title':
+            pattern = post['pattern']
+            nearest_ids = search_by_name(pattern, Event)
+            finder_sections = Event.objects.filter(id__in=nearest_ids)
         elif type_ == 'section':
             add_last_section(id_user, post['id_section'], status=0)
         elif type_ == 'delete_section':

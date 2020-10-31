@@ -8,3 +8,4 @@ pymorphy2
 sklearn
 scipy
 django-crispy-forms
+python-Levenshtein
