@@ -29,8 +29,6 @@ class RequestModelBase:
         objects_read_user = self.SelectObject.objects.filter(id_user=id_user).order_by('-id').values_list(self.id_name)
         objects_read_user = self.get_list(objects_read_user)
         content = self.maker_matrix.make_content(df_text, fit=False)
-        print(self.df.drop('id', axis=1).shape)
-        print(content.shape)
         cosine_similarities = linear_kernel(content.values, self.df.drop('id', axis=1).values)
         similar_indices = cosine_similarities[0].argsort()[::-1]
         similar_items = [int(self.df['id'][i]) for i in similar_indices if int(self.df['id'][i])]
