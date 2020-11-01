@@ -17,16 +17,16 @@
     <h3>Мои книги</h3>
 
     {% for each in book %}
-        <a href="{% url 'book_detail' id_book=each.id id_user=user %}">{{ each.title }}</a>
+        <a href="{% url 'book_detail' id_book=each.id id_user=ID_user %}">{{ each.title }}</a>
 
-        <form action="{% url 'profile' id_user=user %}" method="post">
+        <form action="{% url 'profile' id_user=ID_user %}" method="post">
 
             {% csrf_token %}
             <input type="hidden" name="type" value="read_book">
             <input type="hidden" name="id_book" value="{{ each.id }}">
             <input type="submit" value="Хочу прочитать">
         </form>
-        <form action="{% url 'profile' id_user=user %}" method="post">
+        <form action="{% url 'profile' id_user=ID_user %}" method="post">
 
             {% csrf_token %}
             <input type="hidden" name="type" value="delete_book">
@@ -37,7 +37,7 @@
 
     <h3>Мои события</h3>
     {% for each in event %}
-        <a href="{% url 'event_detail' id_event=each.id id_user=user %}">{{ each.title }}</a>
+        <a href="{% url 'event_detail' id_event=each.id id_user=ID_user %}">{{ each.title }}</a>
 
         <form action="{% url 'profile' id_user=user %}" method="post">
 
@@ -46,7 +46,7 @@
             <input type="hidden" name="id_event" value="{{ each.id }}">
             <input type="submit" value="Посетил">
         </form>
-        <form action="{% url 'profile' id_user=user %}" method="post">
+        <form action="{% url 'profile' id_user=ID_user %}" method="post">
 
             {% csrf_token %}
             <input type="hidden" name="type" value="delete_event">
@@ -58,16 +58,16 @@
 
     <h3>Мои кружки</h3>
     {% for each in section %}
-        <a href="{% url 'section_detail' id_section=each.id id_user=user %}">{{ each.title }}</a>
+        <a href="{% url 'section_detail' id_section=each.id id_user=ID_user %}">{{ each.title }}</a>
 
-        <form action="{% url 'profile' id_user=user %}" method="post">
+        <form action="{% url 'profile' id_user=ID_user %}" method="post">
 
             {% csrf_token %}
             <input type="hidden" name="type" value="visit_section">
             <input type="hidden" name="id_section" value="{{ each.id }}">
             <input type="submit" value="Посетил">
         </form>
-        <form action="{% url 'profile' id_user=user %}" method="post">
+        <form action="{% url 'profile' id_user=ID_usergit  %}" method="post">
 
             {% csrf_token %}
             <input type="hidden" name="type" value="delete_section">
