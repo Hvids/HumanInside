@@ -1,107 +1,142 @@
 {% extends 'polls/base.html' %}
 {% block content %}
 <div>
-    <h3>Поиск по описанию</h3>
+    <h3>Я знаю что ищу</h3>
+
     <form action="{% url 'event_searcher' id_user=ID_user %}" method="POST">
+        <label for="src"> По описанию </label>
         {% csrf_token %}
         <input type="hidden" name="type" value="search_rec">
-        <input id="content" type="text" name="content" maxlength="255" required>
-        <input type="submit" value="Найти">
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <input type="submit" value="Найти" class="btn btn-light btn-sm ">
+            </div>
+            <input type="text" name="content" maxlength="255" required class="form-control col-sm-5"
+                   aria-label="Sizing example input">
+        </div>
+
     </form>
 </div>
 
 <div>
-    <h3>Поиск по названию</h3>
     <form action="{% url 'event_searcher' id_user=ID_user %}" method="POST">
+        <label for="src"> По названию </label>
         {% csrf_token %}
         <input type="hidden" name="type" value="search_title">
-        <input type="text" name="pattern" maxlength="255" required>
-        <input type="submit" value="Найти">
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <input type="submit" value="Найти" class="btn btn-light btn-sm ">
+            </div>
+            <input type="text" name="pattern" maxlength="255" required class="form-control col-sm-5"
+                   aria-label="Sizing example input">
+        </div>
     </form>
 </div>
 
 <div>
-    {% for event in recommend_events %}
-        <a href="{% url 'event_detail' id_event=event.id id_user=ID_user %}">{{ event.title }}</a>
+    <div class="bg_div bg_big_div bg_div__events">
+        <div class="container">
+            <div class="row pb-5 pt-5">
+                <div class="col">
+                    <h2 class="text-white"> События до вас для вас</h2>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row ">
+                {% for event in recommend_events %}
+                <div class="col bg-white rounded m-1">
+                    <a href="{% url 'event_detail' id_event=event.id id_user=ID_user %}" class="text-dark">{{ event.title }}</a>
+                    <div class="event_date pb-1 text-secondary">{{ event.date_start }}</div>
+                    <div class="event_place pb-1 text-secondary">{{ event.name_center }}</div>
+                    <form action="{% url 'event_searcher' id_user=ID_user %}" method="post" class="pb-1">
 
-        <form action="{% url 'event_searcher' id_user=ID_user %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="type" value="event">
+                        <input type="hidden" name="id_event" value="{{ event.id }}">
+                        <input type="submit" value="Хочу посетить" class="btn btn-light btn-sm">
+                    </form>
+                    <form action="{% url 'event_searcher' id_user=ID_user %}" method="post">
 
-            {% csrf_token %}
-            <input type="hidden" name="type" value="event">
-            <input type="hidden" name="id_event" value="{{ event.id }}">
-            <input type="submit" value="Хочу посетить">
-        </form>
-        <form action="{% url 'event_searcher' id_user=ID_user %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="type" value="delete_event">
+                        <input type="hidden" name="id_event" value="{{ event.id }}">
+                        <input type="submit" value="Не интресено" class="btn btn-light btn-sm">
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 
-            {% csrf_token %}
-            <input type="hidden" name="type" value="delete_event">
-            <input type="hidden" name="id_event" value="{{ event.id }}">
-            <input type="submit" value="Удалить из списка">
-        </form>
-    {% endfor %}
 
 </div>
 
 
 <div>
-    <h3>Подобрать событие</h3>
-    <form action="{% url 'event_searcher' id_user=ID_user %}" method="POST">
+
+    <form action="{% url 'event_searcher' id_user=ID_user %}" method="POST" class="mt-5 mb-5">
         {% csrf_token %}
+        <h2>Выбрать фильтр</h2>
         <input type="hidden" name="type" value="filter_search">
-        <select name="type_center" required>
+        <select name="type_center" required class="form-control col-sm-5">
             <option value="default">Тип центра</option>
             {% for type_center in type_centers %}
-                <option value="{{ type_center }}">{{ type_center }}</option>
+            <option value="{{ type_center }}">{{ type_center }}</option>
             {% endfor %}
         </select>
-        <select name="price" required>
+        <select name="price" required class="form-control col-sm-5">
             <option value="default">Цена</option>
             {% for price in prices %}
-                <option value="{{ price }}">{{ price }}</option>
+            <option value="{{ price }}">{{ price }}</option>
             {% endfor %}
         </select>
-        <select name="type_event" required>
+        <select name="type_event" required class="form-control col-sm-5">
             <option value="default">Тип ивента</option>
             {% for type_event in type_events %}
-                <option value="{{ type_event }}">{{ type_event }}</option>
+            <option value="{{ type_event }}">{{ type_event }}</option>
             {% endfor %}
         </select>
-        <select name="holiday" required>
+        <select name="holiday" required class="form-control col-sm-5">
             <option value="default">Праздник</option>
             {% for holiday in holidays %}
-                <option value="{{ holiday }}">{{ holiday }}</option>
+            <option value="{{ holiday }}">{{ holiday }}</option>
             {% endfor %}
         </select>
-        <select name="age_rate" required>
+        <select name="age_rate" required class="form-control col-sm-5 col-sm-5 mb-1">
             <option value="default">Возрастной рейтинг</option>
             {% for age_rate in age_rates %}
-                <option value="{{ age_rate }}">{{ age_rate }}</option>
+            <option value="{{ age_rate }}">{{ age_rate }}</option>
             {% endfor %}
         </select>
-        <input type="submit" value="Поиск">
+        <input type="submit" value="Поиск" class="btn btn-light btn-sm">
     </form>
 </div>
 
-<div>
+<div class="container">
     {% for event in finder_events %}
-        <a href="{% url 'event_detail' id_event=event.id id_user=ID_user %}">{{ event.title }}</a>
+    <div class="row bg-light rounded mb-2">
+        <div class="col rounded">
+            <a href="{% url 'event_detail' id_event=event.id id_user=ID_user %}" class="text-dark">{{ event.title }}</a>
+            <div class="event_date pb-1 text-secondary">{{ event.date_start }}</div>
+            <div class="event_place pb-1 text-secondary">{{ event.name_center }}</div>
+            <form action="{% url 'event_searcher' id_user=ID_user %}" method="post" class="pb-1">
 
-        <form action="{% url 'event_searcher' id_user=ID_user %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="type" value="event">
+                <input type="hidden" name="id_event" value="{{ event.id }}">
+                <input type="submit" value="Хочу посетить" class="btn btn-secondary btn-sm">
+            </form>
+            <form action="{% url 'event_searcher' id_user=ID_user %}" method="post">
 
-            {% csrf_token %}
-            <input type="hidden" name="type" value="event">
-            <input type="hidden" name="id_event" value="{{ event.id }}">
-            <input type="submit" value="Хочу посетить">
-        </form>
+                {% csrf_token %}
+                <input type="hidden" name="type" value="delete_event">
+                <input type="hidden" name="id_event" value="{{ event.id }}">
+                <input type="submit" value="Не интресено" class="btn btn-secondary btn-sm">
+            </form>
+        </div>
+    </div>
 
-
-        <form action="{% url 'event_searcher' id_user=ID_user %}" method="post">
-
-            {% csrf_token %}
-            <input type="hidden" name="type" value="delete_event">
-            <input type="hidden" name="id_event" value="{{ event.id }}">
-            <input type="submit" value="Удалить из списка">
-        </form>
     {% endfor %}
 
 </div>
