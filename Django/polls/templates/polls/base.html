@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <link href="{% static 'polls/styles/style.css' %}" rel="stylesheet" type="text/css">
@@ -13,31 +13,37 @@
             integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
             crossorigin="anonymous"></script>
 </head>
+
 <body>
-
-
 <div class="container__outer">
     <header class="header">
         <div class="container">
             <div class="header__inner">
-                <a class="title__link text-dark"style="text-decoration: none;" href="{% url 'recAll' id_user=ID_user %}">РекСерв.Мск</a>
+                <a class="title__link text-dark" style="text-decoration: none;"
+                   href="{% url 'recAll' id_user=ID_user %}">РекСерв.Мск</a>
 
                 <nav class="nav">
-                    <a class="nav__link text-dark" style="text-decoration: none;" href="{% url 'recAll' id_user=ID_user %}">Главная</a>
-                    <a class="nav__link text-dark" style="text-decoration: none;" href="{% url 'book_searcher' id_user=ID_user %}">Книги</a>
-                    <a class="nav__link text-dark" style="text-decoration: none;" href="{% url 'event_searcher' id_user=ID_user %}">События</a>
-                    <a class="nav__link text-dark" style="text-decoration: none;" href="{% url 'section_searcher' id_user=ID_user %}">Кружки</a>
-                    <a class="nav__link text-dark" style="text-decoration: none;" href="{% url 'profile' id_user=ID_user %}">Личный кабинет</a>
+                    <a class="nav__link text-dark" style="text-decoration: none;"
+                       href="{% url 'recAll' id_user=ID_user %}">Главная</a>
+                    <a class="nav__link text-dark" style="text-decoration: none;"
+                       href="{% url 'book_searcher' id_user=ID_user %}">Книги</a>
+                    <a class="nav__link text-dark" style="text-decoration: none;"
+                       href="{% url 'event_searcher' id_user=ID_user %}">События</a>
+                    <a class="nav__link text-dark" style="text-decoration: none;"
+                       href="{% url 'section_searcher' id_user=ID_user %}">Кружки</a>
+                    <a class="nav__link text-dark" style="text-decoration: none;"
+                       href="{% url 'profile' id_user=ID_user %}">Личный кабинет</a>
                 </nav>
 
-                <a class="login__box text-dark" style="text-decoration: none;" href="{% url 'profile' id_user=ID_user %}">
+                <a class="login__box text-dark" style="text-decoration: none;"
+                   href="{% url 'profile' id_user=ID_user %}">
                     Пользователь {{ Login }}
                 </a>
 
             </div>
         </div>
     </header>
-    <div class="main_content" >
+    <div class="main_content">
         <div class="main_image mb-5">
             <div class="main_image__main__text">
                 <div class="main__text__help">Найдём всё, что</div>

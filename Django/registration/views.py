@@ -48,9 +48,9 @@ def login(request):
             user = User.objects.get(user_login=username, user_password=pwd)
         except User.DoesNotExist:
             user = None
-            err = "User not found"
+            err = "User not found or wrong password"
         if user:
-            return recAll(request, id_user=user.id)
+            return redirect(f'recAll', id_user=user.id)
         else:
             return render(request, f'registration/login.html', {"form": form, 'error': err})
     else:
