@@ -144,7 +144,8 @@ def event_searcher(request, id_user):
             if not post['age_rate'] == 'default':
                 filter_dict['age_rate'] = post['age_rate']
             if len(filter_dict.keys()) > 0:
-                finder_events = Event.objects.filter(**filter_dict)
+                finder_events = Event.objects.filter(**filter_dict, status__in=['Утверждено', 'Запланировано',
+                                                                                'Уточняется', 'Опубликовано'])
         elif type_ == 'event':
             add_last_event(id_user, post['id_event'], status=0)
         elif type_ == 'delete_event':
