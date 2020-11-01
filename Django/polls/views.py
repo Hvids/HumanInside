@@ -109,7 +109,11 @@ def book_searcher(request, id_user):
             else:
                 books = search_book(id_user, filter_dict, order_title=False)
     return render(request, 'polls/book_search.html',
-                  {'ID_user': id_user, 'authors': authors, 'genres': genres, 'books': books,
+                  {'ID_user': id_user,
+                   'Login': User.objects.get(id=id_user).user_login,
+                   'authors': authors,
+                   'genres': genres,
+                   'books': books,
                    'recommend_book': recommend_book})
 
 
@@ -157,6 +161,7 @@ def event_searcher(request, id_user):
     return render(request, 'polls/event_search.html',
                   {
                       'ID_user': id_user,
+                      'Login': User.objects.get(id=id_user).user_login,
                       'type_centers': type_centers,
                       'prices': prices,
                       'type_events': type_events,
@@ -201,6 +206,7 @@ def section_searcher(request, id_user):
     return render(request, 'polls/section_search.html',
                   {
                       'ID_user': id_user,
+                      'Login': User.objects.get(id=id_user).user_login,
                       'type_prices': type_prices,
                       'type_schedules': type_schedules,
                       'undergrounds': undergrounds,
