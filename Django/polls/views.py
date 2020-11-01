@@ -40,17 +40,20 @@ def recAll(request, id_user):
 
 def book_detail(request, id_user, id_book):
     book = Book.objects.get(id=id_book)
-    return render(request, 'polls/book.html', {'book': book, 'user': id_user})
+    login = User.objects.get(id=id_user).user_login
+    return render(request, 'polls/book.html', {'book': book, 'ID_user': id_user, 'Login': login})
 
 
 def event_detail(request, id_user, id_event):
     event = Event.objects.get(id=id_event)
-    return render(request, 'polls/event.html', {'event': event, 'user': id_user})
+    login = User.objects.get(id=id_user).user_login
+    return render(request, 'polls/event.html', {'event': event, 'ID_user': id_user, 'Login': login})
 
 
 def section_detail(request, id_user, id_section):
     section = Section.objects.get(id=id_section)
-    return render(request, 'polls/section.html', {'section': section, 'user': id_user})
+    login = User.objects.get(id=id_user).user_login
+    return render(request, 'polls/section.html', {'section': section, 'ID_user': id_user, 'Login': login})
 
 
 def book_searcher(request, id_user):

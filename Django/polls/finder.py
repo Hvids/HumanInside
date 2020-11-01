@@ -29,6 +29,7 @@ class FinderBase:
 
         dictAllInOne = dict()
         dictAllInOne['ID_user'] = id_user
+        dictAllInOne['Login'] = User.objects.get(id=id_user).user_login
         dictAllInOne['Books'] = allInOne[0]
         dictAllInOne['Events'] = allInOne[1]
         dictAllInOne['Sections'] = allInOne[2]

@@ -1,31 +1,30 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
+{% extends 'polls/base.html' %}
+{% block content %}
     <title>Event page</title>
-</head>
-<body>
-<header>
-    {% if user != 0 %}
-        <a href="{% url 'recAll' id_user=user %}"><h1>Главная</h1></a>
-        <a href="{% url 'book_searcher' id_user=user %}"><h1>Книги</h1></a>
-        <a href="{% url 'event_searcher' id_user=user %}"><h1>События</h1></a>
-        <a href="{% url 'section_searcher' id_user=user %}"><h1>Кружки</h1></a>
-        <a href="{% url 'profile' id_user=user %}"><h1>Личный кабинет</h1></a>
-    {% else %}
-        <a href="{% url 'enter_page' %}"><h1>Главная</h1></a>
-    {% endif %}
-</header>
-<div>
-    <p><b>Название:</b> {{ event.title }}</p>
-    <p><b>Дата начала:</b> {{ event.date_start }}</p>
-    <p><b>Время начала:</b> {{ event.time_start }}</p>
-    <p><b>Дата конца:</b> {{ event.date_end }}</p>
-    <p><b>Время конца:</b> {{ event.time_end }}</p>
-    <p><b>Где:</b> {{ event.name_center }}</p>
-    <p><b>Цена:</b> {{ event.price }}</p>
-    <p><b>Возрастной рейтинг:</b> {{ event.age_rate }}</p>
-    <p><b>Описание:</b> {{ event.content }}</p>
-</div>
-</body>
-</html>
+    <div class="col bg-light rounded m-1 pt-4 pb-4">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="event_title text-secondary mb-3"><p><b>Название:</b></p> {{ event.title }}</div>
+                    <div class="event_status text-secondary mb-3"><p><b>Статус:</b></p> {{ event.status }}</div>
+                    <div class="event_start_date text-secondary mb-3"><p><b>Дата начала:</b></p> {{ event.date_start }}
+                    </div>
+                    <div class="event_start_time text-secondary mb-3"><p><b>Время начала:</b></p> {{ event.time_start }}
+                    </div>
+                    <div class="event_end_date text-secondary mb-3"><p><b>Дата конца:</b></p> {{ event.date_end }}</div>
+                    <div class="event_time_end text-secondary mb-3"><p><b>Время конца:</b></p> {{ event.time_end }}
+                    </div>
+                    <div class="event_where text-secondary mb-3"><p><b>Где:</b></p> {{ event.name_center }}</div>
+                    <div class="event_holiday text-secondary mb-3"><p><b>Событие:</b></p> {{ event.name_holiday }}
+                    </div>
+                    <div class="event_where text-secondary mb-3"><p><b>Что это:</b></p> {{ event.type_event }}</div>
+                    <div class="event_price text-secondary mb-3"><p><b>Цена:</b></p> {{ event.price }}</div>
+                    <div class="event_age_rate text-secondary mb-3"><p><b>Возрастной рейтинг:</b>
+                    </p> {{ event.age_rate }}
+                    </div>
+                    <div class="book_content text-secondary mb-3"><p><b>Описание:</b></p> {{ event.content }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
