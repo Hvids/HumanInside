@@ -39,7 +39,7 @@
     {% for each in event %}
         <a href="{% url 'event_detail' id_event=each.id id_user=ID_user %}">{{ each.title }}</a>
 
-        <form action="{% url 'profile' id_user=user %}" method="post">
+        <form action="{% url 'profile' id_user=ID_user %}" method="post">
 
             {% csrf_token %}
             <input type="hidden" name="type" value="visit_event">
@@ -67,7 +67,7 @@
             <input type="hidden" name="id_section" value="{{ each.id }}">
             <input type="submit" value="Посетил">
         </form>
-        <form action="{% url 'profile' id_user=ID_usergit  %}" method="post">
+        <form action="{% url 'profile' id_user=ID_user %}" method="post">
 
             {% csrf_token %}
             <input type="hidden" name="type" value="delete_section">
