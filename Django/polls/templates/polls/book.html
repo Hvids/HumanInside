@@ -1,32 +1,19 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
+{% extends 'polls/base.html' %}
+{% block content %}
     <title>Book page</title>
-</head>
-<header>
-
-    {% if user != 0 %}
-        <a href="{% url 'recAll' id_user=user %}"><h1>Главная</h1></a>
-        <a href="{% url 'book_searcher' id_user=user %}"><h1>Книги</h1></a>
-        <a href="{% url 'event_searcher' id_user=user %}"><h1>События</h1></a>
-        <a href="{% url 'section_searcher' id_user=user %}"><h1>Кружки</h1></a>
-        <a href="{% url 'profile' id_user=user %}"><h1>Личный кабинет</h1></a>
-    {% else %}
-        <a href="{% url 'enter_page' %}"><h1>Главная</h1></a>
-    {% endif %}
-
-</header>
-<body>
-<div>
-    <p><b>Название:</b> {{ book.title }}</p>
-    <p><b>Серия:</b> {{ book.serie }}</p>
-    <p><b>Автор:</b> {{ book.author }}</p>
-    <p><b>Количество страниц:</b> {{ book.pages }}</p>
-    <p><b>Язык:</b> {{ book.language }}</p>
-    <p><b>Рейтинг:</b> {{ book.rating }}</p>
-    <p><b>Описание:</b> {{ book.content }}</p>
-    <img src="{{ book.image }}" alt="Not found image">
-</div>
-</body>
-</html>
+    <div class="col bg-light rounded m-1 pt-4 pb-4">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="book_title text-secondary mb-3"><p><b>Название:</b></p> {{ book.title }}</div>
+                    <div class="book_seria text-secondary mb-3"><p><b>Серия:</b></p> {{ book.serie }}</div>
+                    <div class="book_autor text-secondary mb-3"><p><b>Автор:</b></p>{{ book.author }}</div>
+                    <div class="book_pages text-secondary mb-3"><p><b>Количество страниц:</b></p>{{ book.pages }}</div>
+                    <div class="book_lang text-secondary mb-3"><p><b>Язык:</b></p>{{ book.language }}</div>
+                    <div class="book_rate text-secondary mb-3"><p><b>Рейтинг:</b></p> {{ book.rating }}</div>
+                    <div class="book_content text-secondary mb-3"><p><b>Описание:</b></p>{{ book.content }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

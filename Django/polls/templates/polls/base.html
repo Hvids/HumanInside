@@ -3,7 +3,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
     <link href="{% static 'polls/styles/style.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'polls/styles/fonts.css' %}" rel="stylesheet" type="text/css">
     <!--    <link href="{% static 'polls/styles/carousel.css' %}" rel="stylesheet" type="text/css">-->
@@ -24,15 +23,15 @@
                 <a class="title__link text-dark"style="text-decoration: none;" href="#">РекСерв.Мск</a>
 
                 <nav class="nav">
-                    <a class="nav__link text-dark" style="text-decoration: none;" href="{% url 'enter_page' %}">Главная</a>
+                    <a class="nav__link text-dark" style="text-decoration: none;" href="{% url 'recAll' id_user=ID_user %}">Главная</a>
                     <a class="nav__link text-dark" style="text-decoration: none;" href="{% url 'book_searcher' id_user=ID_user %}">Книги</a>
                     <a class="nav__link text-dark" style="text-decoration: none;" href="{% url 'event_searcher' id_user=ID_user %}">События</a>
                     <a class="nav__link text-dark" style="text-decoration: none;" href="{% url 'section_searcher' id_user=ID_user %}">Кружки</a>
                     <a class="nav__link text-dark" style="text-decoration: none;" href="{% url 'profile' id_user=ID_user %}">Личный кабинет</a>
                 </nav>
 
-                <a class="login__box text-dark" style="text-decoration: none;" href="#">
-                    Войти
+                <a class="login__box text-dark" style="text-decoration: none;" href="{% url 'profile' id_user=ID_user %}">
+                    Пользователь {{ Login }}
                 </a>
 
             </div>
