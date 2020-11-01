@@ -30,7 +30,7 @@ def search_by_name(pattern, obj_type):
         return all_id_in_match
 
     all_distance = [(distance(pattern, title[0]), title[1]) for title in titles]
-    sorted(all_distance, key=lambda x: x[0])
+    all_distance = sorted(all_distance, key=lambda x: x[0])
 
     all_id_in_distance = [i[1] for i in all_distance]
     all_id_in_distance = all_id_in_distance[0:5]

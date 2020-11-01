@@ -190,8 +190,8 @@ def section_searcher(request, id_user):
                 finder_sections = Section.objects.filter(**filter_dict)
         elif type_ == 'search_title':
             pattern = post['pattern']
-            nearest_ids = search_by_name(pattern, Event)
-            finder_sections = Event.objects.filter(id__in=nearest_ids)
+            nearest_ids = search_by_name(pattern, Section)
+            finder_sections = Section.objects.filter(id__in=nearest_ids)
         elif type_ == 'section':
             add_last_section(id_user, post['id_section'], status=0)
         elif type_ == 'delete_section':
