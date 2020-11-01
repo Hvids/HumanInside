@@ -46,7 +46,8 @@
             <div class="row ">
                 {% for event in recommend_events %}
                 <div class="col bg-white rounded m-1">
-                    <a href="{% url 'event_detail' id_event=event.id id_user=ID_user %}" class="text-dark">{{ event.title }}</a>
+                    <a href="{% url 'event_detail' id_event=event.id id_user=ID_user %}" class="text-dark">
+                        {{ event.title }}</a>
                     <div class="event_date pb-1 text-secondary">{{ event.date_start }}</div>
                     <div class="event_place pb-1 text-secondary">{{ event.name_center }}</div>
                     <form action="{% url 'event_searcher' id_user=ID_user %}" method="post" class="pb-1">
@@ -73,44 +74,47 @@
 </div>
 
 
-<div>
-
-    <form action="{% url 'event_searcher' id_user=ID_user %}" method="POST" class="mt-5 mb-5">
-        {% csrf_token %}
-        <h2>Выбрать фильтр</h2>
-        <input type="hidden" name="type" value="filter_search">
-        <select name="type_center" required class="form-control col-sm-5">
-            <option value="default">Тип центра</option>
-            {% for type_center in type_centers %}
-            <option value="{{ type_center }}">{{ type_center }}</option>
-            {% endfor %}
-        </select>
-        <select name="price" required class="form-control col-sm-5">
-            <option value="default">Цена</option>
-            {% for price in prices %}
-            <option value="{{ price }}">{{ price }}</option>
-            {% endfor %}
-        </select>
-        <select name="type_event" required class="form-control col-sm-5">
-            <option value="default">Тип ивента</option>
-            {% for type_event in type_events %}
-            <option value="{{ type_event }}">{{ type_event }}</option>
-            {% endfor %}
-        </select>
-        <select name="holiday" required class="form-control col-sm-5">
-            <option value="default">Праздник</option>
-            {% for holiday in holidays %}
-            <option value="{{ holiday }}">{{ holiday }}</option>
-            {% endfor %}
-        </select>
-        <select name="age_rate" required class="form-control col-sm-5 col-sm-5 mb-1">
-            <option value="default">Возрастной рейтинг</option>
-            {% for age_rate in age_rates %}
-            <option value="{{ age_rate }}">{{ age_rate }}</option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="Поиск" class="btn btn-light btn-sm">
-    </form>
+<div class="content">
+    <div class="row">
+        <div class="col">
+            <form action="{% url 'event_searcher' id_user=ID_user %}" method="POST" class="mt-5 mb-5">
+                {% csrf_token %}
+                <h2>Выбрать фильтр</h2>
+                <input type="hidden" name="type" value="filter_search">
+                <select name="type_center" required class="form-control col-sm-5">
+                    <option value="default">Тип центра</option>
+                    {% for type_center in type_centers %}
+                    <option value="{{ type_center }}">{{ type_center }}</option>
+                    {% endfor %}
+                </select>
+                <select name="price" required class="form-control col-sm-5">
+                    <option value="default">Цена</option>
+                    {% for price in prices %}
+                    <option value="{{ price }}">{{ price }}</option>
+                    {% endfor %}
+                </select>
+                <select name="type_event" required class="form-control col-sm-5">
+                    <option value="default">Тип ивента</option>
+                    {% for type_event in type_events %}
+                    <option value="{{ type_event }}">{{ type_event }}</option>
+                    {% endfor %}
+                </select>
+                <select name="holiday" required class="form-control col-sm-5">
+                    <option value="default">Праздник</option>
+                    {% for holiday in holidays %}
+                    <option value="{{ holiday }}">{{ holiday }}</option>
+                    {% endfor %}
+                </select>
+                <select name="age_rate" required class="form-control col-sm-5 col-sm-5 mb-1">
+                    <option value="default">Возрастной рейтинг</option>
+                    {% for age_rate in age_rates %}
+                    <option value="{{ age_rate }}">{{ age_rate }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Поиск" class="btn btn-light btn-sm">
+            </form>
+        </div>
+    </div>
 </div>
 
 <div class="container">

@@ -28,7 +28,8 @@
         <div class="row ">
             {% for parametr in recommend_sections %}
             <div class="col bg-white rounded m-1">
-                <a href="{% url 'section_detail' id_section=parametr.id id_user=ID_user %}" class="text-dark">{{ parametr.title }}</a>
+                <a href="{% url 'section_detail' id_section=parametr.id id_user=ID_user %}" class="text-dark">
+                    {{ parametr.title }}</a>
                 <form action="{% url 'section_searcher' id_user=ID_user %}" method="post" class="pb-1">
                     {% csrf_token %}
                     <input type="hidden" name="type" value="section">
@@ -48,36 +49,44 @@
 </div>
 
 
-<form action="{% url 'section_searcher' id_user=ID_user %}" method="POST" class="mt-5 mb-5">
-    {% csrf_token %}
-    <h2>Выбрать фильтр</h2>
-    <input type="hidden" name="type" value="filter_search">
-    <select name="type_price" required class="form-control col-sm-5">
-        <option value="default">Цена</option>
-        {% for filter in type_prices %}
-        <option value="{{ filter }}">{{ filter }}</option>
-        {% endfor %}
-    </select>
-    <select name="underground" required class="form-control col-sm-5">
-        <option value="default">Метро</option>
-        {% for filter in undergrounds %}
-        <option value="{{ filter }}">{{ filter }}</option>
-        {% endfor %}
-    </select>
-    <select name="type_schedule" required class="form-control col-sm-5 mb-1">
-        <option value="default">Тип занятия</option>
-        {% for filter in type_schedules %}
-        <option value="{{ filter }}">{{ filter }}</option>
-        {% endfor %}
-    </select>
-    <input type="submit" value="Поиск" class="btn btn-light btn-sm">
-</form>
+<div class="content">
+    <div class="row">
+        <div class="col">
+            <form action="{% url 'section_searcher' id_user=ID_user %}" method="POST" class="mt-5 mb-5">
+                {% csrf_token %}
+                <h2>Выбрать фильтр</h2>
+                <input type="hidden" name="type" value="filter_search">
+                <select name="type_price" required class="form-control col-sm-5">
+                    <option value="default">Цена</option>
+                    {% for filter in type_prices %}
+                    <option value="{{ filter }}">{{ filter }}</option>
+                    {% endfor %}
+                </select>
+                <select name="underground" required class="form-control col-sm-5">
+                    <option value="default">Метро</option>
+                    {% for filter in undergrounds %}
+                    <option value="{{ filter }}">{{ filter }}</option>
+                    {% endfor %}
+                </select>
+                <select name="type_schedule" required class="form-control col-sm-5 mb-1">
+                    <option value="default">Тип занятия</option>
+                    {% for filter in type_schedules %}
+                    <option value="{{ filter }}">{{ filter }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Поиск" class="btn btn-light btn-sm">
+            </form>
+        </div>
+    </div>
+</div>
+
 
 <div class="container">
     {% for parametr in finder_sections %}
     <div class="row bg-light rounded mb-2">
         <div class="col rounded">
-            <a href="{% url 'section_detail' id_section=parametr.id id_user=ID_user %}" class="text-dark">{{ parametr.title }}</a>
+            <a href="{% url 'section_detail' id_section=parametr.id id_user=ID_user %}" class="text-dark">
+                {{ parametr.title }}</a>
             <form action="{% url 'section_searcher' id_user=ID_user %}" method="post" class="pb-1">
                 {% csrf_token %}
                 <input type="hidden" name="type" value="section">
