@@ -1,104 +1,116 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Books</title>
-</head>
-<header>
-    <a href="{% url 'recAll' id_user=ID_user %}"><h1>Главная</h1></a>
-    <a href="{% url 'book_searcher' id_user=ID_user %}"><h1>Книги</h1></a>
-    <a href="{% url 'event_searcher' id_user=ID_user %}"><h1>События</h1></a>
-    <a href="{% url 'section_searcher' id_user=ID_user %}"><h1>Кружки</h1></a>
-    <a href="{% url 'profile' id_user=ID_user %}"><h1>Личный кабинет</h1></a>
-</header>
-<body>
+{% extends 'polls/base.html' %}
+{% block content %}
+<h3>Я знаю что ищу</h3>
+<form action="{% url 'book_searcher' id_user=ID_user %}" method="POST">
+    <label for="src"> По описанию </label>
+    {% csrf_token %}
+    <input type="hidden" name="type" value="search_rec">
+    <div class="input-group input-group-sm mb-3">
+        <div class="input-group-prepend">
+            <input type="submit" value="Найти" class="btn btn-light btn-sm ">
+        </div>
+        <input type="text" name="content" maxlength="255" required class="form-control col-sm-5"
+               aria-label="Sizing example input">
+    </div>
+
+
+</form>
+
+<form action="{% url 'book_searcher' id_user=ID_user %}" method="POST">
+    <label for="src"> По названию </label>
+    {% csrf_token %}
+    <input type="hidden" name="type" value="search_title">
+
+    <div class="input-group input-group-sm mb-3">
+        <div class="input-group-prepend">
+            <input type="submit" value="Найти" class="btn btn-light btn-sm">
+        </div>
+        <input type="text" name="pattern" maxlength="255" required class="form-control col-sm-5"
+               aria-label="Sizing example input">
+    </div>
+</form>
+
 <div>
-    <header>
-        <h1>Поиск книги</h1>
-    </header>
-    <p>
-    <h3>Я знаю что ищу</h3></p>
-    <form action="{% url 'book_searcher' id_user=ID_user %}" method="POST">
-        <label for="src"> Найти книгу по описанию </label>
-        {% csrf_token %}
-        <input type="hidden" name="type" value="search_rec">
-        <input type="text" name="content" maxlength="255" required>
+    <div class="bg_div bg_big_div bg_div__recommend">
+        <div class="container">
+            <div class="row pb-5 pt-5">
+                <div class="col">
+                    <h2 class="text-white"> Книги для вас</h2>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row ">
+                {% for book in recommend_book %}
+                <div class="col bg-white rounded m-1">
+                    <a href="{% url 'book_detail' id_book=book.id id_user=ID_user %}" class="text-dark">{{ book.title }}</a>
+                    <div class="book_autor text-secondary mt-2 pb-2">{{ book.author }}</div>
+                    <form action="{% url 'book_searcher' id_user=ID_user %}" method="post" class="pb-1">
 
-        <input type="submit" value="Найти">
-    </form>
+                        {% csrf_token %}
+                        <input type="hidden" name="type" value="book">
+                        <input type="hidden" name="id_book" value="{{ book.id }}">
+                        <input type="submit" value="Хочу прочитать" class="btn btn-light btn-sm">
+                    </form>
+                    <form action="{% url 'book_searcher' id_user=ID_user %}" method="post">
 
-    <form action="{% url 'book_searcher' id_user=ID_user %}" method="POST">
-        <label for="src"> Найти книгу по названию </label>
-        {% csrf_token %}
-        <input type="hidden" name="type" value="search_title">
-        <input type="text" name="pattern" maxlength="255" required>
+                        {% csrf_token %}
+                        <input type="hidden" name="type" value="delete_book">
+                        <input type="hidden" name="id_book" value="{{ book.id }}">
+                        <input type="submit" value="Не интересно" class="btn btn-light btn-sm">
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 
-        <input type="submit" value="Найти">
-    </form>
 
-    <div>
-        {% for book in recommend_book %}
-            <a href="{% url 'book_detail' id_book=book.id id_user=ID_user %}">{{ book.title }}</a>
+</div>
 
-            <form action="{% url 'book_searcher' id_user=ID_user %}" method="post">
+
+<form action="{% url 'book_searcher' id_user=ID_user %}" method="GET" class="mt-5 mb-5">
+    {% csrf_token %}
+    <h2>Выбрать фильтр</h2>
+    <select name="author" required class="form-control col-sm-5">
+        <option>Автор</option>
+        {% for author in authors %}
+        <option value="{{ author }}">{{ author }}</option>
+        {% endfor %}
+    </select>
+    <select name="genre" required class="form-control col-sm-5 mb-1">
+        <option>Жанр</option>
+        {% for genre in genres %}
+
+        <option value="{{ genre.id }}">{{ genre.name }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Поиск" class="btn btn-light btn-sm">
+</form>
+<div class="container">
+    {% for book in books %}
+    <div class="row bg-light rounded mb-2">
+        <div class="col rounded-100">
+            <a href="{% url 'book_detail' id_book=book.id id_user=ID_user %}" class="text-dark">{{ book.title }}</a>
+            <div class="book_autor text-dark mt-2 pb-2">{{ book.author }}</div>
+            <form action="{% url 'book_searcher' id_user=ID_user %}" method="post" class="pb-1">
 
                 {% csrf_token %}
                 <input type="hidden" name="type" value="book">
                 <input type="hidden" name="id_book" value="{{ book.id }}">
-                <input type="submit" value="Хочу прочитать">
+                <input type="submit" value="Хочу прочитать" class="btn btn-secondary btn-sm">
             </form>
             <form action="{% url 'book_searcher' id_user=ID_user %}" method="post">
 
                 {% csrf_token %}
                 <input type="hidden" name="type" value="delete_book">
                 <input type="hidden" name="id_book" value="{{ book.id }}">
-                <input type="submit" value="Удалить из списка">
+                <input type="submit" value="Не интересно" class="btn btn-secondary btn-sm">
             </form>
-        {% endfor %}
+        </div>
     </div>
-
-
-    <form action="{% url 'book_searcher' id_user=ID_user %}" method="GET">
-        {% csrf_token %}
-        <p>Выбрать фильтр</p>
-        <select name="author" required>
-            <option>Автор</option>
-            {% for author in authors %}
-                <option value="{{ author }}">{{ author }}</option>
-            {% endfor %}
-        </select>
-        <select name="genre" required>
-            <option>Жанр</option>
-            {% for genre in genres %}
-
-                <option value="{{ genre.id }}">{{ genre.name }}</option>
-            {% endfor %}
-        </select>
-        <p>Сортировать</p>
-        <input type="radio" id="sort_parametr"
-               name="sort_parametr" value="alphavit">
-        <label for="sort_parametr">По алфавиту</label>
-        <input type="submit" value="Поиск">
-    </form>
-    {% for book in books %}
-        <a href="{% url 'book_detail' id_book=book.id id_user=ID_user %}">{{ book.title }}</a>
-
-        <form action="{% url 'book_searcher' id_user=ID_user %}" method="post">
-
-            {% csrf_token %}
-            <input type="hidden" name="type" value="book">
-            <input type="hidden" name="id_book" value="{{ book.id }}">
-            <input type="submit" value="Хочу прочитать">
-        </form>
-        <form action="{% url 'book_searcher' id_user=ID_user %}" method="post">
-
-            {% csrf_token %}
-            <input type="hidden" name="type" value="delete_book">
-            <input type="hidden" name="id_book" value="{{ book.id }}">
-            <input type="submit" value="Удалить из списка">
-        </form>
     {% endfor %}
 </div>
 
-</body>
-</html>
+
+{% endblock %}

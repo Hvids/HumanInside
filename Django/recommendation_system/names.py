@@ -23,7 +23,7 @@ SIMILAR_BOOKS = 'SIMILAR' + BOOKS
 SIMILAR_EVENTS = 'SIMILAR' + EVENTS
 SIMILAR_CULTURAL_CENTERS = "SIMILAR" + CULTURAL_CENTERS
 SIMILAR_LIBRARIES = "SIMILAR" + LIBRARIES
-
+SIMILAR_SECTIONS =  "SIMILAR" + SECTIONS
 FILTER_MATRIX_USERS_BOOKS = 'filter_matrix_users_books'
 FILTER_MATRIX_USERS_EVENTS = 'filter_matrix_users_events'
 FILTER_MATRIX_USERS_CULTURAL_CENTERS = 'filter_matrix_users_cultural_centers'
@@ -35,15 +35,13 @@ PREPROCESSING_CONTENT_EVENTS = 'preprocessing_content_events'
 PREPROCESSING_CULTURAL_CENTERS = 'preprocessing_cultural_centers'
 PREPROCESSING_CONTENT_CULTURAL_CENTERS = 'preprocessing_content_cultural_centers'
 
+PREPROCESSING_SECTIONS = 'preprocessing_content_sections'
+PREPROCESSING_CONTENT_SECTIONS = 'preprocessing_content_sections'
+
 PREPROCESSING_LIBRARIES = 'preprocessing_libraries'
 PREPROCESSING_CONTENT_LIBRARIES = 'preprocessing_content_libraries'
 
 FILTERING_MODEL_BOOKS = 'filtering_model_' + BOOKS
 FILTERING_MODEL_EVENTS = 'filtering_model_' + EVENTS
 FILTERING_MODEL_CULTURAL_CENTERS = 'filtering_model_' + CULTURAL_CENTERS
-
-
-PREPROCESSING_SECTIONS = 'preprocessing_content_sections'
-PREPROCESSING_CONTENT_SECTIONS = 'preprocessing_content_sections'
-SIMILAR_SECTIONS =  "SIMILAR" + SECTIONS
 FILTERING_MODEL_SECTIONS = 'filtering_model_' + SECTIONS
