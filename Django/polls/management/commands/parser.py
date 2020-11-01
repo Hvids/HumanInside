@@ -162,9 +162,22 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if options['short']:
+            print('\n')
+            print('_' * 30)
             print("Congrats!")
             print("You found easter egg!")
-            print("Dat parsing doesn't work!!")
+            print("Dat parsing doesn't work!! Wraaargh!! Oh, working :)\n")
+            print("This site made by\nDenis Vankov\nand")
+            print("Danila Ivanov")
+            print("Check ours gitHub profiles:")
+            print('_' * 30)
+            print("http://github.com/DenVankov")
+            print('_'*30)
+            print('https://github.com/Hvids')
+            print('_' * 30)
+            print('Have a nice day!')
+            print('_' * 30)
+            print('\n')
         elif options['parse__all']:
             print("\n...Start parsing...\n")
             df = pd.read_csv('../data/csv/books.csv')
