@@ -1,85 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Sections</title>
-</head>
-<body>
-<header>
-    <a href="{% url 'recAll' id_user=ID_user %}"><h1>Главная</h1></a>
-    <a href="{% url 'book_searcher' id_user=ID_user %}"><h1>Книги</h1></a>
-    <a href="{% url 'event_searcher' id_user=ID_user %}"><h1>События</h1></a>
-    <a href="{% url 'section_searcher' id_user=ID_user %}"><h1>Кружки</h1></a>
-    <a href="{% url 'profile' id_user=ID_user %}"><h1>Личный кабинет</h1></a>
-</header>
+{% extends 'polls/base.html' %}
+{% block content %}
 <div>
-    <h3>Поиск по названию</h3>
+    <h3>Я знаю что ищу</h3>
     <form action="{% url 'section_searcher' id_user=ID_user %}" method="POST">
         {% csrf_token %}
-        <input type="hidden" name="type" value="search_title">
-        <input type="text" name="pattern" maxlength="255" required>
-        <input type="submit" value="Найти">
+        <label for="src"> По названию </label>
+
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <input type="submit" value="Найти" class="btn btn-light btn-sm">
+            </div>
+            <input type="text" name="pattern" maxlength="255" required class="form-control col-sm-5"
+                   aria-label="Sizing example input">
+        </div>
     </form>
 </div>
-{% for parametr in recommend_sections %}
-    <a href="{% url 'section_detail' id_section=parametr.id id_user=ID_user %}">{{ parametr.title }}</a>
-    <form action="{% url 'section_searcher' id_user=ID_user %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="type" value="section">
-        <input type="hidden" name="id_section" value="{{ parametr.id }}">
-        <input type="submit" value="Хочу посетить">
-    </form>
-    <form action="{% url 'section_searcher' id_user=ID_user %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="type" value="delete_section">
-        <input type="hidden" name="id_section" value="{{ parametr.id }}">
-        <input type="submit" value="Удалить из списка">
-    </form>
-{% endfor %}
+<div class="bg_div bg_big_div bg_div__places">
+    <div class="container">
+        <div class="row pb-5 pt-5">
+            <div class="col">
+                <h2 class="text-white"> Кружки для вас</h2>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row ">
+            {% for parametr in recommend_sections %}
+            <div class="col bg-white rounded m-1">
+                <a href="{% url 'section_detail' id_section=parametr.id id_user=ID_user %}" class="text-dark">{{ parametr.title }}</a>
+                <form action="{% url 'section_searcher' id_user=ID_user %}" method="post" class="pb-1">
+                    {% csrf_token %}
+                    <input type="hidden" name="type" value="section">
+                    <input type="hidden" name="id_section" value="{{ parametr.id }}">
+                    <input type="submit" value="Хочу посетить" class="btn btn-light btn-sm">
+                </form>
+                <form action="{% url 'section_searcher' id_user=ID_user %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="type" value="delete_section">
+                    <input type="hidden" name="id_section" value="{{ parametr.id }}">
+                    <input type="submit" value="Не интересно" class="btn btn-light btn-sm">
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 
 
-<h3>Подобрать событие</h3>
-<form action="{% url 'section_searcher' id_user=ID_user %}" method="POST">
+<form action="{% url 'section_searcher' id_user=ID_user %}" method="POST" class="mt-5 mb-5">
     {% csrf_token %}
+    <h2>Выбрать фильтр</h2>
     <input type="hidden" name="type" value="filter_search">
-    <select name="type_price" required>
+    <select name="type_price" required class="form-control col-sm-5">
         <option value="default">Цена</option>
         {% for filter in type_prices %}
-            <option value="{{ filter }}">{{ filter }}</option>
+        <option value="{{ filter }}">{{ filter }}</option>
         {% endfor %}
     </select>
-    <select name="underground" required>
+    <select name="underground" required class="form-control col-sm-5">
         <option value="default">Метро</option>
         {% for filter in undergrounds %}
-            <option value="{{ filter }}">{{ filter }}</option>
+        <option value="{{ filter }}">{{ filter }}</option>
         {% endfor %}
     </select>
-    <select name="type_schedule" required>
+    <select name="type_schedule" required class="form-control col-sm-5 mb-1">
         <option value="default">Тип занятия</option>
         {% for filter in type_schedules %}
-            <option value="{{ filter }}">{{ filter }}</option>
+        <option value="{{ filter }}">{{ filter }}</option>
         {% endfor %}
     </select>
-    <input type="submit" value="Поиск">
+    <input type="submit" value="Поиск" class="btn btn-light btn-sm">
 </form>
 
-<div>
+<div class="container">
     {% for parametr in finder_sections %}
-        <a href="{% url 'section_detail' id_section=parametr.id id_user=ID_user %}">{{ parametr.title }}</a>
-        <form action="{% url 'section_searcher' id_user=ID_user %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="type" value="section">
-            <input type="hidden" name="id_section" value="{{ parametr.id }}">
-            <input type="submit" value="Хочу посетить">
-        </form>
-        <form action="{% url 'section_searcher' id_user=ID_user %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="type" value="delete_section">
-            <input type="hidden" name="id_section" value="{{ parametr.id }}">
-            <input type="submit" value="Удалить из списка">
-        </form>
+    <div class="row bg-light rounded mb-2">
+        <div class="col rounded">
+            <a href="{% url 'section_detail' id_section=parametr.id id_user=ID_user %}" class="text-dark">{{ parametr.title }}</a>
+            <form action="{% url 'section_searcher' id_user=ID_user %}" method="post" class="pb-1">
+                {% csrf_token %}
+                <input type="hidden" name="type" value="section">
+                <input type="hidden" name="id_section" value="{{ parametr.id }}">
+                <input type="submit" value="Хочу посетить" class="btn btn-secondary btn-sm">
+            </form>
+            <form action="{% url 'section_searcher' id_user=ID_user %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="type" value="delete_section">
+                <input type="hidden" name="id_section" value="{{ parametr.id }}">
+                <input type="submit" value="Не интересно" class="btn btn-secondary btn-sm">
+            </form>
+        </div>
+    </div>
+
     {% endfor %}
 </div>
-
-</body>
-</html>
+{% endblock %}

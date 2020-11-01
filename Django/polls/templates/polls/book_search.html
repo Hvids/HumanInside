@@ -91,7 +91,7 @@
     <div class="container">
         {% for book in books %}
             <div class="row bg-light rounded mb-2">
-                <div class="col rounded-100">
+                <div class="col rounded">
                     <a href="{% url 'book_detail' id_book=book.id id_user=ID_user %}"
                        class="text-dark">{{ book.title }}</a>
                     <div class="book_autor text-dark mt-2 pb-2">{{ book.author }}</div>
