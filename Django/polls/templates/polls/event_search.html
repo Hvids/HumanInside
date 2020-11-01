@@ -1,17 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Events</title>
-</head>
-<body>
-<header>
-    <a href="{% url 'recAll' id_user=ID_user %}"><h1>Главная</h1></a>
-    <a href="{% url 'book_searcher' id_user=ID_user %}"><h1>Книги</h1></a>
-    <a href="{% url 'event_searcher' id_user=ID_user %}"><h1>События</h1></a>
-    <a href="{% url 'section_searcher' id_user=ID_user %}"><h1>Кружки</h1></a>
-    <a href="{% url 'profile' id_user=ID_user %}"><h1>Личный кабинет</h1></a>
-</header>
+{% extends 'polls/base.html' %}
+{% block content %}
 <div>
     <h3>Поиск по описанию</h3>
     <form action="{% url 'event_searcher' id_user=ID_user %}" method="POST">
@@ -118,6 +106,4 @@
 
 </div>
 
-
-</body>
-</html>
+{% endblock %}
