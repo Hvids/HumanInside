@@ -1,12 +1,20 @@
 {% extends 'polls/base.html' %}
 {% block content %}
     <title>Profile</title>
-    <p>Прочитал книг:</p> {{ last_read }}
-    <p>Посетил событий:</p> {{ last_event }}
-    <p>Посетил кружков:</p> {{ last_section }}
+    <div class="col bg-light rounded m-1 pt-4 pb-2">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="section_title text-secondary mb-3">Прочитал книг: {{ last_read }} </div>
+                    <div class="section_title text-secondary mb-3">Посетил событий: {{ last_event }} </div>
+                    <div class="section_title text-secondary mb-3">Посетил кружков: {{ last_section }} </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <p>
-    <h3>Мои книги</h3></p>
+
+    <h3>Мои книги</h3>
 
     {% for each in book %}
         <a href="{% url 'book_detail' id_book=each.id id_user=user %}">{{ each.title }}</a>
@@ -27,8 +35,7 @@
         </form>
     {% endfor %}
 
-    <p>
-    <h3>Мои события</h3></p>
+    <h3>Мои события</h3>
     {% for each in event %}
         <a href="{% url 'event_detail' id_event=each.id id_user=user %}">{{ each.title }}</a>
 
@@ -49,8 +56,7 @@
 
     {% endfor %}
 
-    <p>
-    <h3>Мои кружки</h3></p>
+    <h3>Мои кружки</h3>
     {% for each in section %}
         <a href="{% url 'section_detail' id_section=each.id id_user=user %}">{{ each.title }}</a>
 
