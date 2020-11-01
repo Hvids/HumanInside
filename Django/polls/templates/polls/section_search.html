@@ -4,6 +4,7 @@
     <h3>Я знаю что ищу</h3>
     <form action="{% url 'section_searcher' id_user=ID_user %}" method="POST">
         {% csrf_token %}
+        <input type="hidden" name="type" value="search_title">
         <label for="src"> По названию </label>
 
         <div class="input-group input-group-sm mb-3">
