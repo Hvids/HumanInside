@@ -97,4 +97,5 @@ def profile(request, id_user):
     return render(request, 'registration/profile.html', {'book': to_read, 'last_read': last_read,
                                                          'event': to_event, 'last_event': last_event,
                                                          'section': to_section, 'last_section': last_section,
-                                                         'ID_user': id_user})
+                                                         'ID_user': id_user,
+                                                         'Login': User.objects.get(id=id_user).user_login})

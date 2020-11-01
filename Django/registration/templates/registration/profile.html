@@ -5,9 +5,9 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <div class="section_title text-secondary mb-3">Прочитал книг: {{ last_read }} </div>
-                    <div class="section_title text-secondary mb-3">Посетил событий: {{ last_event }} </div>
-                    <div class="section_title text-secondary mb-3">Посетил кружков: {{ last_section }} </div>
+                    <div class="section_title text-secondary mb-3"><b>Прочитал книг:</b> {{ last_read }} </div>
+                    <div class="section_title text-secondary mb-3"><b>Посетил событий:</b> {{ last_event }} </div>
+                    <div class="section_title text-secondary mb-3"><b>Посетил кружков:</b> {{ last_section }} </div>
                 </div>
             </div>
         </div>
@@ -15,65 +15,88 @@
 
 
     <h3>Мои книги</h3>
+    <div class="content">
+        <div class="row ">
+            <div class="col bg-light rounded m-1 mb-2 pt-3 pb-3">
+                {% for each in book %}
+                    <a href="{% url 'book_detail' id_book=each.id id_user=ID_user %}"
+                       class="text-dark">{{ each.title }}</a>
+                    <div class="book_autor text-secondary mt-2 pb-2">{{ each.author }}</div>
 
-    {% for each in book %}
-        <a href="{% url 'book_detail' id_book=each.id id_user=ID_user %}">{{ each.title }}</a>
+                    <form action="{% url 'profile' id_user=ID_user %}" method="post" class="pb-1">
 
-        <form action="{% url 'profile' id_user=ID_user %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="type" value="read_book">
+                        <input type="hidden" name="id_book" value="{{ each.id }}">
+                        <input type="submit" value="Прочитал" class="btn btn-secondary btn-sm">
+                    </form>
+                    <form action="{% url 'profile' id_user=ID_user %}" method="post">
 
-            {% csrf_token %}
-            <input type="hidden" name="type" value="read_book">
-            <input type="hidden" name="id_book" value="{{ each.id }}">
-            <input type="submit" value="Хочу прочитать">
-        </form>
-        <form action="{% url 'profile' id_user=ID_user %}" method="post">
-
-            {% csrf_token %}
-            <input type="hidden" name="type" value="delete_book">
-            <input type="hidden" name="id_book" value="{{ each.id }}">
-            <input type="submit" value="Удалить из списка">
-        </form>
-    {% endfor %}
+                        {% csrf_token %}
+                        <input type="hidden" name="type" value="delete_book">
+                        <input type="hidden" name="id_book" value="{{ each.id }}">
+                        <input type="submit" value="Удалить из списка" class="btn btn-secondary btn-sm">
+                    </form>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 
     <h3>Мои события</h3>
-    {% for each in event %}
-        <a href="{% url 'event_detail' id_event=each.id id_user=ID_user %}">{{ each.title }}</a>
+    <div class="content">
+        <div class="row ">
+            <div class="col bg-light rounded m-1 mb-2 pt-3 pb-3">
+                {% for each in event %}
+                    <a href="{% url 'event_detail' id_event=each.id id_user=ID_user %}"
+                       class="text-dark">{{ each.title }} </a>
+                    <div class="event_date pb-1 text-secondary">{{ each.date_start }}</div>
+                    <div class="event_place pb-1 text-secondary">{{ each.name_center }}</div>
 
-        <form action="{% url 'profile' id_user=ID_user %}" method="post">
+                    <form action="{% url 'profile' id_user=ID_user %}" method="post" class="pb-1">
 
-            {% csrf_token %}
-            <input type="hidden" name="type" value="visit_event">
-            <input type="hidden" name="id_event" value="{{ each.id }}">
-            <input type="submit" value="Посетил">
-        </form>
-        <form action="{% url 'profile' id_user=ID_user %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="type" value="visit_event">
+                        <input type="hidden" name="id_event" value="{{ each.id }}">
+                        <input type="submit" value="Посетил" class="btn btn-secondary btn-sm">
+                    </form>
+                    <form action="{% url 'profile' id_user=ID_user %}" method="post">
 
-            {% csrf_token %}
-            <input type="hidden" name="type" value="delete_event">
-            <input type="hidden" name="id_event" value="{{ each.id }}">
-            <input type="submit" value="Удалить из списка">
-        </form>
+                        {% csrf_token %}
+                        <input type="hidden" name="type" value="delete_event">
+                        <input type="hidden" name="id_event" value="{{ each.id }}">
+                        <input type="submit" value="Удалить из списка" class="btn btn-secondary btn-sm">
+                    </form>
 
-    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 
     <h3>Мои кружки</h3>
-    {% for each in section %}
-        <a href="{% url 'section_detail' id_section=each.id id_user=ID_user %}">{{ each.title }}</a>
+    <div class="content">
+        <div class="row ">
+            <div class="col bg-light rounded m-1 mb-2 pt-3 pb-3">
+                {% for each in section %}
+                    <a href="{% url 'section_detail' id_section=each.id id_user=ID_user %}"
+                       class="text-dark">{{ each.title }}</a>
 
-        <form action="{% url 'profile' id_user=ID_user %}" method="post">
+                    <form action="{% url 'profile' id_user=ID_user %}" method="post" class="pt-2 pb-1">
 
-            {% csrf_token %}
-            <input type="hidden" name="type" value="visit_section">
-            <input type="hidden" name="id_section" value="{{ each.id }}">
-            <input type="submit" value="Посетил">
-        </form>
-        <form action="{% url 'profile' id_user=ID_user %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="type" value="visit_section">
+                        <input type="hidden" name="id_section" value="{{ each.id }}">
+                        <input type="submit" value="Посетил" class="btn btn-secondary btn-sm">
+                    </form>
+                    <form action="{% url 'profile' id_user=ID_user %}" method="post">
 
-            {% csrf_token %}
-            <input type="hidden" name="type" value="delete_section">
-            <input type="hidden" name="id_section" value="{{ each.id }}">
-            <input type="submit" value="Удалить из списка">
-        </form>
+                        {% csrf_token %}
+                        <input type="hidden" name="type" value="delete_section">
+                        <input type="hidden" name="id_section" value="{{ each.id }}">
+                        <input type="submit" value="Удалить из списка" class="btn btn-secondary btn-sm">
+                    </form>
 
-    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 {% endblock %}
